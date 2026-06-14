@@ -1,0 +1,47 @@
+
+                                            {/* Tone */}
+                                            <div className="grid gap-2">
+                                                <Label>Tone</Label>
+                                                <Select value={data.tone} onValueChange={val => setData('tone', val)}>
+                                                    <SelectTrigger>
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="Professional">Professional</SelectItem>
+                                                        <SelectItem value="Casual">Casual</SelectItem>
+                                                        <SelectItem value="Friendly">Friendly</SelectItem>
+                                                        <SelectItem value="Formal">Formal</SelectItem>
+                                                        <SelectItem value="Empathetic">Empathetic</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+
+                                            {/* Personality */}
+                                            <div className="grid gap-2">
+                                                <Label>Personality</Label>
+                                                <Textarea
+                                                    className="min-h-[100px] text-sm"
+                                                    value={data.personality}
+                                                    onChange={e => setData('personality', e.target.value)}
+                                                />
+                                            </div>
+
+                                            {/* Intent */}
+                                            <div className="grid gap-2">
+                                                <Label>Intent</Label>
+                                                <Textarea
+                                                    className="min-h-[80px] text-sm"
+                                                    value={data.intent}
+                                                    onChange={e => setData('intent', e.target.value)}
+                                                />
+                                            </div>
+
+                                            {/* Additional Information */}
+                                            <div className="grid gap-2">
+                                                <Label>Additional Information & Business Context</Label>
+                                                <Textarea
+                                                    className="min-h-[250px] font-mono text-xs"
+                                                    value={data.additional_context}
+                                                    onChange={e => setData('additional_context', e.target.value)}
+                                                />
+                                            </div>

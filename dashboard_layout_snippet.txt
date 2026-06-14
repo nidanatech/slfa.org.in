@@ -1,0 +1,182 @@
+                            {/* Secondary Stats */}
+                            <div className="grid gap-4 md:grid-cols-3">
+                                {/* Conversations by Channel */}
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-base">Conversations by Channel</CardTitle>
+                                        <CardDescription>Distribution across different channels</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        {analytics?.conversations_by_channel && Object.keys(analytics.conversations_by_channel).length > 0 ? (
+                                            <div className="space-y-3">
+                                                {Object.entries(analytics.conversations_by_channel).map(([channel, data]) => (
+                                                    <div key={channel} className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="h-2 w-2 rounded-full bg-primary"></div>
+                                                            <span className="text-sm font-medium capitalize">{data.channel_name}</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-32 bg-muted rounded-full h-2">
+                                                                <div 
+                                                                    className="bg-primary h-2 rounded-full" 
+                                                                    style={{ width: `${(data.count / analytics.total_conversations) * 100}%` }}
+                                                                ></div>
+                                                            </div>
+                                                            <span className="text-sm text-muted-foreground w-12 text-right">{data.count}</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="text-center py-8 text-muted-foreground text-sm">
+                                                No channel data available yet
+                                            </div>
+                                        )}
+                                    </CardContent>
+                                </Card>
+
+                                {/* Recent Activity - Moved Here */}
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-base">Recent Activity</CardTitle>
+                                        <CardDescription>Latest conversations</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        {analytics?.recent_activity && analytics.recent_activity.length > 0 ? (
+                                            <div className="space-y-2">
+                                                {analytics.recent_activity.slice(0, 5).map((activity) => (
+                                                    <div key={activity.id} className="flex items-center justify-between py-1.5 border-b last:border-0">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                                                <User className="h-3 w-3 text-primary" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs font-medium">{activity.contact_name}</p>
+                                                                <p className="text-[10px] text-muted-foreground capitalize">{activity.channel}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <span className={cn(
+                                                                "text-[10px] px-1.5 py-0.5 rounded-full",
+                                                                activity.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                                                            )}>
+                                                                {activity.status}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="text-center py-6 text-muted-foreground text-xs">
+                                                <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-20" />
+                                                <p>No activity yet</p>
+                                            </div>
+                                        )}
+                                    </CardContent>
+                                </Card>
+
+                                {/* Actions Summary */}
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-base">Actions Summary</CardTitle>
+                                        <CardDescription>Bot actions triggered</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <Zap className="h-4 w-4 text-amber-500" />
+                                                    <span className="text-sm font-medium">Handovers</span>
+                                                </div>
+                                                <span className="text-sm font-bold">{analytics?.handovers_triggered || 0}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <Target className="h-4 w-4 text-green-500" />
+                                                    <span className="text-sm font-medium">Appointments</span>
+                                                </div>
+                                                <span className="text-sm font-bold">{analytics?.appointments_booked || 0}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <UserPlus className="h-4 w-4 text-blue-500" />
+                                                    <span className="text-sm font-medium">Contacts</span>
+                                                </div>
+                                                <span className="text-sm font-bold">{analytics?.contacts_created || 0}</span>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            {/* Weekly Traffic Chart - Full Width with X-Axis */}
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-base">Weekly Traffic Pattern</CardTitle>
+                                    <CardDescription>Conversations by weekday and channel</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    {analytics?.weekly_traffic && Object.keys(analytics.weekly_traffic).some(day => Object.keys(analytics.weekly_traffic[day]).length > 0) ? (
+                                        <div className="space-y-4">
+                                            {/* Chart */}
+                                            <div className="flex items-end justify-between gap-2 h-48">
+                                                {Object.entries(analytics.weekly_traffic).map(([day, channels]) => {
+                                                    const total = Object.values(channels).reduce((sum, count) => sum + count, 0);
+                                                    const maxTotal = Math.max(...Object.values(analytics.weekly_traffic).map(ch => 
+                                                        Object.values(ch).reduce((sum, count) => sum + count, 0)
+                                                    ), 1);
+                                                    const heightPercent = (total / maxTotal) * 100;
+                                                    
+                                                    return (
+                                                        <div key={day} className="flex-1 flex flex-col items-center gap-2">
+                                                            {/* Bar */}
+                                                            <div className="w-full flex flex-col justify-end" style={{ height: '160px' }}>
+                                                                <div 
+                                                                    className="w-full flex flex-col-reverse gap-0.5 rounded-t-md overflow-hidden"
+                                                                    style={{ height: `${heightPercent}%` }}
+                                                                >
+                                                                    {Object.entries(channels).map(([channel, count], idx) => {
+                                                                        const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-orange-500', 'bg-pink-500'];
+                                                                        const segmentHeight = total > 0 ? (count / total) * 100 : 0;
+                                                                        return (
+                                                                            <div
+                                                                                key={channel}
+                                                                                className={cn("w-full", colors[idx % colors.length])}
+                                                                                style={{ height: `${segmentHeight}%` }}
+                                                                                title={`${channel}: ${count}`}
+                                                                            ></div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                            {/* Total Count */}
+                                                            <div className="text-xs font-medium text-muted-foreground">{total}</div>
+                                                            {/* X-axis Label */}
+                                                            <div className="text-xs font-medium">{day.slice(0, 3)}</div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            
+                                            {/* Legend */}
+                                            <div className="pt-4 border-t flex flex-wrap gap-3 justify-center text-xs">
+                                                {analytics?.conversations_by_channel && Object.entries(analytics.conversations_by_channel).map(([channel, data], idx) => {
+                                                    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-orange-500', 'bg-pink-500'];
+                                                    return (
+                                                        <div key={channel} className="flex items-center gap-1.5">
+                                                            <div className={cn("h-3 w-3 rounded", colors[idx % colors.length])}></div>
+                                                            <span className="text-muted-foreground capitalize">{data.channel_name}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-12 text-muted-foreground">
+                                            <BarChart3 className="h-12 w-12 mx-auto mb-3 opacity-20" />
+                                            <p className="text-sm">No weekly data available yet</p>
+                                            <p className="text-xs">Data will appear once conversations start</p>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
