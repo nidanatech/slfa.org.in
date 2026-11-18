@@ -12,7 +12,7 @@ router.on('invalid', (event) => {
     }
 });
 
-const appName = import.meta.env.VITE_APP_NAME || 'SLFA';
+const appName = 'SLFA';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GalleryAlbum extends Model
 {
-    protected $fillable = ['title', 'event_id', 'cover_image_path'];
+    protected $fillable = ['title', 'event_id', 'cover_image_path', 'description', 'date'];
 
     public function event()
     {

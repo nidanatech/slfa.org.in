@@ -37,10 +37,7 @@ export default function NewsDetail({ auth, post }) {
             <div className="slfa-section bg-slfa-cream min-h-screen">
                 <div className="slfa-container max-w-4xl">
                     <div className="bg-white p-8 md:p-12 rounded-xl shadow-sm border border-gray-100 animate-fade-up">
-                        <div 
-                            className="prose prose-lg max-w-none text-gray-700 whitespace-pre-wrap"
-                            dangerouslySetInnerHTML={{ __html: post.body }}
-                        />
+                        <div className="prose prose-lg max-w-none text-gray-700 whitespace-pre-wrap">{post.body}</div>
                     </div>
                 </div>
             </div>

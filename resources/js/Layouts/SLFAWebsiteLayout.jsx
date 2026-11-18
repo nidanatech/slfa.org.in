@@ -17,6 +17,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
     const navLinks = [
         { name: 'Home', href: route('home') },
         { name: 'About', href: route('about') },
+        { name: 'Membership', href: route('membership') },
         { name: 'News', href: route('news') },
         { name: 'Gallery', href: route('gallery') },
         { name: 'Contact', href: route('contact') },
@@ -69,9 +70,9 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                             <div className="flex items-center space-x-6">
                                 {user ? (
                                     <>
-                                        <Link href={route('directory')} className={`${linkBase} ${linkColor}`}>
-                                            Directory
-                                        </Link>
+                                        {(user.role === 'admin' || user.account_status === 'active') && (
+                                            <Link href={route('directory')} className={`${linkBase} ${linkColor}`}>Directory</Link>
+                                        )}
                                         <Link href={user?.role === 'admin' ? route('admin.dashboard') : route('dashboard')} className={`${linkBase} text-[#D4AF37] hover:text-white transition-colors`}>
                                             Dashboard
                                         </Link>
@@ -109,7 +110,9 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                         <div className="border-t border-white/10 pt-5 space-y-4">
                             {user ? (
                                 <>
-                                    <Link href={route('directory')} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] font-lato">Directory</Link>
+                                    {(user.role === 'admin' || user.account_status === 'active') && (
+                                        <Link href={route('directory')} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] font-lato">Directory</Link>
+                                    )}
                                     <Link href={user?.role === 'admin' ? route('admin.dashboard') : route('dashboard')} className="block text-sm font-bold text-[#D4AF37] uppercase tracking-widest font-lato">Dashboard</Link>
                                 </>
                             ) : (

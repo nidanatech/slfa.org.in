@@ -40,11 +40,10 @@ class DashboardController extends Controller
                 'type' => 'news',
                 'id' => $news->id,
                 'title' => $news->title,
-                'excerpt' => $news->excerpt,
-                'content' => $news->content,
+                'excerpt' => \Illuminate\Support\Str::limit(strip_tags($news->body), 180),
                 'author' => 'SLFA Executive Committee',
                 'date' => $news->published_at,
-                'image_url' => $news->featured_image ? asset('storage/' . $news->featured_image) : null,
+                'image_url' => $news->cover_image_path ? asset('storage/' . $news->cover_image_path) : null,
             ]);
         }
 
@@ -55,9 +54,9 @@ class DashboardController extends Controller
                 'title' => $event->title,
                 'excerpt' => $event->description,
                 'author' => 'SLFA Events Team',
-                'date' => $event->start_time,
+                'date' => $event->start_at,
                 'location' => $event->location,
-                'image_url' => $event->featured_image ? asset('storage/' . $event->featured_image) : null,
+                'image_url' => $event->cover_image_path ? asset('storage/' . $event->cover_image_path) : null,
             ]);
         }
 

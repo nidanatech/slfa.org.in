@@ -28,6 +28,8 @@ class AdminGalleryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'event_id' => 'nullable|exists:events,id',
+            'description' => 'nullable|string|max:5000',
+            'date' => 'nullable|date',
         ]);
 
         GalleryAlbum::create($validated);
@@ -43,7 +45,8 @@ class AdminGalleryController extends Controller
 
     public function edit(GalleryAlbum $album)
     {
-        return Inertia::render('Admin/Gallery/Edit', ['album' => $album]);
+        $album->load('media', 'event');
+        return Inertia::render('Admin/Gallery/Show', ['album' => $album]);
     }
 
     public function update(Request $request, GalleryAlbum $album)
@@ -51,6 +54,8 @@ class AdminGalleryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'event_id' => 'nullable|exists:events,id',
+            'description' => 'nullable|string|max:5000',
+            'date' => 'nullable|date',
         ]);
 
         $album->update($validated);
@@ -77,6 +82,10 @@ class AdminGalleryController extends Controller
             'path' => $path,
             'type' => $type,
         ]);
+
+        if ($type === 'image' && !$album->cover_image_path) {
+            $album->update(['cover_image_path' => $path]);
+        }
 
         return back()->with('success', 'Media uploaded.');
     }

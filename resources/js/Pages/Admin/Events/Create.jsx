@@ -3,21 +3,20 @@ import AdminLayout from '@/Layouts/AdminLayout';
 import { ArrowLeft, Save, Calendar } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
-export default function Create({ auth }) {
-    const { data, setData, post, processing, errors } = useForm({
-        title: '',
-        description: '',
-        event_type: 'In-Person',
-        location: '',
-        start_at: '',
-        end_at: '',
-        registration_deadline: '',
-        max_attendees: '',
+export default function Create({ auth, event }) {
+    const { data, setData, post, put, processing, errors } = useForm({
+        title: event?.title || '',
+        description: event?.description || '',
+        event_type: event?.event_type || 'Other',
+        location: event?.location || '',
+        start_at: event?.start_at?.slice(0, 16) || '',
+        end_at: event?.end_at?.slice(0, 16) || '',
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('admin.events.store'), {
+        const submit = event ? put : post;
+        submit(event ? route('admin.events.update', event.id) : route('admin.events.store'), {
             onError: (errs) => {
                 const firstError = Object.values(errs)[0];
                 toast.error(firstError || "Error creating event");
@@ -27,7 +26,7 @@ export default function Create({ auth }) {
 
     return (
         <AdminLayout user={auth.user}>
-            <Head title="Create Event" />
+            <Head title={event ? 'Edit Event' : 'Create Event'} />
             <Toaster position="top-right" />
 
             <div className="mb-6 flex items-center justify-between">
@@ -37,7 +36,7 @@ export default function Create({ auth }) {
                     </Link>
                     <h1 className="text-2xl font-bold text-gray-900 flex items-center">
                         <Calendar className="w-6 h-6 mr-2 text-slfa-maroon" />
-                        Create Event
+                        {event ? 'Edit Event' : 'Create Event'}
                     </h1>
                 </div>
             </div>
@@ -76,9 +75,9 @@ export default function Create({ auth }) {
                                 onChange={(e) => setData('event_type', e.target.value)}
                                 className="w-full border-gray-300 rounded-md shadow-sm focus:ring-slfa-maroon focus:border-slfa-maroon"
                             >
-                                <option value="In-Person">In-Person</option>
-                                <option value="Virtual">Virtual</option>
-                                <option value="Hybrid">Hybrid</option>
+                                {['AGM', 'Get-Together', 'Medical Camp', 'Eye Camp', 'Health Checkup', 'Other'].map(type => (
+                                    <option key={type} value={type}>{type}</option>
+                                ))}
                             </select>
                             {errors.event_type && <p className="text-red-500 text-xs mt-1">{errors.event_type}</p>}
                         </div>
@@ -117,27 +116,6 @@ export default function Create({ auth }) {
                             {errors.end_at && <p className="text-red-500 text-xs mt-1">{errors.end_at}</p>}
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Max Attendees (Leave blank for unlimited)</label>
-                            <input
-                                type="number"
-                                value={data.max_attendees}
-                                onChange={(e) => setData('max_attendees', e.target.value)}
-                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-slfa-maroon focus:border-slfa-maroon"
-                            />
-                            {errors.max_attendees && <p className="text-red-500 text-xs mt-1">{errors.max_attendees}</p>}
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Registration Deadline</label>
-                            <input
-                                type="datetime-local"
-                                value={data.registration_deadline}
-                                onChange={(e) => setData('registration_deadline', e.target.value)}
-                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-slfa-maroon focus:border-slfa-maroon"
-                            />
-                            {errors.registration_deadline && <p className="text-red-500 text-xs mt-1">{errors.registration_deadline}</p>}
-                        </div>
                     </div>
 
                     <div className="pt-6 flex justify-end">

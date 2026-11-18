@@ -79,7 +79,7 @@ export default function News({ auth, posts, categories, currentCategory }) {
                             >
                                 <div className="relative overflow-hidden h-52">
                                     {post.cover_image_path ? (
-                                        <img src={`/storage/${post.cover_image_path}`} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                        <img src={`/storage/${post.cover_image_path}`} alt={post.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                     ) : (
                                         <div className="w-full h-full bg-gray-950 flex items-center justify-center">
                                             <span className="text-[#D4AF37]/30 font-abhaya font-black text-6xl">SLFA</span>

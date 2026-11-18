@@ -22,7 +22,7 @@ export default function Events({ auth, upcomingEvents, pastEvents }) {
             {/* Date / Cover panel */}
             <div className="md:w-44 shrink-0 relative overflow-hidden">
                 {event.cover_image_path ? (
-                    <img src={`/storage/${event.cover_image_path}`} alt={event.title} className={`w-full h-44 md:h-full object-cover group-hover:scale-105 transition-transform duration-700 ${!isUpcoming ? 'grayscale' : ''}`} />
+                    <img src={`/storage/${event.cover_image_path}`} alt={event.title} loading="lazy" decoding="async" className={`w-full h-44 md:h-full object-cover group-hover:scale-105 transition-transform duration-700 ${!isUpcoming ? 'grayscale' : ''}`} />
                 ) : (
                     <div className={`w-full h-44 md:h-full flex flex-col items-center justify-center ${isUpcoming ? 'bg-gray-950' : 'bg-gray-700'}`}>
                         <span className={`text-5xl font-abhaya font-black ${isUpcoming ? 'text-[#D4AF37]' : 'text-gray-400'}`}>{d(event.start_at).getDate()}</span>

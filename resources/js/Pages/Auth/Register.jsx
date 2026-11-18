@@ -33,7 +33,8 @@ export default function Register() {
         },
         family_members: [], // { name, relationship, gender, date_of_birth }
         business_reps: [], // { name, date_of_birth, gender, designation, email, contact_number }
-        id_proof: null
+        id_proof: null,
+        directory_consent: false,
     });
 
     const updateProfile = (key, value) => {
@@ -452,7 +453,13 @@ export default function Register() {
                                             <li>All applicants are required to provide at least one ID Proof.</li>
                                             <li>Membership application is subject to Executive Committee review.</li>
                                         </ul>
+                                        <p className="mt-4 text-sm text-white/80">This form submits your application for review. It does not collect payment.</p>
                                     </div>
+                                    <label className="mt-6 flex items-start gap-3 text-sm text-gray-700">
+                                        <input type="checkbox" checked={data.directory_consent}
+                                            onChange={(e) => setData('directory_consent', e.target.checked)} />
+                                        Show my profile in the private member directory after approval. I can change this in my profile.
+                                    </label>
                                 </motion.div>
                             )}
                         </AnimatePresence>

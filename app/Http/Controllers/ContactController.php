@@ -18,9 +18,6 @@ class ContactController extends Controller
 
         ContactMessage::create($validated);
 
-        // TODO: Send email notification to committee
-        // Mail::to(config('mail.committee'))->send(new ContactFormSubmission($validated));
-
-        return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+        return back()->with('success', 'Thank you. Your message has been received.');
     }
 }

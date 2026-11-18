@@ -44,8 +44,8 @@ export default function Index({ auth, albums }) {
                     albums.data.map(album => (
                         <div key={album.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group">
                             <div className="h-48 bg-gray-100 relative">
-                                {album.cover_image ? (
-                                    <img src={`/storage/${album.cover_image}`} alt={album.title} className="w-full h-full object-cover" />
+                                {album.cover_image_path ? (
+                                    <img src={`/storage/${album.cover_image_path}`} alt={album.title} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="flex items-center justify-center w-full h-full text-gray-400">
                                         <FolderOpen className="w-12 h-12" />

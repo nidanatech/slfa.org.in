@@ -101,6 +101,8 @@ export default function EventDetail({ auth, event, isGoing }) {
                                             <p className="text-sm text-gray-600 mb-3">Please log in to RSVP for this event.</p>
                                             <Link href={route('login')} className="bg-slfa-coral text-white px-4 py-2 rounded text-sm font-bold inline-block hover:bg-slfa-coral-dark">Log In</Link>
                                         </div>
+                                    ) : auth.user.account_status !== 'active' ? (
+                                        <p className="text-sm text-gray-600">RSVPs are available after your membership is approved.</p>
                                     ) : (
                                         <div className="space-y-4">
                                             {isGoing && (

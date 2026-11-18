@@ -70,7 +70,7 @@ export default function Index({ auth, documents }) {
                                         </td>
                                         <td className="py-4 px-6 text-right space-x-3">
                                             <a 
-                                                href={`/storage/${doc.file_path}`} 
+                                                href={route('documents.download', doc.id)}
                                                 target="_blank" 
                                                 rel="noreferrer"
                                                 className="text-slfa-primary hover:text-slfa-navy transition-colors inline-block p-1"

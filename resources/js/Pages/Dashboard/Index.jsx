@@ -86,6 +86,13 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
 
             <div className="bg-gray-50/50 min-h-screen pt-8 pb-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {user.account_status !== 'active' && (
+                        <p className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
+                            {user.account_status === 'pending'
+                                ? 'Your membership application is awaiting committee review.'
+                                : 'Your membership is currently inactive. Please contact SLFA for details.'}
+                        </p>
+                    )}
                     
                     <div className="flex flex-col lg:flex-row gap-8">
                         {/* LEFT SIDEBAR (Profile & Navigation) */}
@@ -112,12 +119,12 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                     <h3 className="font-bold text-slfa-navy font-lato tracking-wide text-sm uppercase">Navigation</h3>
                                 </div>
                                 <div className="p-2 flex flex-col">
-                                    <Link href={route('directory')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
+                                    {user.account_status === 'active' && <Link href={route('directory')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
                                         <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
                                             <Users className="w-4 h-4 text-blue-500" />
                                         </div>
                                         Member Directory
-                                    </Link>
+                                    </Link>}
                                     <Link href={route('events')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
                                         <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
                                             <Calendar className="w-4 h-4 text-purple-500" />

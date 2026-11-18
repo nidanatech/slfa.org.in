@@ -27,10 +27,19 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, pdo
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, pdo_sqlite, bcmath, dom, filter, gd, json, pdo
           tools: composer:v2
 
       - name: Install Composer Dependencies
+        run: composer install --no-ansi --no-interaction --no-progress
+
+      - name: Test Application
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          composer test
+
+      - name: Prepare Production Dependencies
         run: composer install --no-ansi --no-interaction --no-progress --no-dev --optimize-autoloader
 
       - name: Prepare SSH Key

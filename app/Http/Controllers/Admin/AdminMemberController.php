@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class AdminMemberController extends Controller
 {
@@ -32,15 +34,35 @@ class AdminMemberController extends Controller
         ]);
     }
 
+    public function downloadIdProof(User $member)
+    {
+        $path = $member->profile?->id_proof_path;
+        abort_unless($path, 404);
+
+        if (Storage::disk('local')->exists($path)) {
+            return Storage::disk('local')->download($path);
+        }
+
+        // Files uploaded before private storage was introduced remain readable by admins.
+        abort_unless(Storage::disk('public')->exists($path), 404);
+        return Storage::disk('public')->download($path);
+    }
+
     public function approve(User $member)
     {
-        $member->update(['account_status' => 'active']);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($member) {
+            $member->update(['account_status' => 'active']);
+            $member->member?->update(['status' => 'active', 'joined_at' => now()]);
+        });
         return back()->with('success', 'Member approved successfully.');
     }
 
     public function reject(User $member)
     {
-        $member->update(['account_status' => 'suspended']);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($member) {
+            $member->update(['account_status' => 'suspended']);
+            $member->member?->update(['status' => 'rejected']);
+        });
         return back()->with('success', 'Member application rejected.');
     }
 
@@ -77,11 +99,24 @@ class AdminMemberController extends Controller
             $profileData['membership_type'] = $request->membership_type;
             
             if ($request->hasFile('id_proof')) {
-                $path = $request->file('id_proof')->store('id_proofs', 'public');
+                $path = $request->file('id_proof')->store('id_proofs', 'local');
                 $profileData['id_proof_path'] = $path;
             }
 
             $user->profile()->create($profileData);
+            Member::create([
+                'user_id' => $user->id,
+                'full_name' => $user->name,
+                'email' => $user->email,
+                'phone' => $profileData['mobile'] ?? null,
+                'membership_type' => $request->membership_type,
+                'sri_lanka_connection' => implode(', ', $profileData['connection_with_srilanka'] ?? []),
+                'occupation' => $profileData['occupation'] ?? null,
+                'company_name' => $profileData['business_name'] ?? null,
+                'directory_visible' => false,
+                'status' => 'active',
+                'joined_at' => now(),
+            ]);
 
             // 3. Create Family Members or Business Reps
             if ($request->membership_type === 'individual' && !empty($request->family_members)) {
@@ -129,9 +164,11 @@ class AdminMemberController extends Controller
 
     public function toggleFeatured(User $member)
     {
-        // Currently there's no featured column on User or UserProfile. 
-        // We'll just ignore or implement later.
-        return back();
+        $directoryMember = $member->member;
+        abort_unless($directoryMember, 404);
+        $directoryMember->update(['featured' => !$directoryMember->featured]);
+
+        return back()->with('success', 'Directory feature status updated.');
     }
 
     public function destroy(User $member)

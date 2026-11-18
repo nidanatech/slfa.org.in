@@ -22,7 +22,6 @@ export default function AdminLayout({ user, children }) {
         { name: 'Payments', href: route('admin.payments.index'), icon: CreditCard, current: url.startsWith('/admin/payments') },
         { name: 'Messages', href: route('admin.messages.index'), icon: MessageSquare, current: url.startsWith('/admin/messages') },
         { name: 'Committee', href: route('admin.committee.index'), icon: Settings, current: url.startsWith('/admin/committee') },
-        { name: 'Broadcast', href: route('admin.broadcast.create'), icon: Bell, current: url.startsWith('/admin/broadcast') },
     ];
 
     return (

@@ -30,7 +30,8 @@ class AdminDocumentController extends Controller
             'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
         ]);
 
-        $path = $request->file('file')->store('documents', 'public');
+        $path = $request->file('file')->store('documents', 'local');
+        abort_unless($path, 500, 'Could not store document.');
 
         Document::create([
             'title' => $request->title,
@@ -44,8 +45,8 @@ class AdminDocumentController extends Controller
 
     public function destroy(Document $document)
     {
-        if (Storage::disk('public')->exists($document->file_path)) {
-            Storage::disk('public')->delete($document->file_path);
+        foreach (['local', 'public'] as $disk) {
+            Storage::disk($disk)->delete($document->file_path);
         }
         $document->delete();
 

@@ -17,10 +17,11 @@ class DocumentController extends Controller
 
     public function download(Document $document)
     {
-        if (!Storage::disk('public')->exists($document->file_path)) {
+        $disk = Storage::disk('local')->exists($document->file_path) ? 'local' : 'public';
+        if (!Storage::disk($disk)->exists($document->file_path)) {
             abort(404, 'File not found');
         }
 
-        return Storage::disk('public')->download($document->file_path, $document->title);
+        return Storage::disk($disk)->download($document->file_path, $document->title);
     }
 }

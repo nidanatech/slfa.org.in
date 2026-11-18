@@ -40,7 +40,7 @@ class AdminEventController extends Controller
 
     public function edit(Event $event)
     {
-        return Inertia::render('Admin/Events/Edit', ['event' => $event]);
+        return Inertia::render('Admin/Events/Create', ['event' => $event]);
     }
 
     public function update(Request $request, Event $event)

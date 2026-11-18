@@ -302,7 +302,7 @@ export default function Show({ auth, member }) {
                         <div className="p-6">
                             {profile.id_proof_path ? (
                                 <a 
-                                    href={`/storage/${profile.id_proof_path}`} 
+                                    href={route('admin.members.id-proof', member.id)}
                                     target="_blank" 
                                     rel="noreferrer"
                                     className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-slfa-primary transition-colors group"

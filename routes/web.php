@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
@@ -19,7 +18,6 @@ use App\Http\Controllers\Admin\AdminCommitteeController;
 use App\Http\Controllers\Admin\AdminDocumentController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminContactMessageController;
-use App\Http\Controllers\Admin\AdminBroadcastController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -67,10 +65,20 @@ Route::get('/news', function () {
 })->name('news');
 
 Route::get('/news/{news}', function (\App\Models\NewsPost $news) {
+    abort_unless($news->published_at && $news->published_at->lte(now()), 404);
     return Inertia::render('SLFA/NewsDetail', [
         'post' => $news,
     ]);
 })->name('news.show');
+
+Route::get('/sitemap.xml', function () {
+    $urls = collect(['home', 'about', 'news', 'events', 'gallery', 'contact', 'membership'])
+        ->map(fn ($name) => route($name))
+        ->concat(\App\Models\NewsPost::published()->pluck('id')->map(fn ($id) => route('news.show', $id)))
+        ->concat(\App\Models\Event::pluck('id')->map(fn ($id) => route('events.show', $id)));
+
+    return response()->view('sitemap', ['urls' => $urls])->header('Content-Type', 'application/xml');
+})->name('sitemap');
 
 
 
@@ -78,7 +86,7 @@ Route::get('/contact', function () {
     return Inertia::render('SLFA/Contact');
 })->name('contact');
 
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{album}', [GalleryController::class, 'show'])->name('gallery.show');
@@ -87,8 +95,8 @@ Route::get('/events', [EventController::class, 'index'])->name('events');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 
 // Membership Application (public)
-Route::get('/join', [MembershipController::class, 'create'])->name('join');
-Route::post('/join', [MembershipController::class, 'store'])->name('join.store');
+Route::redirect('/join', '/register')->name('join');
+Route::get('/membership', fn () => Inertia::render('SLFA/Membership'))->name('membership');
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // AUTHENTICATED MEMBER ROUTES
@@ -101,19 +109,24 @@ Route::middleware('auth')->group(function () {
     // Profile (Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/membership', [ProfileController::class, 'updateMembership'])->name('profile.membership.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Member Directory
-    Route::get('/directory', [DirectoryController::class, 'index'])->name('directory');
-    Route::get('/directory/{member}', [DirectoryController::class, 'show'])->name('directory.show');
-    Route::post('/directory/{member}/message', [DirectoryController::class, 'message'])->name('directory.message');
+    Route::middleware('can:access-directory')->group(function () {
+        Route::get('/directory', [DirectoryController::class, 'index'])->name('directory');
+        Route::get('/directory/{member}', [DirectoryController::class, 'show'])->name('directory.show');
+        Route::post('/directory/{member}/message', [DirectoryController::class, 'message'])->name('directory.message');
+    });
 
     // RSVP for events
     Route::post('/events/{event}/rsvp', [EventController::class, 'rsvp'])->name('events.rsvp');
 
     // Documents library
-    Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
-    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::middleware('can:access-directory')->group(function () {
+        Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
+        Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    });
 
     // Payments
     Route::get('/pay/{purpose}/{member}', [PaymentController::class, 'show'])->name('payment.show');
@@ -125,7 +138,7 @@ Route::middleware('auth')->group(function () {
 // ADMIN ROUTES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'can:access-admin'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
@@ -140,6 +153,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/members/create', [AdminMemberController::class, 'create'])->name('members.create');
     Route::post('/members', [AdminMemberController::class, 'store'])->name('members.store');
     Route::get('/members/{member}', [AdminMemberController::class, 'show'])->name('members.show');
+    Route::get('/members/{member}/id-proof', [AdminMemberController::class, 'downloadIdProof'])->name('members.id-proof');
     Route::put('/members/{member}', [AdminMemberController::class, 'update'])->name('members.update');
     Route::patch('/members/{member}/approve', [AdminMemberController::class, 'approve'])->name('members.approve');
     Route::patch('/members/{member}/reject', [AdminMemberController::class, 'reject'])->name('members.reject');
@@ -147,10 +161,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/members/{member}', [AdminMemberController::class, 'destroy'])->name('members.destroy');
 
     // News
-    Route::resource('news', AdminNewsController::class);
+    Route::resource('news', AdminNewsController::class)->except(['show']);
 
     // Events
-    Route::resource('events', AdminEventController::class);
+    Route::resource('events', AdminEventController::class)->except(['show']);
     Route::get('/events/{event}/attendees', [AdminEventController::class, 'attendees'])->name('events.attendees');
 
     // Gallery
@@ -159,11 +173,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/media/{media}', [AdminGalleryController::class, 'destroyMedia'])->name('media.destroy');
 
     // Committee
-    Route::resource('committee', AdminCommitteeController::class);
+    Route::resource('committee', AdminCommitteeController::class)->except(['show']);
     Route::post('/committee/reorder', [AdminCommitteeController::class, 'reorder'])->name('committee.reorder');
 
     // Documents
-    Route::resource('documents', AdminDocumentController::class);
+    Route::resource('documents', AdminDocumentController::class)->only(['index', 'create', 'store', 'destroy']);
 
     // Payments (read-only log)
     Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payments.index');
@@ -173,18 +187,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::patch('/messages/{message}/read', [AdminContactMessageController::class, 'markRead'])->name('messages.read');
     Route::delete('/messages/{message}', [AdminContactMessageController::class, 'destroy'])->name('messages.destroy');
 
-    // Broadcast
-    Route::get('/broadcast', [AdminBroadcastController::class, 'create'])->name('broadcast.create');
-    Route::post('/broadcast', [AdminBroadcastController::class, 'send'])->name('broadcast.send');
 });
-
-// Dummy Payment Gateway
-Route::get('/payment-gateway', function () {
-    return Inertia::render('Auth/PaymentGateway');
-})->name('payment.gateway');
-
-Route::post('/payment-gateway/process', function () {
-    return redirect()->route('dashboard')->with('success', 'Payment successful, membership activated.');
-})->name('payment.process');
 
 require __DIR__.'/auth.php';

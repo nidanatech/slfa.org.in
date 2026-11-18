@@ -21,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('access-admin', fn ($user) => $user->isAdmin());
+        Gate::define('access-directory', fn ($user) => $user->isAdmin() || $user->account_status === 'active');
         // Implicitly grant "Super Admin" role all permissions
         Gate::before(function ($user, $ability) {
             return ($user->is_system_user && $user->system_role === 'admin') ? true : null;

@@ -45,8 +45,11 @@ class DirectoryController extends Controller
         // Featured members first
         $query->orderByDesc('featured');
 
+        $members = $query->paginate(24)->withQueryString();
+        $members->through(fn (Member $member) => $this->publicFields($member));
+
         return Inertia::render('SLFA/Directory', [
-            'members' => $query->paginate(24)->withQueryString(),
+            'members' => $members,
             'filters' => $request->only(['search', 'city', 'type', 'connection', 'sort']),
             'cities' => Member::where('status', 'active')->whereNotNull('city')
                 ->distinct()->pluck('city')->sort()->values(),
@@ -58,7 +61,7 @@ class DirectoryController extends Controller
         abort_unless($member->status === 'active' && $member->directory_visible, 404);
 
         return Inertia::render('SLFA/MemberProfile', [
-            'member' => $member,
+            'member' => $this->publicFields($member),
         ]);
     }
 
@@ -69,9 +72,22 @@ class DirectoryController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        // TODO: Send email to the member (don't expose email directly)
-        // Mail::to($member->email)->send(new MemberMessage($request->user()->member, $validated));
+        abort(503, 'Member messaging is not available yet.');
+    }
 
-        return back()->with('success', 'Your message has been sent to the member.');
+    private function publicFields(Member $member): array
+    {
+        $fields = $member->only([
+            'id', 'user_id', 'full_name', 'membership_type', 'occupation',
+            'company_name', 'designation', 'city', 'photo_path', 'featured',
+            'member_id_string', 'sri_lanka_connection', 'joined_at', 'show_contact_info',
+        ]);
+
+        if ($member->show_contact_info) {
+            $fields['email'] = $member->email;
+            $fields['phone'] = $member->phone;
+        }
+
+        return $fields;
     }
 }

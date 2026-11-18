@@ -21,7 +21,7 @@ class AdminDashboardController extends Controller
                 'total_revenue' => Payment::where('status', 'paid')->sum('amount'),
             ],
             'recent_applications' => User::with('profile')->where('account_status', 'pending')->latest()->take(5)->get(),
-            'recent_payments' => Payment::with('user')->latest()->take(5)->get(),
+            'recent_payments' => Payment::with('member')->latest()->take(5)->get(),
         ]);
     }
 }

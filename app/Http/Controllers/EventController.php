@@ -23,7 +23,7 @@ class EventController extends Controller
 
         return Inertia::render('SLFA/EventDetail', [
             'event' => $event,
-            'isGoing' => auth()->check() ? $event->rsvps()->where('user_id', auth()->id())->where('status', 'going')->exists() : false,
+            'isGoing' => auth()->user()?->member ? $event->rsvps()->where('member_id', auth()->user()->member->id)->where('status', 'going')->exists() : false,
         ]);
     }
 
@@ -35,10 +35,10 @@ class EventController extends Controller
 
         $user = $request->user();
         
-        abort_unless($user && $user->account_status === 'active', 403, 'Only active members can RSVP.');
+        abort_unless($user?->account_status === 'active' && $user->member && $event->rsvp_enabled && $event->start_at->isFuture(), 403, 'RSVP is unavailable for this account or event.');
 
         $event->rsvps()->updateOrCreate(
-            ['user_id' => $user->id],
+            ['member_id' => $user->member->id],
             ['status' => $request->status]
         );
 
