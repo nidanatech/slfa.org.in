@@ -51,7 +51,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                         </div>
 
                         {/* Desktop Menu */}
-                        <div className="hidden md:flex items-center space-x-10">
+                        <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
@@ -82,8 +82,8 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                                         <Link href={route('login')} className={`${linkBase} ${linkColor}`}>
                                             Login
                                         </Link>
-                                        <Link href={route('register')} className={`${linkBase} text-gray-900 bg-[#D4AF37] hover:bg-white px-6 py-3 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]`}>
-                                            Join Now
+                                        <Link href={route('register')} className={`${linkBase} text-gray-900 bg-[#D4AF37] hover:bg-white px-5 py-3 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]`}>
+                                            Apply for membership
                                         </Link>
                                     </>
                                 )}
@@ -91,8 +91,8 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                         </div>
 
                         {/* Mobile menu button */}
-                        <div className="md:hidden flex items-center">
-                            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-gray-400 hover:text-white transition-colors">
+                        <div className="lg:hidden flex items-center">
+                            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMobileMenuOpen} className="text-gray-400 hover:text-white transition-colors">
                                 {isMobileMenuOpen ? <X size={28} strokeWidth={1.5} /> : <Menu size={28} strokeWidth={1.5} />}
                             </button>
                         </div>
@@ -100,7 +100,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`md:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
+                <div className={`lg:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
                     <div className="px-6 py-8 space-y-5">
                         {navLinks.map((link) => (
                             <Link key={link.name} href={link.href} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] transition-colors font-lato">
@@ -118,7 +118,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                             ) : (
                                 <>
                                     <Link href={route('login')} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] font-lato">Login</Link>
-                                    <Link href={route('register')} className="inline-block text-sm font-bold text-gray-900 bg-[#D4AF37] uppercase tracking-widest px-6 py-3 rounded-full font-lato">Join Now</Link>
+                                    <Link href={route('register')} className="inline-block text-sm font-bold text-gray-900 bg-[#D4AF37] uppercase tracking-wider px-6 py-3 rounded-full font-lato">Apply for membership</Link>
                                 </>
                             )}
                         </div>
