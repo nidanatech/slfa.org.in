@@ -94,7 +94,7 @@ export default function Contact({ auth, flash }) {
                         <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
                             <div className="bg-white border border-gray-100 p-8 md:p-10 rounded-3xl shadow-sm">
                                 <h3 className="text-2xl font-abhaya font-bold text-gray-900 mb-2">Send Us a Message</h3>
-                                <p className="text-gray-400 font-lato text-sm mb-8">We'll get back to you within 2 business days.</p>
+                                <p className="text-gray-500 font-lato text-sm mb-8">Send your question to the SLFA committee.</p>
 
                                 {flash?.success && (
                                     <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl text-sm font-lato">

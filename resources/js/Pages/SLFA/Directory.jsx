@@ -1,6 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { Search, MapPin, Briefcase, ChevronRight } from 'lucide-react';
+import SLFAPageHero from '@/Components/SLFAPageHero';
+import { Search, MapPin, Briefcase, ChevronRight, Users } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Directory({ auth, members, filters, cities }) {
@@ -26,21 +27,16 @@ export default function Directory({ auth, members, filters, cities }) {
     };
 
     return (
-        <SLFAWebsiteLayout user={auth.user}>
+        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title="Member Directory" />
 
-            <div className="bg-slfa-navy text-white py-12">
-                <div className="slfa-container text-center animate-fade-up">
-                    <h1 className="text-4xl font-bold mb-4">Member Directory</h1>
-                    <p className="text-gray-300">Connect with other SLFA members</p>
-                </div>
-            </div>
+            <SLFAPageHero eyebrow="Members only" title={<>Your community <span className="italic font-light text-[#D4AF37]">directory</span></>} description="Find and connect with SLFA members who have chosen to appear in the directory." />
 
-            <div className="slfa-section bg-slfa-cream min-h-screen">
-                <div className="slfa-container">
+            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     
                     {/* Filters & Search */}
-                    <div className="bg-white p-4 md:p-6 rounded-lg shadow-sm border border-gray-100 mb-8 animate-fade-up">
+                    <div className="mb-8 rounded-3xl border border-gray-100 bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.04)] md:p-7">
                         <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4">
                             
                             <div className="flex-1 relative">
@@ -48,14 +44,14 @@ export default function Directory({ auth, members, filters, cities }) {
                                 <input 
                                     type="text" 
                                     placeholder="Search by name, company, or profession..."
-                                    className="w-full pl-10 border-gray-300 rounded-md shadow-sm focus:ring-slfa-coral focus:border-slfa-coral"
+                                    className="w-full rounded-xl border-gray-200 bg-[#FAF8F4] pl-10 shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                                     value={searchParams.search}
                                     onChange={(e) => setSearchParams({...searchParams, search: e.target.value})}
                                 />
                             </div>
 
                             <select 
-                                className="border-gray-300 rounded-md shadow-sm focus:ring-slfa-coral focus:border-slfa-coral"
+                                className="rounded-xl border-gray-200 bg-[#FAF8F4] shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                                 value={searchParams.city}
                                 onChange={(e) => handleParamChange('city', e.target.value)}
                             >
@@ -66,7 +62,7 @@ export default function Directory({ auth, members, filters, cities }) {
                             </select>
 
                             <select 
-                                className="border-gray-300 rounded-md shadow-sm focus:ring-slfa-coral focus:border-slfa-coral"
+                                className="rounded-xl border-gray-200 bg-[#FAF8F4] shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                                 value={searchParams.type}
                                 onChange={(e) => handleParamChange('type', e.target.value)}
                             >
@@ -76,7 +72,7 @@ export default function Directory({ auth, members, filters, cities }) {
                             </select>
 
                             <select 
-                                className="border-gray-300 rounded-md shadow-sm focus:ring-slfa-coral focus:border-slfa-coral bg-gray-50"
+                                className="rounded-xl border-gray-200 bg-[#FAF8F4] shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                                 value={searchParams.sort}
                                 onChange={(e) => handleParamChange('sort', e.target.value)}
                             >
@@ -84,7 +80,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                 <option value="alphabetical">Alphabetical A-Z</option>
                             </select>
 
-                            <button type="submit" className="bg-slfa-coral text-white px-6 py-2 rounded-md font-semibold hover:bg-slfa-coral-dark transition shrink-0">
+                            <button type="submit" className="shrink-0 rounded-full bg-gray-950 px-6 py-2 font-semibold text-white transition hover:bg-[#800000]">
                                 Search
                             </button>
                         </form>
@@ -96,11 +92,11 @@ export default function Directory({ auth, members, filters, cities }) {
                             <Link 
                                 key={member.id} 
                                 href={route('directory.show', member.id)}
-                                className={`bg-white rounded-lg shadow-sm border ${member.featured ? 'border-slfa-coral/50 ring-1 ring-slfa-coral/20' : 'border-gray-100'} p-5 hover:shadow-md transition animate-fade-up flex flex-col h-full`}
+                                className={`flex h-full flex-col rounded-3xl border bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl ${member.featured ? 'border-[#D4AF37] ring-1 ring-[#D4AF37]/30' : 'border-gray-100'}`}
                                 style={{ animationDelay: `${(index % 8) * 0.05}s` }}
                             >
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-16 h-16 rounded-full bg-slfa-peach flex items-center justify-center text-slfa-coral font-bold text-xl shrink-0 overflow-hidden">
+                                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#D4AF37]/15 text-xl font-bold text-[#9A7714]">
                                         {member.photo_path ? (
                                             <img src={`/storage/${member.photo_path}`} alt="" className="w-full h-full object-cover" />
                                         ) : (
@@ -130,7 +126,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                     )}
                                 </div>
 
-                                <div className="border-t border-gray-100 pt-3 mt-auto flex justify-between items-center text-sm font-semibold text-slfa-coral">
+                                <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-3 text-sm font-semibold text-[#800000]">
                                     View Profile <ChevronRight className="w-4 h-4" />
                                 </div>
                             </Link>
@@ -138,7 +134,7 @@ export default function Directory({ auth, members, filters, cities }) {
                     </div>
 
                     {members.data.length === 0 && (
-                        <div className="bg-white p-12 rounded-lg shadow-sm text-center border border-gray-100">
+                        <div className="rounded-3xl border border-gray-100 bg-white p-12 text-center shadow-sm">
                             <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                             <h3 className="text-xl font-bold text-slfa-navy mb-2">No members found</h3>
                             <p className="text-gray-500">Try adjusting your search or filters.</p>
@@ -156,9 +152,9 @@ export default function Directory({ auth, members, filters, cities }) {
                                     key={i}
                                     href={link.url}
                                     dangerouslySetInnerHTML={{ __html: link.label }}
-                                    className={`px-4 py-2 rounded-md ${
+                                    className={`rounded-full px-4 py-2 ${
                                         link.active 
-                                            ? 'bg-slfa-coral text-white font-bold' 
+                                            ? 'bg-gray-950 text-white font-bold'
                                             : !link.url 
                                                 ? 'text-gray-400 cursor-not-allowed'
                                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
@@ -169,7 +165,7 @@ export default function Directory({ auth, members, filters, cities }) {
                     )}
 
                 </div>
-            </div>
+            </section>
         </SLFAWebsiteLayout>
     );
 }

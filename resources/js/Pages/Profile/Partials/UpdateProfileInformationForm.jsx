@@ -27,11 +27,11 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                <h2 className="font-abhaya text-2xl font-bold text-gray-950">
                     Profile Information
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm leading-relaxed text-gray-600">
                     Update your account's profile information and email address.
                 </p>
             </header>
@@ -42,7 +42,7 @@ export default function UpdateProfileInformation({
 
                     <TextInput
                         id="name"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         required
@@ -59,7 +59,7 @@ export default function UpdateProfileInformation({
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -71,7 +71,7 @@ export default function UpdateProfileInformation({
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="mt-2 text-sm text-gray-800 dark:text-gray-200">
+                        <p className="mt-2 text-sm text-gray-700">
                             Your email address is unverified.
                             <Link
                                 href={route('verification.send')}
@@ -102,7 +102,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm leading-relaxed text-gray-600">
                             Saved.
                         </p>
                     </Transition>

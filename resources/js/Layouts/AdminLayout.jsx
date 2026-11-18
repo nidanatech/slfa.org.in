@@ -25,7 +25,7 @@ export default function AdminLayout({ user, children }) {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 flex">
+        <div className="flex min-h-screen bg-[#FAF8F4]">
 
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
@@ -37,10 +37,10 @@ export default function AdminLayout({ user, children }) {
 
             {/* Sidebar */}
             <div className={`
-                fixed inset-y-0 left-0 z-50 w-64 bg-slfa-navy text-white transition-transform duration-300 ease-in-out lg:static lg:translate-x-0
+                fixed inset-y-0 left-0 z-50 w-64 bg-gray-950 text-white transition-transform duration-300 ease-in-out lg:static lg:translate-x-0
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
-                <div className="flex h-16 items-center justify-between px-4 bg-slfa-navy border-b border-white/10">
+                <div className="flex h-16 items-center justify-between border-b border-white/10 bg-gray-950 px-4">
                     <div className="flex items-center gap-3">
                         <img src="/storage/legacy/logo_white.png" alt="SLFA" className="h-10" />
 
@@ -59,7 +59,7 @@ export default function AdminLayout({ user, children }) {
                                 className={`
                                     flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium
                                     ${item.current
-                                        ? 'bg-slfa-coral text-white'
+                                        ? 'bg-[#D4AF37] text-gray-950'
                                         : 'text-gray-300 hover:bg-white/10 hover:text-white'
                                     }
                                 `}

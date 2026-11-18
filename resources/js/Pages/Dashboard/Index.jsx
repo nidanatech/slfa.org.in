@@ -1,6 +1,7 @@
 import React from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
+import SLFAPageHero from '@/Components/SLFAPageHero';
 import { UserCircle, Calendar, FileText, Users, ArrowRight, Clock, MapPin, Image as ImageIcon } from 'lucide-react';
 import dayjs from 'dayjs';
 
@@ -11,10 +12,10 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
     const renderFeedItem = (item) => {
         if (item.type === 'news') {
             return (
-                <div key={`${item.type}-${item.id}`} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 hover:shadow-md transition-shadow">
+                <div key={`${item.type}-${item.id}`} className="mb-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-full bg-slfa-primary/10 flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-slfa-primary" />
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/15">
+                            <FileText className="h-5 w-5 text-[#9A7714]" />
                         </div>
                         <div>
                             <h4 className="font-bold text-slfa-navy">{item.author}</h4>
@@ -29,7 +30,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                     <h3 className="text-xl font-abhaya font-bold text-gray-900 mb-2">{item.title}</h3>
                     <p className="text-gray-600 font-light mb-4">{item.excerpt}</p>
                     <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
-                        <Link href={route('news')} className="text-sm font-bold text-slfa-primary hover:text-slfa-navy transition-colors flex items-center gap-1">
+                        <Link href={route('news.show', item.id)} className="flex items-center gap-1 text-sm font-bold text-[#800000] transition-colors hover:text-gray-950">
                             Read Full Post <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
@@ -39,10 +40,10 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
 
         if (item.type === 'event') {
             return (
-                <div key={`${item.type}-${item.id}`} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 hover:shadow-md transition-shadow">
+                <div key={`${item.type}-${item.id}`} className="mb-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-full bg-slfa-accent/10 flex items-center justify-center">
-                            <Calendar className="w-5 h-5 text-slfa-accent" />
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/15">
+                            <Calendar className="h-5 w-5 text-[#9A7714]" />
                         </div>
                         <div>
                             <h4 className="font-bold text-slfa-navy">{item.author}</h4>
@@ -71,7 +72,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                     </div>
 
                     <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
-                        <Link href={route('events')} className="text-sm font-bold text-slfa-accent hover:text-slfa-navy transition-colors flex items-center gap-1">
+                        <Link href={route('events.show', item.id)} className="flex items-center gap-1 text-sm font-bold text-[#800000] transition-colors hover:text-gray-950">
                             View Event Details <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
@@ -81,10 +82,12 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
     };
 
     return (
-        <SLFAWebsiteLayout>
+        <SLFAWebsiteLayout user={user} darkNav={true}>
             <Head title="Member Dashboard - SLFA" />
 
-            <div className="bg-gray-50/50 min-h-screen pt-8 pb-20">
+            <SLFAPageHero eyebrow="Member space" title={<>Welcome back, <span className="italic font-light text-[#D4AF37]">{user.name}</span></>} description="Your community updates, events, and membership links in one place." />
+
+            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {user.account_status !== 'active' && (
                         <p className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
@@ -97,7 +100,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                     <div className="flex flex-col lg:flex-row gap-8">
                         {/* LEFT SIDEBAR (Profile & Navigation) */}
                         <div className="w-full lg:w-1/4 flex flex-col gap-6">
-                            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
+                            <div className="flex flex-col items-center rounded-3xl border border-gray-100 bg-white p-6 text-center shadow-sm">
                                 <div className="w-24 h-24 bg-gradient-to-tr from-slfa-primary to-slfa-accent rounded-full p-1 mb-4">
                                     <div className="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
                                         <UserCircle className="w-20 h-20 text-gray-300" />
@@ -114,7 +117,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                 </Link>
                             </div>
 
-                            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
                                 <div className="p-4 border-b border-gray-100 bg-gray-50">
                                     <h3 className="font-bold text-slfa-navy font-lato tracking-wide text-sm uppercase">Navigation</h3>
                                 </div>
@@ -131,12 +134,12 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                         </div>
                                         Events Calendar
                                     </Link>
-                                    <Link href={route('documents')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
+                                    {user.account_status === 'active' && <Link href={route('documents')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
                                         <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center">
                                             <FileText className="w-4 h-4 text-green-500" />
                                         </div>
                                         Document Library
-                                    </Link>
+                                    </Link>}
                                 </div>
                             </div>
                         </div>
@@ -166,7 +169,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
 
                         {/* RIGHT SIDEBAR (Widgets) */}
                         <div className="w-full lg:w-1/4 flex flex-col gap-6">
-                            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
                                 <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
                                     <h3 className="font-bold text-slfa-navy font-lato tracking-wide text-sm uppercase">Upcoming Events</h3>
                                     <Link href={route('events')} className="text-xs text-slfa-primary hover:underline">View All</Link>
@@ -175,14 +178,14 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                     {upcomingEvents.length > 0 ? upcomingEvents.map(event => (
                                         <div key={event.id} className="flex gap-4 items-start group">
                                             <div className="flex flex-col items-center justify-center w-12 h-12 bg-gray-50 rounded-xl border border-gray-100 shrink-0">
-                                                <span className="text-xs text-slfa-accent font-bold uppercase">{dayjs(event.start_time).format('MMM')}</span>
-                                                <span className="text-lg font-extrabold text-slfa-navy leading-none">{dayjs(event.start_time).format('D')}</span>
+                                                <span className="text-xs text-slfa-accent font-bold uppercase">{dayjs(event.start_at).format('MMM')}</span>
+                                                <span className="text-lg font-extrabold text-slfa-navy leading-none">{dayjs(event.start_at).format('D')}</span>
                                             </div>
                                             <div>
-                                                <Link href={route('events')} className="font-bold text-sm text-gray-800 group-hover:text-slfa-primary transition-colors line-clamp-2">
+                                                <Link href={route('events.show', event.id)} className="font-bold text-sm text-gray-800 group-hover:text-slfa-primary transition-colors line-clamp-2">
                                                     {event.title}
                                                 </Link>
-                                                <span className="text-xs text-gray-500 block mt-1">{dayjs(event.start_time).format('h:mm A')}</span>
+                                                <span className="text-xs text-gray-500 block mt-1">{dayjs(event.start_at).format('h:mm A')}</span>
                                             </div>
                                         </div>
                                     )) : (
@@ -196,7 +199,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
 
                     </div>
                 </div>
-            </div>
+            </section>
         </SLFAWebsiteLayout>
     );
 }

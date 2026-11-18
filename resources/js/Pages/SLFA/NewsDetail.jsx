@@ -1,46 +1,26 @@
 import { Head, Link } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { Calendar, ArrowLeft } from 'lucide-react';
+import SLFAPageHero from '@/Components/SLFAPageHero';
+import SLFAPageCard from '@/Components/SLFAPageCard';
+import { Calendar } from 'lucide-react';
 import dayjs from 'dayjs';
 
 export default function NewsDetail({ auth, post }) {
     return (
-        <SLFAWebsiteLayout user={auth.user}>
+        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={post.title} />
+            <SLFAPageHero eyebrow={post.category || 'News & activities'} title={post.title} backHref={route('news')} backLabel="Back to news" image={post.cover_image_path ? `/storage/${post.cover_image_path}` : null}>
+                <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />Published {dayjs(post.published_at || post.created_at).format('MMMM D, YYYY')}</span>
+            </SLFAPageHero>
 
-            <div className="bg-slfa-navy text-white relative py-12 md:py-20">
-                {post.cover_image_path && (
-                    <>
-                        <div className="absolute inset-0 bg-black/60 z-10"></div>
-                        <img src={`/storage/${post.cover_image_path}`} alt="" className="absolute inset-0 w-full h-full object-cover z-0 opacity-50 blur-sm" />
-                    </>
-                )}
-                
-                <div className="relative z-20 slfa-container animate-fade-up max-w-4xl">
-                    <Link href={route('news')} className="text-gray-300 hover:text-white transition flex items-center text-sm font-semibold mb-6">
-                        <ArrowLeft className="w-4 h-4 mr-1" /> Back to News
-                    </Link>
-                    <span className="inline-block bg-slfa-coral text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                        {post.category || 'General'}
-                    </span>
-                    <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">{post.title}</h1>
-                    
-                    <div className="flex items-center text-gray-300 text-sm">
-                        <Calendar className="w-4 h-4 mr-2 text-slfa-coral" /> 
-                        <span className="font-medium">
-                            Published on {post.published_at ? dayjs(post.published_at).format('MMMM D, YYYY') : dayjs(post.created_at).format('MMMM D, YYYY')}
-                        </span>
-                    </div>
+            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6">
+                    <SLFAPageCard as="article" className="border-t-4 border-t-[#D4AF37] sm:p-12">
+                        <div className="prose prose-lg max-w-none whitespace-pre-wrap text-gray-700">{post.body}</div>
+                    </SLFAPageCard>
+                    <Link href={route('news')} className="mt-8 inline-flex items-center font-bold text-[#800000] hover:underline">Explore more news</Link>
                 </div>
-            </div>
-
-            <div className="slfa-section bg-slfa-cream min-h-screen">
-                <div className="slfa-container max-w-4xl">
-                    <div className="bg-white p-8 md:p-12 rounded-xl shadow-sm border border-gray-100 animate-fade-up">
-                        <div className="prose prose-lg max-w-none text-gray-700 whitespace-pre-wrap">{post.body}</div>
-                    </div>
-                </div>
-            </div>
+            </section>
         </SLFAWebsiteLayout>
     );
 }

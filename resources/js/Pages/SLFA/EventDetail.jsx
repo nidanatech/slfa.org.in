@@ -1,60 +1,42 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { Calendar, MapPin, Clock, ArrowLeft, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
+import SLFAPageHero from '@/Components/SLFAPageHero';
+import SLFAPageCard from '@/Components/SLFAPageCard';
+import { Calendar, MapPin, Clock, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 
 export default function EventDetail({ auth, event, isGoing }) {
     
-    const { post, processing } = useForm({
-        status: 'going'
-    });
+    const [processing, setProcessing] = useState(false);
 
     const submitRsvp = (status) => {
-        post(route('events.rsvp', event.id), {
-            data: { status },
+        router.post(route('events.rsvp', event.id), { status }, {
             preserveScroll: true,
+            onStart: () => setProcessing(true),
+            onFinish: () => setProcessing(false),
         });
     };
 
     const isPast = new Date(event.start_at) < new Date();
 
     return (
-        <SLFAWebsiteLayout user={auth.user}>
+        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={event.title} />
 
-            {/* Event Header */}
-            <div className="bg-slfa-navy text-white relative">
-                {event.cover_image_path && (
-                    <>
-                        <div className="absolute inset-0 bg-black/60 z-10"></div>
-                        <img src={`/storage/${event.cover_image_path}`} alt="" className="absolute inset-0 w-full h-full object-cover z-0 opacity-50 blur-sm" />
-                    </>
-                )}
-                
-                <div className="relative z-20 slfa-container py-12 md:py-20 animate-fade-up">
-                    <Link href={route('events')} className="text-gray-300 hover:text-white transition flex items-center text-sm font-semibold mb-6">
-                        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Events
-                    </Link>
-                    <span className="inline-block bg-slfa-coral text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                        {event.event_type}
-                    </span>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-6">{event.title}</h1>
-                    
-                    <div className="flex flex-col md:flex-row gap-6 text-gray-200">
-                        <div className="flex items-center"><Calendar className="w-5 h-5 mr-2 text-slfa-coral" /> <span className="font-medium">{new Date(event.start_at).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span></div>
-                        <div className="flex items-center"><Clock className="w-5 h-5 mr-2 text-slfa-coral" /> <span className="font-medium">{new Date(event.start_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span></div>
-                        {event.location && <div className="flex items-center"><MapPin className="w-5 h-5 mr-2 text-slfa-coral" /> <span className="font-medium">{event.location}</span></div>}
-                    </div>
-                </div>
-            </div>
+            <SLFAPageHero eyebrow={event.event_type || 'SLFA event'} title={event.title} backHref={route('events')} backLabel="Back to events" image={event.cover_image_path ? `/storage/${event.cover_image_path}` : null}>
+                <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
+                <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })}</span>
+                {event.location && <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-[#D4AF37]" />{event.location}</span>}
+            </SLFAPageHero>
 
-            <div className="slfa-section bg-slfa-cream min-h-screen">
-                <div className="slfa-container">
+            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         
                         {/* Main Content */}
                         <div className="lg:col-span-2">
-                            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 animate-fade-up">
-                                <h2 className="text-2xl font-bold text-slfa-navy mb-6">Event Details</h2>
+                            <SLFAPageCard as="article" className="border-t-4 border-t-[#D4AF37]">
+                                <h2 className="mb-6 font-abhaya text-3xl font-bold text-gray-950">About this event</h2>
                                 
                                 {event.description ? (
                                     <div className="prose prose-lg max-w-none text-gray-600 whitespace-pre-wrap">
@@ -70,10 +52,10 @@ export default function EventDetail({ auth, event, isGoing }) {
                                         <h3 className="text-xl font-bold text-slfa-navy mb-6">Event Gallery</h3>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {event.albums.map(album => (
-                                                <Link key={album.id} href={route('gallery.show', album.id)} className="block bg-slfa-peach rounded-lg overflow-hidden group hover:shadow-md transition">
+                                                <Link key={album.id} href={route('gallery.show', album.id)} className="group block overflow-hidden rounded-2xl bg-[#FAF8F4] transition hover:shadow-md">
                                                     <div className="h-32 bg-gray-200 relative">
                                                         {album.cover_image_path ? (
-                                                            <img src={`/storage/${album.cover_image_path}`} className="w-full h-full object-cover group-hover:scale-105 transition" />
+                                                            <img src={`/storage/${album.cover_image_path}`} alt={album.title} className="w-full h-full object-cover group-hover:scale-105 transition" />
                                                         ) : (
                                                             <div className="w-full h-full bg-slfa-navy flex items-center justify-center"><span className="text-white text-xs">No Cover</span></div>
                                                         )}
@@ -86,20 +68,20 @@ export default function EventDetail({ auth, event, isGoing }) {
                                         </div>
                                     </div>
                                 )}
-                            </div>
+                            </SLFAPageCard>
                         </div>
 
                         {/* Sidebar / RSVP */}
                         <div className="space-y-6 animate-fade-up-delay-1">
                             
                             {event.rsvp_enabled && !isPast && (
-                                <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-slfa-coral">
-                                    <h3 className="text-xl font-bold text-slfa-navy mb-4">Are you attending?</h3>
+                                <SLFAPageCard className="border-t-4 border-t-[#D4AF37]">
+                                    <h3 className="mb-4 font-abhaya text-2xl font-bold text-gray-950">Are you attending?</h3>
                                     
                                     {!auth.user ? (
                                         <div className="bg-gray-50 p-4 rounded-md text-center">
                                             <p className="text-sm text-gray-600 mb-3">Please log in to RSVP for this event.</p>
-                                            <Link href={route('login')} className="bg-slfa-coral text-white px-4 py-2 rounded text-sm font-bold inline-block hover:bg-slfa-coral-dark">Log In</Link>
+                                            <Link href={route('login')} className="inline-block rounded-full bg-[#D4AF37] px-5 py-2 text-sm font-bold text-gray-950 hover:bg-gray-950 hover:text-white">Log in</Link>
                                         </div>
                                     ) : auth.user.account_status !== 'active' ? (
                                         <p className="text-sm text-gray-600">RSVPs are available after your membership is approved.</p>
@@ -115,28 +97,28 @@ export default function EventDetail({ auth, event, isGoing }) {
                                                 <button 
                                                     onClick={() => submitRsvp('going')}
                                                     disabled={processing}
-                                                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center transition disabled:opacity-50"
+                                                    className="flex w-full items-center justify-center rounded-full bg-gray-950 px-4 py-3 font-bold text-white transition hover:bg-[#800000] disabled:opacity-50"
                                                 >
                                                     <CheckCircle className="w-4 h-4 mr-2" /> Yes, I'm Going
                                                 </button>
                                                 <button 
                                                     onClick={() => submitRsvp('maybe')}
                                                     disabled={processing}
-                                                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center transition disabled:opacity-50"
+                                                    className="flex w-full items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-3 font-bold text-gray-950 transition hover:border-[#D4AF37] disabled:opacity-50"
                                                 >
                                                     <HelpCircle className="w-4 h-4 mr-2" /> Maybe
                                                 </button>
                                                 <button 
                                                     onClick={() => submitRsvp('declined')}
                                                     disabled={processing}
-                                                    className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded flex items-center justify-center transition disabled:opacity-50"
+                                                    className="flex w-full items-center justify-center rounded-full bg-gray-100 px-4 py-3 font-bold text-gray-700 transition hover:bg-gray-200 disabled:opacity-50"
                                                 >
                                                     <XCircle className="w-4 h-4 mr-2" /> Can't Make It
                                                 </button>
                                             </div>
                                         </div>
                                     )}
-                                </div>
+                                </SLFAPageCard>
                             )}
 
                             {isPast && (
@@ -146,21 +128,15 @@ export default function EventDetail({ auth, event, isGoing }) {
                                 </div>
                             )}
 
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <h3 className="text-lg font-bold text-slfa-navy mb-4 border-b pb-2">Location Map</h3>
-                                <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
-                                    {event.location ? (
-                                        <MapPin className="w-8 h-8" />
-                                    ) : (
-                                        <span>No location set</span>
-                                    )}
-                                </div>
-                            </div>
+                            <SLFAPageCard>
+                                <h3 className="font-abhaya text-xl font-bold text-gray-950">Location</h3>
+                                <p className="mt-3 flex items-start gap-2 text-sm text-gray-600"><MapPin className="h-5 w-5 shrink-0 text-[#B99425]" />{event.location || 'Location to be announced'}</p>
+                            </SLFAPageCard>
                         </div>
 
                     </div>
                 </div>
-            </div>
+            </section>
         </SLFAWebsiteLayout>
     );
 }

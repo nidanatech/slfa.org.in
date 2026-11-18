@@ -18,6 +18,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
         { name: 'Home', href: route('home') },
         { name: 'About', href: route('about') },
         { name: 'Membership', href: route('membership') },
+        { name: 'Events', href: route('events') },
         { name: 'News', href: route('news') },
         { name: 'Gallery', href: route('gallery') },
         { name: 'Contact', href: route('contact') },
@@ -51,7 +52,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                         </div>
 
                         {/* Desktop Menu */}
-                        <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+                        <div className="hidden xl:flex items-center space-x-6">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
@@ -91,7 +92,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                         </div>
 
                         {/* Mobile menu button */}
-                        <div className="lg:hidden flex items-center">
+                        <div className="xl:hidden flex items-center">
                             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMobileMenuOpen} className="text-gray-400 hover:text-white transition-colors">
                                 {isMobileMenuOpen ? <X size={28} strokeWidth={1.5} /> : <Menu size={28} strokeWidth={1.5} />}
                             </button>
@@ -100,7 +101,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`lg:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
+                <div className={`xl:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
                     <div className="px-6 py-8 space-y-5">
                         {navLinks.map((link) => (
                             <Link key={link.name} href={link.href} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] transition-colors font-lato">

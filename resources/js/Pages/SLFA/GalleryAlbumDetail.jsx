@@ -1,39 +1,31 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import SLFAPageHero from '@/Components/SLFAPageHero';
+import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 export default function GalleryAlbumDetail({ auth, album }) {
     const [selectedMedia, setSelectedMedia] = useState(null);
 
     return (
-        <SLFAWebsiteLayout user={auth.user}>
+        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={`${album.title} - Gallery`} />
 
-            <div className="bg-slfa-navy text-white py-12">
-                <div className="slfa-container animate-fade-up">
-                    <Link href={route('gallery')} className="text-slfa-coral hover:text-white transition flex items-center text-sm font-semibold mb-6">
-                        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Gallery
-                    </Link>
-                    <h1 className="text-3xl md:text-4xl font-bold mb-2">{album.title}</h1>
-                    {album.event && (
-                        <div className="flex items-center text-gray-300">
-                            <Calendar className="w-4 h-4 mr-2" />
-                            <span>Event: {album.event.title}</span>
-                        </div>
-                    )}
-                </div>
-            </div>
+            <SLFAPageHero eyebrow="Community memories" title={album.title} description={album.description} backHref={route('gallery')} backLabel="Back to gallery" image={album.cover_image_path ? `/storage/${album.cover_image_path}` : null}>
+                {album.event && <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{album.event.title}</span>}
+            </SLFAPageHero>
 
-            <div className="slfa-section bg-slfa-cream min-h-screen">
-                <div className="slfa-container">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 sm:gap-6">
                         {album.media.map((item, index) => (
-                            <div 
+                            <button
+                                type="button"
                                 key={item.id} 
-                                className="aspect-square bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition animate-fade-up"
+                                className="aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-white text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
                                 style={{ animationDelay: `${(index % 10) * 0.05}s` }}
                                 onClick={() => setSelectedMedia(item)}
+                                aria-label={`View ${item.caption || `${item.type} ${index + 1}`}`}
                             >
                                 {item.type === 'video' ? (
                                     <div className="relative w-full h-full bg-gray-900 flex items-center justify-center">
@@ -47,22 +39,22 @@ export default function GalleryAlbumDetail({ auth, album }) {
                                 ) : (
                                     <img src={`/storage/${item.path}`} alt="" className="w-full h-full object-cover hover:scale-105 transition duration-500" loading="lazy" />
                                 )}
-                            </div>
+                            </button>
                         ))}
 
                         {album.media.length === 0 && (
-                            <div className="col-span-full text-center py-20 bg-white rounded-lg shadow-sm">
+                            <div className="col-span-full rounded-3xl border border-gray-100 bg-white py-20 text-center shadow-sm">
                                 <p className="text-gray-500">No media available in this album.</p>
                             </div>
                         )}
                     </div>
                 </div>
-            </div>
+            </section>
 
             {/* Lightbox Modal */}
             {selectedMedia && (
                 <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setSelectedMedia(null)}>
-                    <button className="absolute top-4 right-4 text-white hover:text-slfa-coral transition bg-white/10 rounded-full p-2">
+                    <button type="button" aria-label="Close image" className="absolute top-4 right-4 text-white hover:text-[#D4AF37] transition bg-white/10 rounded-full p-2">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                     
