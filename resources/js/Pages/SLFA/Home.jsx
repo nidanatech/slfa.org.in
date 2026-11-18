@@ -7,6 +7,7 @@ import HeroMap from '@/Components/HeroMap';
 import CanvasFlag from '@/Components/CanvasFlag';
 
 export default function Home({ auth, latestNews, upcomingEvents }) {
+    const featuredEvent = upcomingEvents?.[0];
     const fadeUp = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
@@ -99,7 +100,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             className="relative w-full overflow-visible flex justify-center items-center drop-shadow-[0_15px_35px_rgba(0,0,0,0.8)] z-10"
                             aria-hidden="true"
                         >
-                            <div className="w-full max-w-[620px]">
+                            <div className="w-full max-w-[840px]">
                                 <CanvasFlag src="/images/slfa-bg.png" />
                             </div>
                         </motion.div>
@@ -125,28 +126,30 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             </div>
                         </motion.div>
 
-                        <motion.div variants={fadeUp} className="relative z-20 w-full max-w-2xl mt-7 sm:mt-9">
-                            {upcomingEvents?.length > 0 ? (
-                                <Link href={route('events.show', upcomingEvents[0].id)} className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl border border-[#D4AF37]/50 bg-gray-950/80 px-5 py-4 text-left shadow-[0_14px_45px_rgba(0,0,0,0.25)] backdrop-blur-sm hover:border-[#D4AF37] hover:bg-gray-900 transition-colors">
-                                    <div className="flex items-center gap-4 sm:flex-1 min-w-0">
-                                        <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-[#D4AF37] text-gray-950 font-lato">
-                                            <span className="text-2xl font-bold leading-none">{new Date(upcomingEvents[0].start_at).toLocaleDateString('en-IN', { day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
-                                            <span className="text-xs font-bold uppercase">{new Date(upcomingEvents[0].start_at).toLocaleDateString('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' })}</span>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-lato">Next event</span>
-                                            <h2 className="mt-1 text-lg sm:text-xl font-abhaya font-bold text-white leading-tight group-hover:text-[#D4AF37] transition-colors">{upcomingEvents[0].title}</h2>
-                                            {upcomingEvents[0].location && <span className="mt-1 flex items-center gap-1.5 text-xs text-gray-300 font-lato"><MapPin className="h-3 w-3 shrink-0" />{upcomingEvents[0].location}</span>}
-                                        </div>
-                                    </div>
-                                    <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#D4AF37] font-lato sm:shrink-0">View event <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></span>
-                                </Link>
-                            ) : (
-                                <Link href={route('events')} className="group flex items-center justify-between gap-4 rounded-2xl border border-white/20 bg-gray-950/70 px-5 py-4 text-left backdrop-blur-sm hover:border-[#D4AF37]/60 transition-colors">
-                                    <span><span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-lato">Upcoming events</span><span className="block mt-1 text-sm text-gray-200 font-lato">New gatherings will appear here when announced.</span></span>
-                                    <ArrowRight className="h-5 w-5 shrink-0 text-[#D4AF37] group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                            )}
+                        <motion.div variants={fadeUp} className="relative z-20 w-full max-w-3xl mt-7 sm:mt-9">
+                            <Link href={featuredEvent ? route('events.show', featuredEvent.id) : route('events')} className="group flex flex-col sm:flex-row sm:items-center gap-5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F0D36A] to-[#D4AF37] p-5 sm:p-6 text-left text-gray-950 shadow-[0_18px_60px_rgba(212,175,55,0.22)] ring-1 ring-white/20 transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_65px_rgba(212,175,55,0.34)]">
+                                <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-gray-950 text-[#F0D36A] font-lato">
+                                    {featuredEvent ? (
+                                        <>
+                                            <span className="text-2xl font-bold leading-none">{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
+                                            <span className="text-xs font-bold uppercase">{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' })}</span>
+                                        </>
+                                    ) : <Calendar className="h-7 w-7" aria-hidden="true" />}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] font-lato">Upcoming events</span>
+                                    <h2 className="mt-1 text-xl sm:text-2xl font-abhaya font-bold leading-tight">{featuredEvent ? featuredEvent.title : 'Find your next SLFA gathering'}</h2>
+                                    {featuredEvent ? (
+                                        <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-lato text-gray-800">
+                                            <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4 shrink-0" aria-hidden="true" />{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
+                                            {featuredEvent.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />{featuredEvent.location}</span>}
+                                        </span>
+                                    ) : (
+                                        <p className="mt-1.5 text-sm font-lato text-gray-800">Dates will appear here when the next event is announced.</p>
+                                    )}
+                                </div>
+                                <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-gray-950 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white font-lato group-hover:bg-[#800000] transition-colors">{featuredEvent ? 'View event' : 'Explore events'} <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></span>
+                            </Link>
                         </motion.div>
                     </motion.div>
                 </div>
