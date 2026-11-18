@@ -157,12 +157,8 @@ export default function About({ auth, leadershipSetup = [], executiveCommittee =
             </section>
 
 
-            {/* History section was moved to Hero overlay */}
-
             {/* ── Journey Timeline ── */}
-            <div className="bg-[#faf9f7] border-y border-gray-100">
-                <JourneyTimeline />
-            </div>
+            <JourneyTimeline />
 
             {/* ── Mission & Vision ── */}
             <section className="py-28 bg-[#faf9f7]">
