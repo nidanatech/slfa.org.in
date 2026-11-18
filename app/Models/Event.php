@@ -2,96 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory;
-
-    protected $table = 'calendar_events';
-
     protected $fillable = [
-        'calendar_id',
-        'title',
-        'description',
-        'start_datetime',
-        'end_datetime',
-        'timezone',
-        'status',
-        'mode',
-        'location',
-        'meeting_link',
-        'contact_id',
-        'product_id',
-        'product_variation_id',
-        'opportunity_id',
-        'conversation_id',
-        'owner_id',
-        'created_by',
-        'source',
-        'payment_status',
-        'stripe_session_id',
-        'google_event_id',
-        'google_calendar_connection_id',
-        'last_synced_at',
+        'title', 'description', 'event_type',
+        'location', 'start_at', 'end_at',
+        'cover_image_path', 'rsvp_enabled',
     ];
 
-    protected $casts = [
-        'start_datetime' => 'datetime',
-        'end_datetime' => 'datetime',
-        'last_synced_at' => 'datetime',
-    ];
-
-    public function calendar()
+    protected function casts(): array
     {
-        return $this->belongsTo(Calendar::class);
+        return [
+            'start_at' => 'datetime',
+            'end_at' => 'datetime',
+            'rsvp_enabled' => 'boolean',
+        ];
     }
 
-    public function contact()
+    public function rsvps()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->hasMany(EventRsvp::class);
     }
 
-    public function product()
+    public function albums()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(GalleryAlbum::class);
     }
 
-    public function variation()
+    public function scopeUpcoming($query)
     {
-        return $this->belongsTo(ProductVariation::class, 'product_variation_id');
+        return $query->where('start_at', '>=', now())->orderBy('start_at');
     }
 
-    public function opportunity()
+    public function scopePast($query)
     {
-        return $this->belongsTo(Opportunity::class);
-    }
-
-    public function conversation()
-    {
-        return $this->belongsTo(Conversation::class);
-    }
-
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
-
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function googleConnection()
-    {
-        return $this->belongsTo(\App\Models\GoogleCalendarConnection::class, 'google_calendar_connection_id');
-    }
-
-    // Helper methods
-    public function shouldSyncToGoogle(): bool
-    {
-        return $this->calendar?->googleConnection?->sync_enabled ?? false;
+        return $query->where('start_at', '<', now())->orderByDesc('start_at');
     }
 }

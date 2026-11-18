@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+    --primary: 16 88% 57%;          /* SLFA Coral #F26E34 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 18 80% 94%;        /* SLFA Peach #F9EBE5 */
+    --secondary-foreground: 240 10% 10%;
+    --muted: 18 40% 96%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 18 80% 94%;
+    --accent-foreground: 240 10% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 16 88% 57%;
+    --radius: 0.625rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-outfit antialiased selection:bg-slfa-coral selection:text-white;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* SLFA Custom Utilities                                                      */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* Gradient backgrounds */
+  .slfa-gradient {
+    background: linear-gradient(135deg, #F26E34 0%, #D95A24 100%);
+  }
+
+  .slfa-gradient-subtle {
+    background: linear-gradient(135deg, #FFFAF3 0%, #F9EBE5 100%);
+  }
+
+  .slfa-gradient-cultural {
+    background: linear-gradient(135deg, #C8860A 0%, #F26E34 50%, #006D6F 100%);
+  }
+
+  .slfa-gradient-warm {
+    background: linear-gradient(135deg, #FFFAF3 0%, #FFF3E0 30%, #F9EBE5 100%);
+  }
+
+  /* Glass effect for cards */
+  .slfa-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  }
+  
+  .slfa-glass-dark {
+    background: rgba(26, 26, 46, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Text gradient */
+  .slfa-text-gradient {
+    background: linear-gradient(135deg, #F26E34 0%, #F8A07A 50%, #D4A017 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .slfa-text-gradient-cultural {
+    background: linear-gradient(135deg, #C8860A 0%, #F26E34 50%, #006D6F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Section spacing */
+  .slfa-section {
+    @apply py-16 md:py-24 px-4;
+  }
+
+  /* Container */
+  .slfa-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Cultural Decorative Elements                                               */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Kolam-inspired geometric ornament divider */
+.kolam-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0.25;
+}
+
+.kolam-divider::before,
+.kolam-divider::after {
+  content: '';
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor);
+}
+
+.kolam-divider::after {
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+
+.kolam-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  position: relative;
+}
+
+.kolam-dot::before,
+.kolam-dot::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.kolam-dot::before {
+  top: -8px;
+  left: 1px;
+}
+
+.kolam-dot::after {
+  bottom: -8px;
+  left: 1px;
+}
+
+/* Rangoli background pattern (subtle geometric) */
+.rangoli-bg {
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(200, 134, 10, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(0, 109, 111, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(242, 110, 52, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px, 30px 30px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Animation classes                                                          */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+.animate-fade-up-delay-1 {
+  animation: fade-up 0.6s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.animate-fade-up-delay-2 {
+  animation: fade-up 0.6s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-fade-up-delay-3 {
+  animation: fade-up 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+/* Apply paper texture to all white/light sections across the site */
+section.bg-white, 
+section.bg-\[\#faf9f7\] {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('/images/paper-texture.avif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}

@@ -17,24 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
-            \App\Http\Middleware\EnsureBusinessProfile::class,
-            \App\Http\Middleware\AllowFraming::class,
-        ]);
-
-        $middleware->validateCsrfTokens(except: [
-            '/chat/*',
-            '/webhooks/threads',
-            '/webhooks/instagram',
-            '/webhooks/facebook',
-            '/webhooks/google-business',
-            '/forms/*',
-            '/l/*/submit',
-            '/webhooks/stripe/tenant/*',
-        ]);
-        $middleware->alias([
-            'system-admin' => \App\Http\Middleware\SystemAdminMiddleware::class,
-            'quota' => \App\Http\Middleware\EnsureWithinQuota::class,
-            'allow-framing' => \App\Http\Middleware\AllowFraming::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

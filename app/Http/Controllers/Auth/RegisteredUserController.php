@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Tenant;
-use App\Models\Pipeline;
-use App\Models\PipelineStage;
-use App\Models\Calendar;
+use App\Models\UserProfile;
+use App\Models\FamilyMember;
+use App\Models\BusinessRepresentative;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Services\DashboardAssistantService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -34,64 +32,63 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, \App\Services\DashboardAssistantService $service): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'membership_type' => 'required|in:individual,business',
+            'profile' => 'required|array',
+            'family_members' => 'nullable|array',
+            'business_reps' => 'nullable|array',
+            'id_proof' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $user = DB::transaction(function () use ($request) {
-            // 1. Create Tenant
-            $tenant = Tenant::create([
-                'name' => $request->name . "'s Business",
-            ]);
-
-            // 2. Create User
+            // 1. Create User
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'tenant_id' => $tenant->id,
-                'role' => 'owner',
-                'account_status' => 'active',
+                'role' => 'member',
+                'account_status' => 'pending',
             ]);
 
-            $user->tenants()->attach($tenant);
+            // 2. Create User Profile
+            $profileData = $request->profile;
+            $profileData['membership_type'] = $request->membership_type;
+            
+            if ($request->hasFile('id_proof')) {
+                $path = $request->file('id_proof')->store('id_proofs', 'public');
+                $profileData['id_proof_path'] = $path;
+            }
 
-            // 4. Create Default Calendar
-            Calendar::create([
-                'name' => $request->name . "'s Calendar",
-                'calendar_type' => 'user',
-                'owner_id' => $user->id,
-                'tenant_id' => $tenant->id,
-                'timezone' => 'UTC',
-                'color' => '#3b82f6',
-                'is_default' => true,
-                'visibility' => 'private',
-                'slug' => strtolower(str_replace(' ', '-', $request->name)) . '-calendar-' . uniqid(),
-                'slot_duration' => 30,
-                'buffer_time' => 0,
-                'is_public' => false,
-            ]);
+            $user->profile()->create($profileData);
+
+            // 3. Create Family Members or Business Reps
+            if ($request->membership_type === 'individual' && !empty($request->family_members)) {
+                foreach ($request->family_members as $member) {
+                    // Only save if name is provided
+                    if (!empty($member['name'])) {
+                        $user->familyMembers()->create($member);
+                    }
+                }
+            } elseif ($request->membership_type === 'business' && !empty($request->business_reps)) {
+                foreach ($request->business_reps as $rep) {
+                    if (!empty($rep['name'])) {
+                        $user->businessRepresentatives()->create($rep);
+                    }
+                }
+            }
 
             return $user;
         });
-
-        // 5. Initialize Dashboard Assistant (Best effort, don't crash registration)
-        try {
-            if ($user->tenant) {
-                $service->ensureAssistant($user->tenant);
-            }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::warning("Could not initialize dashboard assistant for {$user->email}: " . $e->getMessage());
-        }
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect()->route('subscription.select');
+        return redirect(route('payment.gateway', absolute: false));
     }
 }

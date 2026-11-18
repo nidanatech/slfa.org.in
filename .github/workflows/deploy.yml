@@ -1,4 +1,4 @@
-name: Deploy to CentOS 9
+name: Deploy to Hostinger
 
 on:
   push:
@@ -9,92 +9,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install Node Dependencies
-      run: npm ci
+      - name: Install Node Dependencies
+        run: npm ci
 
-    - name: Build Frontend Assets
-      run: npm run build
-      env:
-        VITE_REVERB_APP_KEY: ${{ secrets.VITE_REVERB_APP_KEY }}
-        VITE_REVERB_HOST: ${{ secrets.VITE_REVERB_HOST }}
-        VITE_REVERB_PORT: ${{ secrets.VITE_REVERB_PORT }}
-        VITE_REVERB_SCHEME: ${{ secrets.VITE_REVERB_SCHEME }}
+      - name: Build Frontend Assets
+        run: npm run build
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, iconv, json, mbstring, pdo
-        tools: composer:v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, pdo
+          tools: composer:v2
 
-    - name: Install Composer Dependencies
-      run: composer install --no-ansi --no-interaction --no-progress --no-dev --optimize-autoloader
+      - name: Install Composer Dependencies
+        run: composer install --no-ansi --no-interaction --no-progress --no-dev --optimize-autoloader
 
-    - name: Prepare SSH Key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+      - name: Prepare SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.SERVER_PORT || 65002 }}" -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
 
-    - name: Deploy with rsync
-      run: |
-        rsync -rvz --delete --omit-dir-times --no-owner --no-group --no-perms \
-          -e "ssh -i ~/.ssh/id_rsa" \
-          --exclude='.git/' \
-          --exclude='.github/' \
-          --exclude='node_modules/' \
-          --exclude='whatsapp-service/node_modules/' \
-          --exclude='whatsapp-service/sessions/' \
-          --exclude='whatsapp-service/.env' \
-          --exclude='whatsapp-service/service.log' \
-          --exclude='storage/' \
-          --exclude='.env' \
-          --exclude='public/hot' \
-          --exclude='public/storage' \
-          --exclude='bootstrap/cache/' \
-          ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.TARGET_DIR }}
+      - name: Deploy with rsync
+        run: |
+          rsync -rvz --delete --omit-dir-times --no-owner --no-group --no-perms \
+            -e "ssh -p ${{ secrets.SERVER_PORT || 65002 }} -i ~/.ssh/id_rsa" \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='storage/' \
+            --exclude='.env' \
+            --exclude='public/hot' \
+            --exclude='public/storage' \
+            --exclude='bootstrap/cache/' \
+            ./ "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.TARGET_DIR }}"
 
-    - name: Post-Deployment Commands
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd ${{ secrets.TARGET_DIR }}
-          # Ensure storage and WhatsApp directories exist
-          mkdir -p storage/framework/{sessions,views,cache}
-          mkdir -p storage/logs
-          mkdir -p whatsapp-service/sessions
-          chmod -R 775 storage bootstrap/cache whatsapp-service/sessions
-          
-          # Run Laravel commands
-          php artisan migrate --force
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-          
-          # WhatsApp Service Setup (Node.js)
-          cd whatsapp-service
-          npm install --omit=dev
-          cd ..
+      - name: Post-Deployment Commands
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT || 65002 }}
+          script: |
+            cd "${{ secrets.TARGET_DIR }}"
+            mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache
+            chmod -R 775 storage bootstrap/cache
 
-          # Restart Services
-          php artisan queue:restart
-          sudo supervisorctl restart sydkic-reverb
-          sudo supervisorctl restart sydkic-whatsapp
-          
-          # Fix Permissions for Nginx (if deployment user is centos/etc)
-          # Note: This might require passwordless sudo for the user
-          sudo chown -R nginx:nginx storage bootstrap/cache
-          sudo systemctl reload php-fpm
-
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan storage:link || true

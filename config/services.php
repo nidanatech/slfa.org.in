@@ -52,7 +52,7 @@ return [
     'instagram' => [
         'client_id' => env('INSTAGRAM_CLIENT_ID', env('FACEBOOK_CLIENT_ID')),
         'client_secret' => env('INSTAGRAM_CLIENT_SECRET', env('FACEBOOK_CLIENT_SECRET')),
-        'redirect' => 'https://sydkic.com/user/ig/callback',
+        'redirect' => 'https://slfa.org.in/user/ig/callback',
         'webhook_verify_token' => env('INSTAGRAM_WEBHOOK_VERIFY_TOKEN', env('FACEBOOK_WEBHOOK_VERIFY_TOKEN')),
     ],
 

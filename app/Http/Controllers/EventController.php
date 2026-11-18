@@ -4,63 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
-    public function store(Request $request)
+    public function index()
     {
-        $validated = $request->validate([
-            'calendar_id' => 'required|exists:calendars,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_datetime' => 'required|date',
-            'end_datetime' => 'required|date|after:start_datetime',
-            'location' => 'nullable|string|max:255',
-            'mode' => 'nullable|in:in_person,phone,video,chat',
-            'contact_id' => 'nullable|exists:contacts,id',
-            'product_id' => 'nullable|exists:products,id',
-            'product_variation_id' => 'nullable|exists:product_variations,id',
-            'opportunity_id' => 'nullable|exists:opportunities,id',
-            'status' => 'nullable|string',
+        return Inertia::render('SLFA/Events', [
+            'upcomingEvents' => Event::upcoming()->get(),
+            'pastEvents' => Event::past()->get(),
         ]);
-
-        $event = Event::create([
-            'calendar_id' => $validated['calendar_id'],
-            'title' => $validated['title'],
-            'description' => $validated['description'] ?? null,
-            'start_datetime' => $validated['start_datetime'],
-            'end_datetime' => $validated['end_datetime'],
-            'location' => $validated['location'] ?? null,
-            'mode' => $validated['mode'] ?? 'in_person',
-            'contact_id' => $validated['contact_id'] ?? null,
-            'product_id' => $validated['product_id'] ?? null,
-            'product_variation_id' => $validated['product_variation_id'] ?? null,
-            'opportunity_id' => $validated['opportunity_id'] ?? null,
-            'status' => $validated['status'] ?? 'scheduled',
-            'owner_id' => Auth::id(), // Assigned to current user by default? Or should come from input? User spec says owner_id -- assigned user. Default to auth user is fine for now.
-            'created_by' => Auth::id(),
-            'source' => 'manual',
-        ]);
-
-        return redirect()->back()->with('success', 'Appointment booked successfully.');
     }
 
-    public function update(Request $request, Event $event)
+    public function show(Event $event)
     {
-        $validated = $request->validate([
-            'calendar_id' => 'sometimes|exists:calendars,id',
-            'product_id' => 'nullable|exists:products,id',
-            'product_variation_id' => 'nullable|exists:product_variations,id',
-            'title' => 'sometimes|string|max:255',
-            'start_datetime' => 'sometimes|date',
-            'end_datetime' => 'sometimes|date|after:start_datetime',
-            'location' => 'nullable|string|max:255',
-            'status' => 'sometimes|string',
+        // Load the gallery albums for this event if any
+        $event->load('albums.media');
+
+        return Inertia::render('SLFA/EventDetail', [
+            'event' => $event,
+            'isGoing' => auth()->check() ? $event->rsvps()->where('user_id', auth()->id())->where('status', 'going')->exists() : false,
+        ]);
+    }
+
+    public function rsvp(Request $request, Event $event)
+    {
+        $request->validate([
+            'status' => 'required|in:going,maybe,declined',
         ]);
 
-        $event->update($validated);
+        $user = $request->user();
+        
+        abort_unless($user && $user->account_status === 'active', 403, 'Only active members can RSVP.');
 
-        return redirect()->back()->with('success', 'Appointment updated successfully.');
+        $event->rsvps()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['status' => $request->status]
+        );
+
+        return back()->with('success', 'Your RSVP has been updated.');
     }
 }

@@ -2,61 +2,26 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable;
 
-    public function getPermissionsTeamId()
-    {
-        return $this->tenant_id;
-    }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
-        'first_name',
-        'last_name',
         'email',
-        'phone',
-        'extension',
-        'profile_image',
-        'calendar_id',
-        'online_status',
-        'account_status',
         'password',
-        'role',
-        'tenant_id',
-        'is_system_user',
-        'system_role',
+        'role', // 'member' or 'admin'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -65,32 +30,37 @@ class User extends Authenticatable
         ];
     }
 
-    public function tenant()
+    // ─── Relationships ───────────────────────────────────────────────────────
+
+    public function member()
     {
-        return $this->belongsTo(Tenant::class);
+        return $this->hasOne(Member::class);
     }
 
-    public function tenants()
+    // ─── Role Helpers ────────────────────────────────────────────────────────
+
+    public function isAdmin(): bool
     {
-        return $this->belongsToMany(Tenant::class);
-    }
-    
-    // The calendar this user is "currently" viewing/using default or assigned
-    public function calendar()
-    {
-        return $this->belongsTo(Calendar::class);
+        return $this->role === 'admin';
     }
 
-    // Calendars owned by this user
-    public function calendars()
+    public function isMember(): bool
     {
-        return $this->hasMany(Calendar::class, 'owner_id');
+        return $this->role === 'member';
     }
 
-    public function assignedConversations()
+    public function profile()
     {
-        return $this->hasMany(Conversation::class, 'assigned_to');
+        return $this->hasOne(UserProfile::class);
     }
 
+    public function familyMembers()
+    {
+        return $this->hasMany(FamilyMember::class);
+    }
 
+    public function businessRepresentatives()
+    {
+        return $this->hasMany(BusinessRepresentative::class);
+    }
 }

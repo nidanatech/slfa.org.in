@@ -10,22 +10,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "aws/aws-sdk-php": "^3.369",
         "barryvdh/laravel-dompdf": "^3.1",
         "fakerphp/faker": "^1.23",
-        "google/apiclient": "^2.19",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/cashier": "^16.2",
         "laravel/framework": "^12.0",
         "laravel/reverb": "^1.7",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
-        "microsoft/microsoft-graph": "^2.53",
-        "smalot/pdfparser": "^2.12",
-        "spatie/laravel-permission": "^6.24",
-        "tightenco/ziggy": "^2.0",
-        "vinkla/hashids": "^13.0",
-        "webklex/laravel-imap": "^6.2"
+        "razorpay/razorpay": "^2.9",
+        "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
         "laravel/breeze": "^2.3",
