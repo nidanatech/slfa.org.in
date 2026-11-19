@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Hostinger serves public_html, while Laravel's front controller is in public/.
+    # Keep certificate challenges and already rewritten paths out of this rule.
+    RewriteRule ^\.well-known/ - [L]
+    RewriteRule ^public/ - [L]
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

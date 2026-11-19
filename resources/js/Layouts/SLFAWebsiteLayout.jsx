@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import BrandMark from '@/Components/BrandMark';
 
 export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,8 +19,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
         { name: 'Home', href: route('home') },
         { name: 'About', href: route('about') },
         { name: 'Membership', href: route('membership') },
-        { name: 'Events', href: route('events') },
-        { name: 'News', href: route('news') },
+        { name: 'News & Events', href: route('happenings') },
         { name: 'Gallery', href: route('gallery') },
         { name: 'Contact', href: route('contact') },
     ];
@@ -39,6 +39,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
 
     return (
         <div className="min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white">
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#D4AF37] focus:px-5 focus:py-3 focus:font-bold focus:text-gray-950">Skip to content</a>
 
             {/* Navigation */}
             <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${navBg}`}>
@@ -46,8 +47,8 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                     <div className="flex justify-between items-center">
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
-                            <Link href="/">
-                                <img src="/storage/legacy/logo.png" alt="SLFA Logo" className="h-12 md:h-14 hover:opacity-80 transition-opacity duration-300" />
+                            <Link href="/" aria-label="SLFA home" className="rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
+                                <BrandMark />
                             </Link>
                         </div>
 
@@ -57,9 +58,9 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className={`${linkBase} ${activeColor}`}
+                                    className={`${linkBase} ${activeColor} rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]`}
                                 >
-                                    <span className={route().current() === link.href.split('/').pop() || (link.href === route('home') && route().current('home')) ? activeColor : linkColor}>
+                                    <span className={route().current(link.href === route('happenings') ? 'happenings' : link.href === route('home') ? 'home' : link.href.split('/').pop()) ? activeColor : linkColor}>
                                         {link.name}
                                     </span>
                                 </Link>
@@ -104,7 +105,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                 <div className={`xl:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
                     <div className="px-6 py-8 space-y-5">
                         {navLinks.map((link) => (
-                            <Link key={link.name} href={link.href} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] transition-colors font-lato">
+                            <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] transition-colors font-lato focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">
                                 {link.name}
                             </Link>
                         ))}
@@ -128,7 +129,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
             </nav>
 
             {/* Main Content */}
-            <main>
+            <main id="main-content">
                 {children}
             </main>
 
@@ -142,8 +143,8 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
 
                         <div className="md:col-span-5">
-                            <Link href="/" className="inline-block mb-8">
-                                <img src="/storage/legacy/logo.png" alt="SLFA Logo" className="h-16 hover:opacity-80 transition-opacity duration-300" />
+                            <Link href="/" aria-label="SLFA home" className="inline-block mb-8">
+                                <BrandMark />
                             </Link>
                             <p className="text-gray-300 font-abhaya font-light text-xl leading-relaxed mb-8 pr-8">
                                 The official forum congregating people of Sri Lankan origin residing in South India for mutual acquaintance, cultural preservation, and professional relationships across borders.

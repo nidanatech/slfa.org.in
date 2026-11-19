@@ -50,19 +50,15 @@ Route::get('/about', function () {
     ]);
 })->name('about');
 
-Route::get('/news', function () {
-    $query = \App\Models\NewsPost::published();
-
-    if (request('category')) {
-        $query->where('category', request('category'));
-    }
-
-    return Inertia::render('SLFA/News', [
-        'posts' => $query->paginate(12),
-        'categories' => ['AGM', 'Get-Together', 'Medical Camp', 'Health Checkup'],
-        'currentCategory' => request('category'),
+Route::get('/happenings', function () {
+    return Inertia::render('SLFA/Happenings', [
+        'posts' => \App\Models\NewsPost::published()->paginate(9),
+        'upcomingEvents' => \App\Models\Event::upcoming()->get(),
+        'pastEvents' => \App\Models\Event::past()->take(6)->get(),
     ]);
-})->name('news');
+})->name('happenings');
+
+Route::get('/news', fn () => redirect()->to(route('happenings').'#news', 301))->name('news');
 
 Route::get('/news/{news}', function (\App\Models\NewsPost $news) {
     abort_unless($news->published_at && $news->published_at->lte(now()), 404);
@@ -72,7 +68,7 @@ Route::get('/news/{news}', function (\App\Models\NewsPost $news) {
 })->name('news.show');
 
 Route::get('/sitemap.xml', function () {
-    $urls = collect(['home', 'about', 'news', 'events', 'gallery', 'contact', 'membership'])
+    $urls = collect(['home', 'about', 'happenings', 'gallery', 'contact', 'membership'])
         ->map(fn ($name) => route($name))
         ->concat(\App\Models\NewsPost::published()->pluck('id')->map(fn ($id) => route('news.show', $id)))
         ->concat(\App\Models\Event::pluck('id')->map(fn ($id) => route('events.show', $id)));
@@ -91,7 +87,7 @@ Route::post('/contact', [ContactController::class, 'store'])->middleware('thrott
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{album}', [GalleryController::class, 'show'])->name('gallery.show');
 
-Route::get('/events', [EventController::class, 'index'])->name('events');
+Route::get('/events', fn () => redirect()->to(route('happenings').'#events', 301))->name('events');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 
 // Membership Application (public)

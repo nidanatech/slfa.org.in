@@ -7,6 +7,7 @@
             $publicPages = [
                 'home' => ['SriLankan Friendship Association of South India', 'Discover SLFA, its community, events and membership in South India.'],
                 'about' => ['About SLFA', 'Learn about the Sri Lankan Friendship Association, its purpose and leadership.'],
+                'happenings' => ['News and Events', 'Explore SLFA community news, upcoming gatherings, and past events in South India.'],
                 'news' => ['News and activities', 'Read the latest news and community activities from the Sri Lankan Friendship Association.'],
                 'events' => ['Events', 'Explore upcoming and past Sri Lankan Friendship Association events.'],
                 'gallery' => ['Gallery', 'Browse photos from Sri Lankan Friendship Association events and activities.'],

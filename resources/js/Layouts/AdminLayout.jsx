@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import BrandMark from '@/Components/BrandMark';
 import {
     LayoutDashboard, Users, FileText, Calendar,
     Image as ImageIcon, Upload, Menu, X, CreditCard,
@@ -42,7 +43,7 @@ export default function AdminLayout({ user, children }) {
             `}>
                 <div className="flex h-16 items-center justify-between border-b border-white/10 bg-gray-950 px-4">
                     <div className="flex items-center gap-3">
-                        <img src="/storage/legacy/logo_white.png" alt="SLFA" className="h-10" />
+                        <BrandMark compact />
 
                     </div>
                     <button className="lg:hidden text-gray-300 hover:text-white" onClick={() => setSidebarOpen(false)}>

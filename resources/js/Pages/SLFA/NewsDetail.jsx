@@ -9,7 +9,7 @@ export default function NewsDetail({ auth, post }) {
     return (
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={post.title} />
-            <SLFAPageHero eyebrow={post.category || 'News & activities'} title={post.title} backHref={route('news')} backLabel="Back to news" image={post.cover_image_path ? `/storage/${post.cover_image_path}` : null}>
+            <SLFAPageHero eyebrow={post.category || 'News & activities'} title={post.title} backHref={route('happenings')} backLabel="Back to news" image={post.cover_image_path ? `/storage/${post.cover_image_path}` : null}>
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />Published {dayjs(post.published_at || post.created_at).format('MMMM D, YYYY')}</span>
             </SLFAPageHero>
 
@@ -18,7 +18,7 @@ export default function NewsDetail({ auth, post }) {
                     <SLFAPageCard as="article" className="border-t-4 border-t-[#D4AF37] sm:p-12">
                         <div className="prose prose-lg max-w-none whitespace-pre-wrap text-gray-700">{post.body}</div>
                     </SLFAPageCard>
-                    <Link href={route('news')} className="mt-8 inline-flex items-center font-bold text-[#800000] hover:underline">Explore more news</Link>
+                    <Link href={route('happenings')} className="mt-8 inline-flex items-center font-bold text-[#800000] hover:underline">Explore more news</Link>
                 </div>
             </section>
         </SLFAWebsiteLayout>

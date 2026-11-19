@@ -2,7 +2,7 @@ name: Deploy to Hostinger
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ master ]
 
 jobs:
   deploy:
@@ -56,7 +56,9 @@ jobs:
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='node_modules/' \
+            --exclude='design-previews/' \
             --exclude='storage/' \
+            --exclude='public_html/' \
             --exclude='.env' \
             --exclude='public/hot' \
             --exclude='public/storage' \
@@ -71,8 +73,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT || 65002 }}
           script: |
+            set -e
             cd "${{ secrets.TARGET_DIR }}"
-            mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache
+            mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache public_html
             chmod -R 775 storage bootstrap/cache
 
             php artisan migrate --force
@@ -80,3 +83,27 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             php artisan storage:link || true
+
+            # Hostinger serves public_html; Laravel's public directory is its web root.
+            rsync -a --delete --exclude='storage' public/ public_html/
+            if [ ! -e public_html/storage ]; then
+              ln -s ../storage/app/public public_html/storage
+            fi
+
+      - name: Verify public website
+        env:
+          SITE_URL: https://venerable-mistyrose-quetzal-21.hostingersite.com/
+        run: |
+          base_url="${SITE_URL%/}"
+          echo '| Path | HTTP status |' >> "$GITHUB_STEP_SUMMARY"
+          echo '| --- | --- |' >> "$GITHUB_STEP_SUMMARY"
+          failed=0
+          for path in / /favicon.svg /images/slfa-bg.png /about /membership /happenings /events /news; do
+            status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$base_url$path" || true)
+            printf '| `%s` | %s |\n' "$path" "$status" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$status" != "200" ]; then
+              echo "Public route $path returned HTTP $status"
+              failed=1
+            fi
+          done
+          exit "$failed"

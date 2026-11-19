@@ -55,7 +55,7 @@ export default function JourneyTimeline() {
                     ))}
                 </ol>
 
-                <Link href={route('news')} className="mt-10 inline-flex items-center gap-2 text-sm font-bold text-[#D4AF37] hover:text-white transition-colors font-lato">
+                <Link href={route('happenings')} className="mt-10 inline-flex items-center gap-2 text-sm font-bold text-[#D4AF37] hover:text-white transition-colors font-lato">
                     Explore our news and activities <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
             </div>

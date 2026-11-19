@@ -128,7 +128,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                         </div>
                                         Member Directory
                                     </Link>}
-                                    <Link href={route('events')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
+                                    <Link href={route('happenings')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
                                         <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
                                             <Calendar className="w-4 h-4 text-purple-500" />
                                         </div>
@@ -172,7 +172,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                             <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
                                 <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
                                     <h3 className="font-bold text-slfa-navy font-lato tracking-wide text-sm uppercase">Upcoming Events</h3>
-                                    <Link href={route('events')} className="text-xs text-slfa-primary hover:underline">View All</Link>
+                                    <Link href={route('happenings')} className="text-xs text-slfa-primary hover:underline">View All</Link>
                                 </div>
                                 <div className="p-4 flex flex-col gap-4">
                                     {upcomingEvents.length > 0 ? upcomingEvents.map(event => (

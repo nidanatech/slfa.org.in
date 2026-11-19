@@ -23,7 +23,7 @@ export default function EventDetail({ auth, event, isGoing }) {
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={event.title} />
 
-            <SLFAPageHero eyebrow={event.event_type || 'SLFA event'} title={event.title} backHref={route('events')} backLabel="Back to events" image={event.cover_image_path ? `/storage/${event.cover_image_path}` : null}>
+            <SLFAPageHero eyebrow={event.event_type || 'SLFA event'} title={event.title} backHref={route('happenings')} backLabel="Back to events" image={event.cover_image_path ? `/storage/${event.cover_image_path}` : null}>
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
                 <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })}</span>
                 {event.location && <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-[#D4AF37]" />{event.location}</span>}
