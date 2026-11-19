@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import HeroMap from '@/Components/HeroMap';
 import CanvasFlag from '@/Components/CanvasFlag';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
+import { coverImageUrl } from '@/lib/coverImageUrl';
 
 const happeningsImages = ['/images/cta/gallery27.jpg', '/images/cta/gallery15.jpg', '/images/cta/gallery4.jpg'];
 
@@ -65,17 +66,17 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             <section className="relative min-h-[100svh] bg-gray-950 overflow-hidden flex items-center pt-28 pb-16 sm:pt-32 sm:pb-20">
                 {/* Animated Glowing Orbs (Saffron, Maroon, Teal/Green) */}
                 <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1], x: [0, 50, 0] }}
+                    animate={reducedMotion ? undefined : { scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1], x: [0, 50, 0] }}
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                     className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#FF9933] rounded-full blur-[150px] pointer-events-none mix-blend-screen"
                 ></motion.div>
                 <motion.div
-                    animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15], x: [0, -50, 0] }}
+                    animate={reducedMotion ? undefined : { scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15], x: [0, -50, 0] }}
                     transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                     className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-[#800000] rounded-full blur-[150px] pointer-events-none mix-blend-screen"
                 ></motion.div>
                 <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05], y: [0, -50, 0] }}
+                    animate={reducedMotion ? undefined : { scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05], y: [0, -50, 0] }}
                     transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
                     className="absolute top-[40%] left-[60%] w-[500px] h-[500px] bg-[#138808] rounded-full blur-[120px] pointer-events-none mix-blend-screen"
                 ></motion.div>
@@ -115,7 +116,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                                 Connecting Sri Lankans<br />in South India
                             </h1>
                             <p className="text-base sm:text-lg text-gray-300 font-lato font-light leading-relaxed mb-7 sm:mb-8">
-                                A community for cultural connections, events, and professional relationships.
+                                Shared roots. New friendships. A community to call your own.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center items-center">
@@ -170,8 +171,8 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         />
                     </AnimatePresence>
                     {/* Dark gradient overlay for text legibility and seamless section blending */}
-                    <div className="absolute inset-0 bg-gray-950/35"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/20"></div>
+                    <div className="absolute inset-0 bg-gray-950/10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/80 to-transparent"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-gray-950/30"></div>
                 </div>
 
@@ -204,37 +205,44 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             </section>
 
             {/* Three ways members connect */}
-            <section className="py-12 md:py-16 bg-gray-950 relative z-20 border-t border-white/10">
+            <section className="py-12 md:py-16 bg-gray-950 relative z-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                         {[
                             {
                                 num: "I",
+                                image: "/images/cta/gallery15.jpg",
+                                alt: "SLFA members spending time together at a community gathering",
                                 title: "Community",
                                 desc: "Meet people who share a connection with Sri Lanka and South India."
                             },
                             {
                                 num: "II",
+                                image: "/images/cta/gallery27.jpg",
+                                alt: "Families and members gathered for an SLFA event",
                                 title: "Gatherings",
                                 desc: "Join family get-togethers, cultural celebrations, and association events."
                             },
                             {
                                 num: "III",
+                                image: "/images/cta/gallery4.jpg",
+                                alt: "SLFA members meeting around a conference table",
                                 title: "Network",
                                 desc: "Build professional relationships across the community."
                             }
                         ].map((item, idx) => (
                             <motion.div
                                 key={idx}
-                                initial={{ opacity: 0, y: 30 }}
+                                initial={reducedMotion ? false : { opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
-                                className="text-left border-t border-[#D4AF37]/30 pt-5"
+                                className="group text-left"
                             >
-                                <div className="text-[#D4AF37] font-abhaya italic font-light text-3xl mb-2 leading-none">
-                                    {item.num}.
+                                <div className="mb-5 aspect-[4/3] overflow-hidden">
+                                    <img src={item.image} alt={item.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 motion-safe:group-hover:scale-105" />
                                 </div>
+                                <div className="mb-3 h-px w-12 bg-[#F2B66D]" aria-hidden="true" />
                                 <h3 className="text-2xl font-abhaya font-bold text-white mb-2">{item.title}</h3>
                                 <p className="text-gray-300 leading-relaxed font-abhaya text-lg font-light">
                                     {item.desc}
@@ -247,8 +255,8 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
 
             {/* Community updates */}
             <section className="relative overflow-hidden bg-gray-950 py-20 text-white md:py-28">
-                <PhotoBackdrop images={happeningsImages} />
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/60" aria-hidden="true" />
+                <PhotoBackdrop images={happeningsImages} className="opacity-25" />
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-[#101e27]/90 to-gray-950/70" aria-hidden="true" />
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <span className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">From the community</span>
                     <div className="mt-4 flex flex-col justify-between gap-7 md:flex-row md:items-end">
@@ -258,16 +266,28 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                     <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-20">
                         <div>
                             <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Latest news</h3>
-                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group flex gap-5 border-b border-white/20 py-5">
-                                <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
-                                <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{post.title}</span>
+                            {latestNews?.length ? latestNews.slice(0, 3).map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group flex items-center gap-5 border-b border-white/15 py-5">
+                                {post.cover_image_path && <div className="h-20 w-24 shrink-0 overflow-hidden sm:w-32"><img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105" /></div>}
+                                <div><time dateTime={post.published_at} className="font-lato text-xs text-[#F2B66D]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
+                                    <h4 className="mt-2 font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#F2B66D]">{post.title}</h4>
+                                    <span className="mt-3 inline-flex items-center gap-2 text-xs text-gray-300">Read story <ArrowRight size={14} /></span>
+                                </div>
                             </Link>) : <p className="py-6 text-gray-300">News will appear here as it is published.</p>}
                         </div>
                         <div>
                             <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Upcoming events</h3>
-                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.public_id)} className="group flex gap-5 border-b border-white/20 py-5">
-                                <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
-                                <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{event.title}</span>
+                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.public_id)} className="group block border-b border-white/15 py-7">
+                                <div className="flex items-start gap-6">
+                                    <div className="shrink-0 border-l-2 border-[#F2B66D] pl-4 text-[#F2B66D]" aria-hidden="true">
+                                        <span className="block font-abhaya text-5xl leading-none">{new Intl.DateTimeFormat('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</span>
+                                        <span className="mt-1 block text-xs uppercase tracking-widest">{new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</span>
+                                    </div>
+                                    <div><h4 className="font-abhaya text-2xl font-bold leading-tight text-white group-hover:text-[#F2B66D] sm:text-3xl">{event.title}</h4>
+                                        <time dateTime={event.start_at} className="mt-3 block text-sm text-gray-300">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
+                                        {event.location && <p className="mt-3 flex items-start gap-2 text-sm leading-relaxed text-gray-300"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#F2B66D]" />{event.location}</p>}
+                                        <span className="mt-5 inline-flex items-center gap-2 border-b border-[#F2B66D]/50 pb-1 text-sm font-bold text-[#F2B66D]">Discover the programme <ArrowRight size={16} /></span>
+                                    </div>
+                                </div>
                             </Link>) : <p className="py-6 text-gray-300">The next gathering is being planned.</p>}
                         </div>
                     </div>
