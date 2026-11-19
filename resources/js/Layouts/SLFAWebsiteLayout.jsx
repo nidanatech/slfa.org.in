@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import BrandMark from '@/Components/BrandMark';
 
-export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
+export default function SLFAWebsiteLayout({ children, user, darkNav = false, lightOnScroll = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -24,17 +24,16 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
     ];
 
     // If darkNav, start transparent over dark bg; link colour starts white
+    const lightNav = (scrolled && lightOnScroll) || (!darkNav && !scrolled);
     const navBg = scrolled
-        ? 'bg-gray-950/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.3)] py-4'
+        ? lightOnScroll ? 'bg-[#f8fbfc]/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(10,50,75,0.1)] py-4' : 'bg-gray-950/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.3)] py-4'
         : darkNav
             ? 'bg-transparent py-8'
             : 'bg-white/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] py-4';
 
     const linkBase = 'text-xs font-bold tracking-[0.2em] uppercase font-lato transition-all duration-300';
-    const linkColor = scrolled || !darkNav
-        ? 'text-gray-400 hover:text-white'
-        : 'text-white/70 hover:text-white';
-    const activeColor = 'text-[#D4AF37]';
+    const linkColor = lightNav ? 'text-[#27465d] hover:text-[#08618c]' : 'text-white/75 hover:text-white';
+    const activeColor = lightNav ? 'text-[#08618c]' : 'text-[#D4AF37]';
 
     return (
         <div className="min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white">
@@ -47,7 +46,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
                             <Link href="/" aria-label="SLFA home" className="rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
-                                <BrandMark />
+                                <BrandMark lightText={lightNav} />
                             </Link>
                         </div>
 
@@ -74,7 +73,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                                         {(user.role === 'admin' || user.account_status === 'active') && (
                                             <Link href={route('directory')} className={`${linkBase} ${linkColor}`}>Directory</Link>
                                         )}
-                                        <Link href={user?.role === 'admin' ? route('admin.dashboard') : route('dashboard')} className={`${linkBase} text-[#D4AF37] hover:text-white transition-colors`}>
+                                        <Link href={user?.role === 'admin' ? route('admin.dashboard') : route('dashboard')} className={`${linkBase} ${activeColor} transition-colors`}>
                                             Dashboard
                                         </Link>
                                     </>
@@ -83,7 +82,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                                         <Link href={route('login')} className={`${linkBase} ${linkColor}`}>
                                             Login
                                         </Link>
-                                        <Link href={route('register')} className={`${linkBase} text-gray-900 bg-[#D4AF37] hover:bg-white px-5 py-3 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]`}>
+                                        <Link href={route('register')} className={`${linkBase} ${lightNav ? 'bg-[#0d5a83] text-white hover:bg-[#083b5b]' : 'bg-[#D4AF37] text-gray-900 hover:bg-white'} px-5 py-3 rounded-full transition-all duration-300`}>
                                             Apply for membership
                                         </Link>
                                     </>
@@ -93,7 +92,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
 
                         {/* Mobile menu button */}
                         <div className="xl:hidden flex items-center">
-                            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMobileMenuOpen} className="text-gray-400 hover:text-white transition-colors">
+                            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMobileMenuOpen} className={`${lightNav ? 'text-[#27465d] hover:text-[#08618c]' : 'text-white/80 hover:text-white'} transition-colors`}>
                                 {isMobileMenuOpen ? <X size={28} strokeWidth={1.5} /> : <Menu size={28} strokeWidth={1.5} />}
                             </button>
                         </div>
@@ -101,10 +100,10 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`xl:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
+                <div className={`xl:hidden absolute top-full left-0 w-full backdrop-blur-xl transition-all duration-500 overflow-hidden ${lightNav ? 'bg-[#f8fbfc]/98' : 'bg-gray-950/98'} ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
                     <div className="px-6 py-8 space-y-5">
                         {navLinks.map((link) => (
-                            <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] transition-colors font-lato focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">
+                            <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className={`block text-sm font-bold uppercase tracking-widest transition-colors font-lato focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37] ${linkColor}`}>
                                 {link.name}
                             </Link>
                         ))}
@@ -112,14 +111,14 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                             {user ? (
                                 <>
                                     {(user.role === 'admin' || user.account_status === 'active') && (
-                                        <Link href={route('directory')} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] font-lato">Directory</Link>
+                                        <Link href={route('directory')} className={`block text-sm font-bold uppercase tracking-widest font-lato ${linkColor}`}>Directory</Link>
                                     )}
-                                    <Link href={user?.role === 'admin' ? route('admin.dashboard') : route('dashboard')} className="block text-sm font-bold text-[#D4AF37] uppercase tracking-widest font-lato">Dashboard</Link>
+                                    <Link href={user?.role === 'admin' ? route('admin.dashboard') : route('dashboard')} className={`block text-sm font-bold uppercase tracking-widest font-lato ${activeColor}`}>Dashboard</Link>
                                 </>
                             ) : (
                                 <>
-                                    <Link href={route('login')} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] font-lato">Login</Link>
-                                    <Link href={route('register')} className="inline-block text-sm font-bold text-gray-900 bg-[#D4AF37] uppercase tracking-wider px-6 py-3 rounded-full font-lato">Apply for membership</Link>
+                                    <Link href={route('login')} className={`block text-sm font-bold uppercase tracking-widest font-lato ${linkColor}`}>Login</Link>
+                                    <Link href={route('register')} className={`inline-block text-sm font-bold uppercase tracking-wider px-6 py-3 rounded-full font-lato ${lightNav ? 'bg-[#0d5a83] text-white' : 'bg-[#D4AF37] text-gray-900'}`}>Apply for membership</Link>
                                 </>
                             )}
                         </div>

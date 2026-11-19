@@ -188,6 +188,20 @@
   }
 }
 
+@keyframes ocean-ripple {
+  from { transform: translate(-50%, -50%) scale(0.15); opacity: 0.45; }
+  to { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+.ocean-ripple {
+  width: 12rem;
+  height: 12rem;
+  border: 1px solid rgba(219, 243, 255, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.25rem rgba(216, 241, 252, 0.08), inset 0 0 2rem rgba(216, 241, 252, 0.14);
+  animation: ocean-ripple 1.8s ease-out forwards;
+}
+
 .animate-fade-up {
   animation: fade-up 0.6s ease-out forwards;
 }
@@ -208,6 +222,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ocean-ripple { animation: none; display: none; }
   .animate-fade-up,
   .animate-fade-up-delay-1,
   .animate-fade-up-delay-2,

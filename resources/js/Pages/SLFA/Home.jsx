@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Head } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import { MapPin, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import HeroMap from '@/Components/HeroMap';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import CanvasFlag from '@/Components/CanvasFlag';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
 
@@ -11,6 +10,14 @@ const happeningsImages = ['/images/cta/gallery27.jpg', '/images/cta/gallery15.jp
 
 export default function Home({ auth, latestNews, upcomingEvents }) {
     const featuredEvent = upcomingEvents?.[0];
+    const reducedMotion = useReducedMotion();
+    const [ripples, setRipples] = useState([]);
+    const addRipple = (event) => {
+        if (reducedMotion || event.pointerType !== 'mouse' || event.target.closest('a, button')) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        const id = `${Date.now()}-${Math.random()}`;
+        setRipples(current => [...current.slice(-2), { id, x: event.clientX - bounds.left, y: event.clientY - bounds.top }]);
+    };
     const fadeUp = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
@@ -35,6 +42,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
     const [ctaImageIdx, setCtaImageIdx] = useState(0);
 
     useEffect(() => {
+        if (reducedMotion) return undefined;
         const timer = setInterval(() => {
             setCurrentImageIdx((prev) => (prev + 1) % carouselImages.length);
             setCtaImageIdx((prev) => (prev + 1) % ctaImages.length);
@@ -43,7 +51,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
         return () => {
             clearInterval(timer);
         };
-    }, []);
+    }, [reducedMotion]);
 
     const staggerContainer = {
         hidden: { opacity: 0 },
@@ -56,34 +64,15 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
     };
 
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} darkNav lightOnScroll>
             <Head title="Sri Lankan Friendship Association of South India" />
 
             {/* Hero */}
-            <section className="relative min-h-[100svh] bg-gray-950 overflow-hidden flex items-center pt-28 pb-16 sm:pt-32 sm:pb-20">
-                {/* Animated Glowing Orbs (Saffron, Maroon, Teal/Green) */}
-                <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1], x: [0, 50, 0] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#FF9933] rounded-full blur-[150px] pointer-events-none mix-blend-screen"
-                ></motion.div>
-                <motion.div
-                    animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15], x: [0, -50, 0] }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-[#800000] rounded-full blur-[150px] pointer-events-none mix-blend-screen"
-                ></motion.div>
-                <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05], y: [0, -50, 0] }}
-                    transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute top-[40%] left-[60%] w-[500px] h-[500px] bg-[#138808] rounded-full blur-[120px] pointer-events-none mix-blend-screen"
-                ></motion.div>
-
-                {/* Subtle South India/Sri Lanka Map Background */}
-                <div className="absolute inset-x-0 top-0 h-[120vh] z-0 opacity-30 mix-blend-screen pointer-events-none flex justify-center items-start overflow-hidden blur-[1px]" aria-hidden="true">
-                    <div className="scale-150 sm:scale-100 transform origin-top w-full max-w-4xl flex justify-center">
-                        <HeroMap />
-                    </div>
-                </div>
+            <section onPointerDown={addRipple} className="relative min-h-[100svh] overflow-hidden flex items-center bg-[#0d5079] pt-28 pb-24 sm:pt-32 sm:pb-28">
+                <img src="/images/hero-ocean-bg-slfa.jpg" alt="" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-center" aria-hidden="true" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#073a60]/45 via-[#0b4f79]/50 to-[#dcecf2]/55" aria-hidden="true" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#063650]/30 via-transparent to-[#073b5a]/20" aria-hidden="true" />
+                <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden="true">{ripples.map(ripple => <span key={ripple.id} className="ocean-ripple absolute" style={{ left: ripple.x, top: ripple.y }} onAnimationEnd={() => setRipples(current => current.filter(item => item.id !== ripple.id))} />)}</div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
                     <motion.div
@@ -129,32 +118,32 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             </div>
                         </motion.div>
 
-                        <motion.div variants={fadeUp} className="relative z-20 mt-9 w-full max-w-3xl border-t border-[#D4AF37]/45 pt-5 text-left sm:mt-11">
+                        <motion.div variants={fadeUp} className="relative z-20 mt-9 w-full max-w-3xl border-t border-white/70 bg-white/90 px-5 py-5 text-left shadow-[0_18px_50px_-28px_rgba(0,40,65,0.5)] backdrop-blur-md sm:mt-11 sm:px-7">
                             <Link href={featuredEvent ? route('events.show', featuredEvent.public_id) : route('happenings')} className="group grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
                                 <div className="min-w-0">
-                                    <span className="font-lato text-[11px] font-bold uppercase tracking-[0.22em] text-[#D4AF37]">Upcoming event</span>
-                                    <h2 className="mt-2 font-abhaya text-2xl font-bold leading-tight text-white transition-colors group-hover:text-[#F0D36A] sm:text-3xl">{featuredEvent ? featuredEvent.title : 'Find your next SLFA gathering'}</h2>
-                                    {featuredEvent ? <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-lato text-sm text-gray-300">
+                                    <span className="font-lato text-[11px] font-bold uppercase tracking-[0.22em] text-[#0b5a82]">Upcoming event</span>
+                                    <h2 className="mt-2 font-abhaya text-2xl font-bold leading-tight text-[#102f46] transition-colors group-hover:text-[#0b648e] sm:text-3xl">{featuredEvent ? featuredEvent.title : 'Find your next SLFA gathering'}</h2>
+                                    {featuredEvent ? <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-lato text-sm text-[#34576b]">
                                         <span>{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
-                                        {featuredEvent.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 shrink-0 text-[#D4AF37]" aria-hidden="true" />{featuredEvent.location}</span>}
-                                    </span> : <p className="mt-2 font-lato text-sm text-gray-300">See what is coming up in the community.</p>}
+                                        {featuredEvent.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 shrink-0 text-[#0b6b96]" aria-hidden="true" />{featuredEvent.location}</span>}
+                                    </span> : <p className="mt-2 font-lato text-sm text-[#34576b]">See what is coming up in the community.</p>}
                                 </div>
-                                <span className="inline-flex items-center gap-2 border-b border-[#D4AF37]/70 pb-1 font-lato text-xs font-bold uppercase tracking-wider text-[#D4AF37] sm:mb-1">{featuredEvent ? 'Event details' : 'Explore events'} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
+                                <span className="inline-flex items-center gap-2 border-b border-[#0b6b96]/70 pb-1 font-lato text-xs font-bold uppercase tracking-wider text-[#0b5a82] sm:mb-1">{featuredEvent ? 'Event details' : 'Explore events'} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
                             </Link>
                         </motion.div>
                     </motion.div>
                 </div>
 
                 {/* Seamless blend into the next section */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-950 to-transparent pointer-events-none z-20"></div>
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f7f8f5] to-transparent pointer-events-none z-20"></div>
             </section>
 
 
 
             {/* About / Story Section */}
-            <section className="relative py-16 md:py-24 overflow-hidden bg-gray-950">
+            <section className="relative py-20 md:py-28 overflow-hidden bg-[#f7f8f5]">
                 {/* Background Carousel */}
-                <div className="absolute inset-0 z-0 bg-gray-950">
+                <div className="absolute inset-0 z-0 bg-[#f7f8f5]">
                     <AnimatePresence>
                         <motion.img
                             key={currentImageIdx}
@@ -163,14 +152,12 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 1.5, ease: "easeInOut" }}
-                            className="absolute inset-y-0 right-0 w-full md:w-[65%] h-full object-cover"
+                            className="absolute inset-y-0 right-0 w-full md:w-[60%] h-full object-cover opacity-70"
                             alt=""
                         />
                     </AnimatePresence>
-                    {/* Dark gradient overlay for text legibility and seamless section blending */}
-                    <div className="absolute inset-0 bg-gray-950/35"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/20"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-gray-950/30"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#f7f8f5] via-[#f7f8f5]/95 to-[#f7f8f5]/30"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#f7f8f5]/85 via-transparent to-[#f7f8f5]/30"></div>
                 </div>
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -181,11 +168,11 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         transition={{ duration: 1 }}
                         className="max-w-xl"
                     >
-                        <span className="uppercase tracking-[0.24em] text-xs font-bold text-[#D4AF37] font-lato block mb-4">Who we are · Est. 2011</span>
-                        <h2 className="text-4xl sm:text-5xl font-abhaya font-extrabold text-white mb-5 leading-tight">
-                            A community built on <span className="italic font-light text-[#D4AF37]">connection</span>
+                        <span className="uppercase tracking-[0.24em] text-xs font-bold text-[#0c6c97] font-lato block mb-4">Who we are · Est. 2011</span>
+                        <h2 className="text-4xl sm:text-5xl font-abhaya font-extrabold text-[#102e43] mb-5 leading-tight">
+                            A community built on <span className="italic font-light text-[#0c6c97]">connection</span>
                         </h2>
-                        <div className="space-y-4 text-lg md:text-xl text-gray-200 font-abhaya font-normal leading-relaxed mb-7">
+                        <div className="space-y-4 text-lg md:text-xl text-[#355166] font-abhaya font-normal leading-relaxed mb-7">
                             <p>
                                 SLFA brings together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.
                             </p>
@@ -193,7 +180,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                                 Our activities include community events, medical camps, and opportunities to build professional relationships.
                             </p>
                         </div>
-                        <Link href={route('about')} className="inline-flex items-center text-[#D4AF37] font-bold uppercase tracking-wider text-xs sm:text-sm hover:text-white transition-colors group">
+                        <Link href={route('about')} className="inline-flex items-center text-[#0c638c] font-bold uppercase tracking-wider text-xs sm:text-sm hover:text-[#073b5a] transition-colors group">
                             Meet the association
                             <ArrowRight className="ml-3 w-4 h-4 transform group-hover:translate-x-2 transition-transform" />
                         </Link>
@@ -202,7 +189,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             </section>
 
             {/* Three ways members connect */}
-            <section className="py-12 md:py-16 bg-gray-950 relative z-20 border-t border-white/10">
+            <section className="py-12 md:py-16 bg-white relative z-20 border-t border-[#d8e5eb]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                         {[
@@ -228,13 +215,13 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
-                                className="text-left border-t border-[#D4AF37]/30 pt-5"
+                                className="text-left border-t border-[#92b3c4] pt-5"
                             >
-                                <div className="text-[#D4AF37] font-abhaya italic font-light text-3xl mb-2 leading-none">
+                                <div className="text-[#0c6c97] font-abhaya italic font-light text-3xl mb-2 leading-none">
                                     {item.num}.
                                 </div>
-                                <h3 className="text-2xl font-abhaya font-bold text-white mb-2">{item.title}</h3>
-                                <p className="text-gray-300 leading-relaxed font-abhaya text-lg font-light">
+                                <h3 className="text-2xl font-abhaya font-bold text-[#102e43] mb-2">{item.title}</h3>
+                                <p className="text-[#506879] leading-relaxed font-abhaya text-lg font-light">
                                     {item.desc}
                                 </p>
                             </motion.div>
@@ -244,29 +231,29 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             </section>
 
             {/* Community updates */}
-            <section className="relative overflow-hidden bg-gray-950 py-20 text-white md:py-28">
-                <PhotoBackdrop images={happeningsImages} />
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/60" aria-hidden="true" />
+            <section className="relative overflow-hidden bg-[#eaf3f6] py-20 text-[#102e43] md:py-28">
+                <PhotoBackdrop images={happeningsImages} className="opacity-[0.12]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#eaf3f6]/95 via-[#eaf3f6]/90 to-[#eaf3f6]/70" aria-hidden="true" />
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <span className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">From the community</span>
+                    <span className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#0c6c97]">From the community</span>
                     <div className="mt-4 flex flex-col justify-between gap-7 md:flex-row md:items-end">
-                        <h2 className="font-abhaya text-4xl font-bold leading-tight sm:text-6xl">Community <em className="font-light text-[#D4AF37]">happenings</em></h2>
-                        <Link href={route('happenings')} className="inline-flex items-center gap-2 self-start border-b border-[#D4AF37] pb-2 text-sm font-bold text-[#D4AF37] md:self-auto">All news & events <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+                        <h2 className="font-abhaya text-4xl font-bold leading-tight sm:text-6xl">Community <em className="font-light text-[#0c6c97]">happenings</em></h2>
+                        <Link href={route('happenings')} className="inline-flex items-center gap-2 self-start border-b border-[#0c6c97] pb-2 text-sm font-bold text-[#0c638c] md:self-auto">All news & events <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
                     </div>
                     <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-20">
                         <div>
-                            <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Latest news</h3>
-                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group flex gap-5 border-b border-white/20 py-5">
-                                <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
-                                <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{post.title}</span>
-                            </Link>) : <p className="py-6 text-gray-300">News will appear here as it is published.</p>}
+                            <h3 className="border-b border-[#a8c5d2] pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#0c6c97]">Latest news</h3>
+                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group flex gap-5 border-b border-[#c6dbe3] py-5">
+                                <time className="w-20 shrink-0 font-lato text-xs text-[#0c638c]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
+                                <span className="font-abhaya text-xl font-bold leading-tight text-[#102e43] group-hover:text-[#0c638c]">{post.title}</span>
+                            </Link>) : <p className="py-6 text-[#506879]">News will appear here as it is published.</p>}
                         </div>
                         <div>
-                            <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Upcoming events</h3>
-                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.public_id)} className="group flex gap-5 border-b border-white/20 py-5">
-                                <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
-                                <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{event.title}</span>
-                            </Link>) : <p className="py-6 text-gray-300">The next gathering is being planned.</p>}
+                            <h3 className="border-b border-[#a8c5d2] pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#0c6c97]">Upcoming events</h3>
+                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.public_id)} className="group flex gap-5 border-b border-[#c6dbe3] py-5">
+                                <time className="w-20 shrink-0 font-lato text-xs text-[#0c638c]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
+                                <span className="font-abhaya text-xl font-bold leading-tight text-[#102e43] group-hover:text-[#0c638c]">{event.title}</span>
+                            </Link>) : <p className="py-6 text-[#506879]">The next gathering is being planned.</p>}
                         </div>
                     </div>
                 </div>
@@ -303,9 +290,9 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             </section>
 
             {/* Downloads Call to Action */}
-            <section className="bg-gray-950 py-20 md:py-28 text-white overflow-hidden relative flex flex-col items-center justify-center">
+            <section className="bg-[#f7f8f5] py-20 md:py-28 text-[#102e43] overflow-hidden relative flex flex-col items-center justify-center">
                 {/* Background Carousel */}
-                <div className="absolute inset-0 z-0 bg-gray-950">
+                <div className="absolute inset-0 z-0 bg-[#f7f8f5]">
                     <AnimatePresence>
                         <motion.img
                             key={ctaImageIdx}
@@ -314,14 +301,12 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 1.5, ease: "easeInOut" }}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            alt="SLFA Event Gallery"
+                            className="absolute inset-0 w-full h-full object-cover opacity-20"
+                            alt=""
                         />
                     </AnimatePresence>
-                    {/* Dark gradient overlay for text legibility */}
-                    <div className="absolute inset-0 bg-gray-950/70 mix-blend-multiply"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-950/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-[#f7f8f5]/70"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#f7f8f5] via-transparent to-[#f7f8f5]"></div>
                 </div>
 
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 w-full">
@@ -332,20 +317,20 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         transition={{ duration: 1 }}
                         className="flex flex-col items-center"
                     >
-                        <h2 className="text-5xl md:text-6xl font-abhaya font-extrabold mb-8 leading-tight drop-shadow-lg">
-                            Be a part of <br /><span className="italic font-light text-[#D4AF37]">SLFA</span>
+                        <h2 className="text-5xl md:text-6xl font-abhaya font-extrabold mb-8 leading-tight">
+                            Be a part of <br /><span className="italic font-light text-[#0c6c97]">SLFA</span>
                         </h2>
-                        <p className="text-xl md:text-2xl text-gray-300 font-abhaya font-light mb-16 leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+                        <p className="text-xl md:text-2xl text-[#466173] font-abhaya font-light mb-12 leading-relaxed max-w-2xl mx-auto">
                             Whether you are from Sri Lanka or trace your ancestral roots to the island, we invite you to join our community. Connect, celebrate, and preserve our rich heritage together in South India.
                         </p>
                         
                         <div className="flex flex-col items-center gap-8 w-full">
                             {/* Primary Online Action */}
-                            <Link href={route('register')} className="group bg-[#D4AF37] text-gray-950 hover:bg-white px-12 py-5 rounded-full font-lato text-sm uppercase tracking-widest font-bold transition-all duration-300 flex items-center justify-center hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:-translate-y-1">
+                            <Link href={route('register')} className="group bg-[#0d5a83] text-white hover:bg-[#083b5b] px-12 py-5 rounded-full font-lato text-sm uppercase tracking-widest font-bold transition-all duration-300 flex items-center justify-center hover:-translate-y-1">
                                 Apply Online Now
                             </Link>
 
-                            <Link href={route('membership')} className="text-sm font-bold text-[#D4AF37] hover:text-white transition-colors">Learn how membership works</Link>
+                            <Link href={route('membership')} className="text-sm font-bold text-[#0c638c] hover:text-[#083b5b] transition-colors">Learn how membership works</Link>
                         </div>
                     </motion.div>
                 </div>
