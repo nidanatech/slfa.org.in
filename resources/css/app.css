@@ -226,3 +226,30 @@ section.bg-\[\#faf9f7\] {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+/* Home page: brighter community palette and a consistent, readable typeface. */
+.slfa-vibrant,
+.slfa-vibrant .font-sans,
+.slfa-vibrant .font-lato,
+.slfa-vibrant .font-abhaya {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.slfa-vibrant h1,
+.slfa-vibrant h2,
+.slfa-vibrant h3,
+.slfa-vibrant h4 { letter-spacing: -0.025em; }
+.slfa-vibrant main p { font-weight: 400; }
+.slfa-vibrant nav[class*="bg-gray-950"],
+.slfa-vibrant nav [class*="bg-gray-950"],
+.slfa-vibrant footer { background-color: #091724; }
+.slfa-vibrant nav [class*="text-[#D4AF37]"],
+.slfa-vibrant footer [class*="text-[#D4AF37]"] { color: #5eead4; }
+.slfa-vibrant nav [class*="bg-[#D4AF37]"] { background-color: #ff977d; color: #09202b; }
+.slfa-vibrant footer .text-gray-400,
+.slfa-vibrant footer .text-gray-500 { color: #b6c7d1; }
+.slfa-vibrant footer p,
+.slfa-vibrant footer li { font-size: 1rem; line-height: 1.75; }
+@media (max-width: 639px) {
+  .slfa-vibrant nav { padding-top: 1rem; padding-bottom: 1rem; }
+  .slfa-vibrant h1 { font-size: 2.25rem; line-height: 1.15; }
+}

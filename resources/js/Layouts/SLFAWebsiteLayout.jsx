@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import BrandMark from '@/Components/BrandMark';
 
-export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
+export default function SLFAWebsiteLayout({ children, user, darkNav = false, vibrant = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -37,7 +37,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
     const activeColor = 'text-[#D4AF37]';
 
     return (
-        <div className="min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white">
+        <div className={`${vibrant ? 'slfa-vibrant' : ''} min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white`}>
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#D4AF37] focus:px-5 focus:py-3 focus:font-bold focus:text-gray-950">Skip to content</a>
 
             {/* Navigation */}
