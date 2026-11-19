@@ -5,6 +5,7 @@ import { MapPin, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import HeroMap from '@/Components/HeroMap';
 import CanvasFlag from '@/Components/CanvasFlag';
+import CommunityWord from '@/Components/CommunityWord';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
 import { coverImageUrl } from '@/lib/coverImageUrl';
 
@@ -19,7 +20,6 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
     };
 
     const carouselImages = [
-        "/images/sigiriya-rock.jpg",
         "/images/kandyan-srilankandance.jpg",
         "/images/kalaripayuttu.webp",
         "/images/Sri-Lanka-Culture.webp",
@@ -186,7 +186,8 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                     >
                         <span className="uppercase tracking-[0.24em] text-xs font-bold text-[#D4AF37] font-lato block mb-4">Who we are · Est. 2011</span>
                         <h2 className="text-4xl sm:text-5xl font-abhaya font-extrabold text-white mb-5 leading-tight">
-                            A community built on <span className="italic font-light text-[#D4AF37]">connection</span>
+                            <span className="sr-only">A community built on connection</span>
+                            <span aria-hidden="true">A <CommunityWord /><br />built on <span className="italic font-light text-[#D4AF37]">connection</span></span>
                         </h2>
                         <div className="space-y-4 text-lg md:text-xl text-gray-200 font-abhaya font-normal leading-relaxed mb-7">
                             <p>
