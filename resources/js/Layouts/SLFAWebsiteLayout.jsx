@@ -11,7 +11,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -170,6 +170,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
                                 <li className="leading-relaxed">164/27B, Dr. P. J. Thomas Avenue,<br />Injambakkam, Chennai-600115</li>
                                 <li><a href="tel:+919884088808" className="hover:text-[#D4AF37] transition-colors">+91 98840 88808</a></li>
                                 <li><a href="mailto:info@slfa.org.in" className="hover:text-[#D4AF37] transition-colors">info@slfa.org.in</a></li>
+                                <li><a href="https://www.facebook.com/slfaorg" target="_blank" rel="noopener noreferrer" className="hover:text-[#D4AF37] transition-colors">Facebook</a></li>
                             </ul>
                         </div>
                     </div>

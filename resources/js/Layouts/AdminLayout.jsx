@@ -52,7 +52,7 @@ export default function AdminLayout({ user, children }) {
                     </button>
                 </div>
 
-                <div className="flex flex-col h-[calc(100vh-4rem)]">
+                <div className="flex flex-col h-[calc(100dvh-4rem)]">
                     <nav className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-1">
                         {navigation.map((item) => (
                             <Link

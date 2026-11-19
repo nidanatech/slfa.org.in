@@ -21,7 +21,7 @@ export default defineConfig({
         sourcemap: false,
         reportCompressedSize: false,
         minify: 'esbuild',
-        target: 'es2018',
+        target: 'es2022',
         chunkSizeWarningLimit: 1500,
 
         rollupOptions: {
