@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import BrandMark from '@/Components/BrandMark';
 
-export default function SLFAWebsiteLayout({ children, user, darkNav = false, lightOnScroll = false }) {
+export default function SLFAWebsiteLayout({ children, user, darkNav = false, lightOnScroll = false, coastal = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -132,13 +132,13 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, lig
             </main>
 
             {/* Dark Footer */}
-            <footer className="bg-gray-950 border-t border-[#D4AF37]/20 pt-24 pb-12 relative overflow-hidden">
+            <footer className={`${coastal ? 'bg-[#103f57] pt-16 pb-8 [&_.text-gray-400]:text-slate-200 [&_.text-gray-500]:text-slate-300' : 'bg-gray-950 pt-24 pb-12'} border-t border-[#D4AF37]/20 relative overflow-hidden`}>
                 {/* Subtle rangoli background and gradient for footer */}
                 <div className="absolute inset-0 rangoli-bg opacity-30 pointer-events-none"></div>
                 <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-[#D4AF37]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
+                    <div className={`grid grid-cols-1 md:grid-cols-12 ${coastal ? 'gap-10 mb-12' : 'gap-16 mb-20'}`}>
 
                         <div className="md:col-span-5">
                             <Link href="/" aria-label="SLFA home" className="inline-block mb-8">

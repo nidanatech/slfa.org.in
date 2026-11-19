@@ -4,9 +4,9 @@ import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import CanvasFlag from '@/Components/CanvasFlag';
-import PhotoBackdrop from '@/Components/PhotoBackdrop';
+import { coverImageUrl } from '@/lib/coverImageUrl';
 
-const happeningsImages = ['/images/cta/gallery27.jpg', '/images/cta/gallery15.jpg', '/images/cta/gallery4.jpg'];
+const formatDate = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 
 export default function Home({ auth, latestNews, upcomingEvents }) {
     const featuredEvent = upcomingEvents?.[0];
@@ -70,19 +70,10 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
     ];
     const [currentImageIdx, setCurrentImageIdx] = useState(0);
 
-    const ctaImages = [
-        "/images/cta/gallery15.jpg",
-        "/images/cta/gallery27.jpg",
-        "/images/cta/gallery4.jpg",
-        "/images/cta/gallery9.jpg"
-    ];
-    const [ctaImageIdx, setCtaImageIdx] = useState(0);
-
     useEffect(() => {
         if (reducedMotion) return undefined;
         const timer = setInterval(() => {
             setCurrentImageIdx((prev) => (prev + 1) % carouselImages.length);
-            setCtaImageIdx((prev) => (prev + 1) % ctaImages.length);
         }, 6000); // 6 seconds per slide
 
         return () => {
@@ -101,11 +92,11 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
     };
 
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav lightOnScroll>
+        <SLFAWebsiteLayout user={auth.user} darkNav lightOnScroll coastal>
             <Head title="Sri Lankan Friendship Association of South India" />
 
             {/* Hero */}
-            <section onPointerMove={moveOcean} className="relative min-h-[100svh] overflow-hidden flex items-center bg-[#0d5079] pt-28 pb-24 sm:pt-32 sm:pb-28">
+            <section onPointerMove={moveOcean} className="relative min-h-[85svh] overflow-hidden flex items-center bg-[#0d5079] pt-28 pb-20 sm:pt-32 sm:pb-24">
                 <div ref={oceanRef} className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/hero-ocean-bg-slfa.jpg)' }} aria-hidden="true" />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#073a60]/45 via-[#0b4f79]/50 to-[#dcecf2]/55" aria-hidden="true" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#063650]/30 via-transparent to-[#073b5a]/20" aria-hidden="true" />
@@ -129,7 +120,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             className="relative w-full overflow-visible flex justify-center items-center drop-shadow-[0_15px_35px_rgba(0,0,0,0.8)] z-10"
                             aria-hidden="true"
                         >
-                            <div className="w-full max-w-[840px]">
+                            <div className="w-full max-w-[720px]">
                                 <CanvasFlag src="/images/slfa-bg.png" animate={!reducedMotion} />
                             </div>
                         </motion.div>
@@ -155,7 +146,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             </div>
                         </motion.div>
 
-                        <motion.div variants={fadeUp} className="relative z-20 mt-9 w-full max-w-3xl border-t border-white/70 bg-white/90 px-5 py-5 text-left shadow-[0_18px_50px_-28px_rgba(0,40,65,0.5)] backdrop-blur-md sm:mt-11 sm:px-7">
+                        <motion.div variants={fadeUp} className="relative z-20 mt-9 w-full max-w-3xl border-t border-white/70 bg-white/85 px-5 py-4 text-left shadow-[0_18px_50px_-28px_rgba(0,40,65,0.5)] backdrop-blur-md sm:mt-11 sm:px-7">
                             <Link href={featuredEvent ? route('events.show', featuredEvent.public_id) : route('happenings')} className="group grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
                                 <div className="min-w-0">
                                     <span className="font-lato text-[11px] font-bold uppercase tracking-[0.22em] text-[#0b5a82]">Upcoming event</span>
@@ -172,206 +163,109 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                 </div>
 
                 {/* Seamless blend into the next section */}
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f7f8f5] to-transparent pointer-events-none z-20"></div>
+                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#f7f8f5] to-transparent pointer-events-none z-20"></div>
             </section>
 
 
 
-            {/* About / Story Section */}
-            <section className="relative py-20 md:py-28 overflow-hidden bg-[#f7f8f5]">
-                {/* Background Carousel */}
-                <div className="absolute inset-0 z-0 bg-[#f7f8f5]">
-                    <AnimatePresence>
-                        <motion.img
-                            key={currentImageIdx}
-                            src={carouselImages[currentImageIdx]}
-                            initial={{ opacity: 0, scale: 1.05 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 1.5, ease: "easeInOut" }}
-                            className="absolute inset-y-0 right-0 w-full md:w-[60%] h-full object-cover opacity-70"
-                            alt=""
-                        />
-                    </AnimatePresence>
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#f7f8f5] via-[#f7f8f5]/95 to-[#f7f8f5]/30"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#f7f8f5]/85 via-transparent to-[#f7f8f5]/30"></div>
-                </div>
-
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1 }}
-                        className="max-w-xl"
-                    >
-                        <span className="uppercase tracking-[0.24em] text-xs font-bold text-[#0c6c97] font-lato block mb-4">Who we are · Est. 2011</span>
-                        <h2 className="text-4xl sm:text-5xl font-abhaya font-extrabold text-[#102e43] mb-5 leading-tight">
-                            A community built on <span className="italic font-light text-[#0c6c97]">connection</span>
-                        </h2>
-                        <div className="space-y-4 text-lg md:text-xl text-[#355166] font-abhaya font-normal leading-relaxed mb-7">
-                            <p>
-                                SLFA brings together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.
-                            </p>
-                            <p>
-                                Our activities include community events, medical camps, and opportunities to build professional relationships.
-                            </p>
-                        </div>
-                        <Link href={route('about')} className="inline-flex items-center text-[#0c638c] font-bold uppercase tracking-wider text-xs sm:text-sm hover:text-[#073b5a] transition-colors group">
-                            Meet the association
-                            <ArrowRight className="ml-3 w-4 h-4 transform group-hover:translate-x-2 transition-transform" />
-                        </Link>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Three ways members connect */}
-            <section className="py-12 md:py-16 bg-white relative z-20 border-t border-[#d8e5eb]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                        {[
-                            {
-                                num: "I",
-                                title: "Community",
-                                desc: "Meet people who share a connection with Sri Lanka and South India."
-                            },
-                            {
-                                num: "II",
-                                title: "Gatherings",
-                                desc: "Join family get-togethers, cultural celebrations, and association events."
-                            },
-                            {
-                                num: "III",
-                                title: "Network",
-                                desc: "Build professional relationships across the community."
-                            }
-                        ].map((item, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-50px" }}
-                                transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
-                                className="text-left border-t border-[#92b3c4] pt-5"
-                            >
-                                <div className="text-[#0c6c97] font-abhaya italic font-light text-3xl mb-2 leading-none">
-                                    {item.num}.
+            <div className="bg-[#f7f8f5] text-[#102e43]">
+                <section className="relative overflow-hidden pt-12 pb-8 md:pt-16 md:pb-12" aria-labelledby="community-heading">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                            <div className="relative z-10">
+                                <span className="font-lato text-xs font-bold uppercase tracking-[0.24em] text-[#0c6c97]">Who we are · Est. 2011</span>
+                                <h2 id="community-heading" className="mt-4 font-abhaya text-4xl font-bold leading-tight sm:text-5xl">A community built on <em className="font-light text-[#0c6c97]">connection</em></h2>
+                                <div className="mt-5 space-y-4 font-lato text-base leading-relaxed text-[#466173] sm:text-lg">
+                                    <p>SLFA brings together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.</p>
+                                    <p>From celebrating our heritage to helping one another, there is a place here to belong, contribute, and grow.</p>
                                 </div>
-                                <h3 className="text-2xl font-abhaya font-bold text-[#102e43] mb-2">{item.title}</h3>
-                                <p className="text-[#506879] leading-relaxed font-abhaya text-lg font-light">
-                                    {item.desc}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Community updates */}
-            <section className="relative overflow-hidden bg-[#eaf3f6] py-20 text-[#102e43] md:py-28">
-                <PhotoBackdrop images={happeningsImages} className="opacity-[0.12]" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#eaf3f6]/95 via-[#eaf3f6]/90 to-[#eaf3f6]/70" aria-hidden="true" />
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <span className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#0c6c97]">From the community</span>
-                    <div className="mt-4 flex flex-col justify-between gap-7 md:flex-row md:items-end">
-                        <h2 className="font-abhaya text-4xl font-bold leading-tight sm:text-6xl">Community <em className="font-light text-[#0c6c97]">happenings</em></h2>
-                        <Link href={route('happenings')} className="inline-flex items-center gap-2 self-start border-b border-[#0c6c97] pb-2 text-sm font-bold text-[#0c638c] md:self-auto">All news & events <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-                    </div>
-                    <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-20">
-                        <div>
-                            <h3 className="border-b border-[#a8c5d2] pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#0c6c97]">Latest news</h3>
-                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group flex gap-5 border-b border-[#c6dbe3] py-5">
-                                <time className="w-20 shrink-0 font-lato text-xs text-[#0c638c]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
-                                <span className="font-abhaya text-xl font-bold leading-tight text-[#102e43] group-hover:text-[#0c638c]">{post.title}</span>
-                            </Link>) : <p className="py-6 text-[#506879]">News will appear here as it is published.</p>}
+                                <Link href={route('about')} className="mt-7 inline-flex items-center gap-2 border-b border-[#0c638c]/40 pb-2 text-sm font-bold text-[#0c638c] hover:text-[#102e43]">Meet the association <ArrowRight size={16} /></Link>
+                            </div>
+                            <div className="relative aspect-[4/3] overflow-hidden lg:aspect-[5/4]" aria-hidden="true">
+                                <AnimatePresence>
+                                    <motion.img key={currentImageIdx} src={carouselImages[currentImageIdx]} alt="" loading="lazy"
+                                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 1.5 }}
+                                        className="absolute inset-0 h-full w-full object-cover" />
+                                </AnimatePresence>
+                                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#f7f8f5_100%)]" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#f7f8f5] via-transparent to-transparent" />
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="border-b border-[#a8c5d2] pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#0c6c97]">Upcoming events</h3>
-                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.public_id)} className="group flex gap-5 border-b border-[#c6dbe3] py-5">
-                                <time className="w-20 shrink-0 font-lato text-xs text-[#0c638c]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
-                                <span className="font-abhaya text-xl font-bold leading-tight text-[#102e43] group-hover:text-[#0c638c]">{event.title}</span>
-                            </Link>) : <p className="py-6 text-[#506879]">The next gathering is being planned.</p>}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className="bg-[#f5f1e9] py-20 md:py-28 border-t border-[#D4AF37]/20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-                    <div>
-                        <span className="uppercase tracking-[0.3em] text-xs font-bold text-[#9A7714] font-lato">Get involved</span>
-                        <h2 className="mt-4 text-4xl sm:text-5xl font-abhaya font-bold text-gray-950 leading-tight">Find your place in the community</h2>
-                        <p className="mt-5 text-lg text-gray-700 font-lato leading-relaxed">Come to a gathering, learn about our work, or apply to become a member. There is a clear next step wherever you start.</p>
-                        <div className="mt-8 flex flex-wrap gap-3">
-                            <Link href={route('happenings')} className="inline-flex items-center gap-2 border-b border-[#800000] pb-2 text-sm font-bold text-[#800000]">News & events <ArrowRight className="h-4 w-4" /></Link>
-                            <Link href={`${route('happenings')}#news`} className="inline-flex items-center gap-2 border-b border-gray-500 pb-2 text-sm font-bold text-gray-900">See our activities <ArrowRight className="h-4 w-4" /></Link>
-                        </div>
-                    </div>
-                    <div className="border-t border-[#b7a676] pt-6">
-                        <h3 className="text-2xl font-abhaya font-bold text-gray-950">Membership at a glance</h3>
-                        <ol className="mt-6 space-y-6">
+                        <div className="mt-10 grid gap-8 border-t border-[#bfd1d9] pt-8 md:grid-cols-3 md:gap-12">
                             {[
-                                ['Check eligibility', 'Adults in South India with a connection to Sri Lanka can apply.'],
-                                ['Apply online', 'Create an account and submit your membership details for review.'],
-                                ['Stay connected', 'Sign in to see your application status and update your profile.'],
-                            ].map(([title, description], index) => (
-                                <li key={title} className="flex gap-4 border-b border-[#d8d0c3] pb-5">
-                                    <span className="w-8 shrink-0 text-sm font-bold text-[#9a7714]">0{index + 1}</span>
-                                    <div><h4 className="font-bold text-gray-950">{title}</h4><p className="mt-1 text-sm text-gray-700 leading-relaxed">{description}</p></div>
-                                </li>
-                            ))}
-                        </ol>
-                        <Link href={route('membership')} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#800000] hover:underline">Read membership details <ArrowRight className="h-4 w-4" /></Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Downloads Call to Action */}
-            <section className="bg-[#f7f8f5] py-20 md:py-28 text-[#102e43] overflow-hidden relative flex flex-col items-center justify-center">
-                {/* Background Carousel */}
-                <div className="absolute inset-0 z-0 bg-[#f7f8f5]">
-                    <AnimatePresence>
-                        <motion.img
-                            key={ctaImageIdx}
-                            src={ctaImages[ctaImageIdx]}
-                            initial={{ opacity: 0, scale: 1.05 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 1.5, ease: "easeInOut" }}
-                            className="absolute inset-0 w-full h-full object-cover opacity-20"
-                            alt=""
-                        />
-                    </AnimatePresence>
-                    <div className="absolute inset-0 bg-[#f7f8f5]/70"></div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#f7f8f5] via-transparent to-[#f7f8f5]"></div>
-                </div>
-
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 w-full">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1 }}
-                        className="flex flex-col items-center"
-                    >
-                        <h2 className="text-5xl md:text-6xl font-abhaya font-extrabold mb-8 leading-tight">
-                            Be a part of <br /><span className="italic font-light text-[#0c6c97]">SLFA</span>
-                        </h2>
-                        <p className="text-xl md:text-2xl text-[#466173] font-abhaya font-light mb-12 leading-relaxed max-w-2xl mx-auto">
-                            Whether you are from Sri Lanka or trace your ancestral roots to the island, we invite you to join our community. Connect, celebrate, and preserve our rich heritage together in South India.
-                        </p>
-                        
-                        <div className="flex flex-col items-center gap-8 w-full">
-                            {/* Primary Online Action */}
-                            <Link href={route('register')} className="group bg-[#0d5a83] text-white hover:bg-[#083b5b] px-12 py-5 rounded-full font-lato text-sm uppercase tracking-widest font-bold transition-all duration-300 flex items-center justify-center hover:-translate-y-1">
-                                Apply Online Now
-                            </Link>
-
-                            <Link href={route('membership')} className="text-sm font-bold text-[#0c638c] hover:text-[#083b5b] transition-colors">Learn how membership works</Link>
+                                ['Community', 'Meet people who share a connection with Sri Lanka and South India.'],
+                                ['Gatherings', 'Join family get-togethers, cultural celebrations, and association events.'],
+                                ['Network', 'Build friendships and professional relationships across the community.'],
+                            ].map(([title, description], index) => <div key={title}>
+                                <span className="font-lato text-xs tracking-widest text-[#0c6c97]">0{index + 1}</span>
+                                <h3 className="mt-2 font-abhaya text-2xl font-bold">{title}</h3>
+                                <p className="mt-2 font-lato text-sm leading-relaxed text-[#466173]">{description}</p>
+                            </div>)}
                         </div>
-                    </motion.div>
-                </div>
-            </section>
+                    </div>
+                </section>
+
+                <section className="relative py-12 md:py-16" aria-labelledby="happenings-heading">
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_right,rgba(201,227,237,0.45),transparent_70%)]" aria-hidden="true" />
+                    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+                            <div><span className="font-lato text-xs font-bold uppercase tracking-[0.24em] text-[#0c6c97]">Life at SLFA</span>
+                                <h2 id="happenings-heading" className="mt-4 font-abhaya text-4xl font-bold leading-tight sm:text-5xl">Together, <em className="font-light text-[#0c6c97]">more happens</em></h2>
+                            </div>
+                            <Link href={route('happenings')} className="inline-flex items-center gap-2 self-start border-b border-[#0c638c]/40 pb-2 text-sm font-bold text-[#0c638c] sm:self-auto">All news & events <ArrowRight size={16} /></Link>
+                        </div>
+                        <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-16">
+                            <article className="border-t border-[#9ab9c9] pt-6">
+                                <span className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#0c6c97]">{featuredEvent ? 'Our next gathering' : 'Come together'}</span>
+                                {featuredEvent?.cover_image_path && <img src={coverImageUrl(featuredEvent.cover_image_path)} alt="" loading="lazy" className="mt-5 max-h-72 w-full object-contain object-left" />}
+                                <h3 className="mt-5 font-abhaya text-3xl font-bold leading-tight sm:text-4xl">{featuredEvent?.title || 'Your next connection starts here'}</h3>
+                                {featuredEvent ? <>
+                                    <time dateTime={featuredEvent.start_at} className="mt-6 block font-lato text-lg text-[#0c638c]">{formatDate(featuredEvent.start_at)}</time>
+                                    {featuredEvent.location && <p className="mt-3 flex items-start gap-2 font-lato text-base leading-relaxed text-[#466173]"><MapPin className="mt-1 h-4 w-4 shrink-0" />{featuredEvent.location}</p>}
+                                </> : <p className="mt-5 font-lato leading-relaxed text-[#466173]">Explore our community gatherings, cultural celebrations, and activities. New dates will appear here when announced.</p>}
+                                <Link href={featuredEvent ? route('events.show', featuredEvent.public_id) : route('happenings')} className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#0d5a83] px-6 py-3 font-lato text-sm font-bold text-white transition-colors hover:bg-[#083b5b]">{featuredEvent ? 'Explore the event' : 'Explore our activities'} <ArrowRight size={16} /></Link>
+                            </article>
+                            <div className="border-t border-[#9ab9c9] pt-6">
+                                <h3 className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#0c6c97]">Stories from the community</h3>
+                                {latestNews?.length ? latestNews.slice(0, 2).map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group mt-6 grid grid-cols-[96px_minmax(0,1fr)] items-center gap-5 border-b border-[#bfd1d9] pb-6 sm:grid-cols-[144px_minmax(0,1fr)]">
+                                    {post.cover_image_path ? <img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" /> : <div className="flex aspect-[4/3] items-center justify-center border-y border-[#bfd1d9] font-abhaya text-2xl text-[#0c6c97]" aria-hidden="true">SLFA</div>}
+                                    <div><time dateTime={post.published_at} className="font-lato text-xs text-[#466173]">{formatDate(post.published_at)}</time><h4 className="mt-2 font-abhaya text-xl font-bold leading-tight group-hover:text-[#0c638c] sm:text-2xl">{post.title}</h4><span className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-[#0c638c]">Read story <ArrowRight size={14} /></span></div>
+                                </Link>) : <p className="mt-6 font-lato text-[#466173]">News will appear here as it is published.</p>}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="pt-4 pb-16 md:pt-8 md:pb-20" aria-labelledby="membership-heading">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="grid gap-10 border-t border-[#bfd1d9] pt-12 lg:grid-cols-2 lg:gap-16">
+                            <div>
+                                <span className="font-lato text-xs font-bold uppercase tracking-[0.24em] text-[#0c6c97]">A place to belong</span>
+                                <h2 id="membership-heading" className="mt-4 font-abhaya text-4xl font-bold leading-tight sm:text-5xl">Be a part of <em className="font-light text-[#0c6c97]">SLFA</em></h2>
+                                <p className="mt-5 font-lato text-base leading-relaxed text-[#466173] sm:text-lg">Connect with fellow members, celebrate our heritage, and take part in community life across South India.</p>
+                                <img src="/images/cta/gallery27.jpg" alt="Members of the SLFA community gathered together" loading="lazy" className="mt-8 aspect-[16/9] w-full object-cover" />
+                            </div>
+                            <div className="lg:pt-9">
+                                <h3 className="font-abhaya text-2xl font-bold">Your membership journey</h3>
+                                <ol className="mt-6">
+                                    {[
+                                        ['Check eligibility', 'Adults in South India with a connection to Sri Lanka can apply.'],
+                                        ['Apply online', 'Create an account and submit your membership details for review.'],
+                                        ['Stay connected', 'Follow your application status and manage your member profile online.'],
+                                    ].map(([title, description], index) => <li key={title} className="flex gap-5 border-b border-[#bfd1d9] py-5 first:pt-0">
+                                        <span className="font-lato text-sm text-[#0c6c97]">0{index + 1}</span>
+                                        <div><h4 className="font-lato font-bold">{title}</h4><p className="mt-2 font-lato text-sm leading-relaxed text-[#466173]">{description}</p></div>
+                                    </li>)}
+                                </ol>
+                                <div className="mt-8 flex flex-wrap items-center gap-5">
+                                    <Link href={auth.user ? route('dashboard') : route('register')} className="inline-flex items-center gap-3 rounded-full bg-[#0d5a83] px-7 py-3.5 font-lato text-sm font-bold text-white transition-colors hover:bg-[#083b5b]">{auth.user ? 'Your membership' : 'Apply for membership'} <ArrowRight size={16} /></Link>
+                                    <Link href={route('membership')} className="border-b border-[#0c638c]/40 pb-1 text-sm font-bold text-[#0c638c]">Membership details</Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </SLFAWebsiteLayout>
     );
 }
