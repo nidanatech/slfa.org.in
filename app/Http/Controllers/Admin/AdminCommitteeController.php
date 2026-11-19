@@ -12,7 +12,7 @@ class AdminCommitteeController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Committee/Index', [
-            'leadershipSetup' => CommitteeMember::where('type', 'Leadership')->orderBy('display_order')->get(),
+            'leadershipSetup' => CommitteeMember::whereIn('type', ['Leadership', 'Management'])->orderBy('display_order')->get(),
             'executiveCommittee' => CommitteeMember::where('type', 'Executive')->orderBy('display_order')->get(),
         ]);
     }

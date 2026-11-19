@@ -30,7 +30,7 @@ Route::get('/', function () {
     return Inertia::render('SLFA/Home', [
         'latestNews' => \App\Models\NewsPost::published()->take(3)->get(),
         'upcomingEvents' => \App\Models\Event::upcoming()->take(3)->get(),
-        'leadershipSetup' => \App\Models\CommitteeMember::where('type', 'Leadership')
+        'leadershipSetup' => \App\Models\CommitteeMember::whereIn('type', ['Leadership', 'Management'])
             ->where('show_in_website', true)
             ->orderBy('display_order')->get(),
         'executiveCommittee' => \App\Models\CommitteeMember::where('type', 'Executive')
@@ -41,7 +41,7 @@ Route::get('/', function () {
 
 Route::get('/about', function () {
     return Inertia::render('SLFA/About', [
-        'leadershipSetup' => \App\Models\CommitteeMember::where('type', 'Leadership')
+        'leadershipSetup' => \App\Models\CommitteeMember::whereIn('type', ['Leadership', 'Management'])
             ->where('show_in_website', true)
             ->orderBy('display_order')->get(),
         'executiveCommittee' => \App\Models\CommitteeMember::where('type', 'Executive')
