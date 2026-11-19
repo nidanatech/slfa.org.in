@@ -10,6 +10,9 @@ export default function Create({ auth }) {
         body: '',
         published_at: '',
         cover_image: null,
+        meta_title: '',
+        meta_description: '',
+        og_image: null,
         gallery_images: [],
     });
 
@@ -91,6 +94,8 @@ export default function Create({ auth }) {
                         ></textarea>
                         {errors.body && <p className="text-sm text-red-600 mt-1">{errors.body}</p>}
                     </div>
+
+                    <div className="space-y-4 border-t pt-5"><h2 className="font-bold">Search and sharing</h2><p className="text-xs text-gray-600">Leave blank to use the story title, excerpt, and cover image.</p><label className="block text-sm">Meta title<input className="mt-1 w-full rounded-md border-gray-300" maxLength={255} value={data.meta_title} onChange={e => setData('meta_title', e.target.value)} /></label><label className="block text-sm">Meta description<textarea className="mt-1 w-full rounded-md border-gray-300" maxLength={320} rows={3} value={data.meta_description} onChange={e => setData('meta_description', e.target.value)} /></label><label className="block text-sm">Social share image<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" className="mt-1 block w-full" onChange={e => setData('og_image', e.target.files[0] || null)} />{errors.og_image && <span className="text-red-700">{errors.og_image}</span>}</label></div>
 
                     <div className="flex justify-end pt-4 border-t border-gray-100">
                         <button 

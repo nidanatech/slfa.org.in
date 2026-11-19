@@ -25,7 +25,7 @@ class GalaEventAndNewsGalleryTest extends TestCase
         $this->assertSame(5, $gala->sponsors()->count());
         $this->assertFalse($gala->rsvp_enabled);
 
-        $this->get(route('events.show', $gala))->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->get(route('events.show', $gala->public_id))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('SLFA/EventDetail')
             ->has('event.programme_items', 11)
             ->has('event.sponsors', 5));
@@ -72,7 +72,7 @@ class GalaEventAndNewsGalleryTest extends TestCase
         ])->assertRedirect();
 
         $this->assertSame(2, $news->photos()->count());
-        $this->get(route('news.show', $news))->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->get(route('news.show', $news->public_id))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('SLFA/NewsDetail')
             ->has('post.photos', 2));
 

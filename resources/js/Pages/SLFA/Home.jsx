@@ -130,7 +130,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         </motion.div>
 
                         <motion.div variants={fadeUp} className="relative z-20 mt-9 w-full max-w-3xl border-t border-[#D4AF37]/45 pt-5 text-left sm:mt-11">
-                            <Link href={featuredEvent ? route('events.show', featuredEvent.id) : route('happenings')} className="group grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
+                            <Link href={featuredEvent ? route('events.show', featuredEvent.public_id) : route('happenings')} className="group grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
                                 <div className="min-w-0">
                                     <span className="font-lato text-[11px] font-bold uppercase tracking-[0.22em] text-[#D4AF37]">Upcoming event</span>
                                     <h2 className="mt-2 font-abhaya text-2xl font-bold leading-tight text-white transition-colors group-hover:text-[#F0D36A] sm:text-3xl">{featuredEvent ? featuredEvent.title : 'Find your next SLFA gathering'}</h2>
@@ -256,14 +256,14 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                     <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-20">
                         <div>
                             <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Latest news</h3>
-                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.id)} className="group flex gap-5 border-b border-white/20 py-5">
+                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.public_id)} className="group flex gap-5 border-b border-white/20 py-5">
                                 <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
                                 <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{post.title}</span>
                             </Link>) : <p className="py-6 text-gray-300">News will appear here as it is published.</p>}
                         </div>
                         <div>
                             <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Upcoming events</h3>
-                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.id)} className="group flex gap-5 border-b border-white/20 py-5">
+                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.public_id)} className="group flex gap-5 border-b border-white/20 py-5">
                                 <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
                                 <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{event.title}</span>
                             </Link>) : <p className="py-6 text-gray-300">The next gathering is being planned.</p>}

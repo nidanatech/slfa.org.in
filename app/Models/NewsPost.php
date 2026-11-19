@@ -9,6 +9,7 @@ class NewsPost extends Model
     protected $fillable = [
         'title', 'body', 'category',
         'cover_image_path', 'published_at', 'author_id',
+        'public_id', 'meta_title', 'meta_description', 'og_image_path',
     ];
 
     protected function casts(): array
@@ -16,6 +17,13 @@ class NewsPost extends Model
         return [
             'published_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $post) {
+            $post->public_id ??= (string) \Illuminate\Support\Str::ulid();
+        });
     }
 
     public function author()

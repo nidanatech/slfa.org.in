@@ -39,11 +39,12 @@ class DashboardController extends Controller
             $feed->push([
                 'type' => 'news',
                 'id' => $news->id,
+                'public_id' => $news->public_id,
                 'title' => $news->title,
                 'excerpt' => \Illuminate\Support\Str::limit(strip_tags($news->body), 180),
                 'author' => 'SLFA Executive Committee',
                 'date' => $news->published_at,
-                'image_url' => $news->cover_image_path ? asset('storage/' . $news->cover_image_path) : null,
+                'image_url' => $news->cover_image_path ? (str_starts_with($news->cover_image_path, '/') ? asset(ltrim($news->cover_image_path, '/')) : asset('storage/'.$news->cover_image_path)) : null,
             ]);
         }
 
@@ -51,12 +52,13 @@ class DashboardController extends Controller
             $feed->push([
                 'type' => 'event',
                 'id' => $event->id,
+                'public_id' => $event->public_id,
                 'title' => $event->title,
                 'excerpt' => $event->description,
                 'author' => 'SLFA Events Team',
                 'date' => $event->start_at,
                 'location' => $event->location,
-                'image_url' => $event->cover_image_path ? asset('storage/' . $event->cover_image_path) : null,
+                'image_url' => $event->cover_image_path ? (str_starts_with($event->cover_image_path, '/') ? asset(ltrim($event->cover_image_path, '/')) : asset('storage/'.$event->cover_image_path)) : null,
             ]);
         }
 

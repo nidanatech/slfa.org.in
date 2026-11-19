@@ -12,6 +12,8 @@ class Event extends Model
         'cover_image_path', 'rsvp_enabled',
         'venue_name', 'venue_address', 'timezone', 'dress_code',
         'adult_price', 'child_price', 'child_age_range', 'contact_details',
+        'public_id', 'admission_enabled', 'admission_closes_at',
+        'meta_title', 'meta_description', 'og_image_path',
     ];
 
     protected function casts(): array
@@ -20,7 +22,27 @@ class Event extends Model
             'start_at' => 'datetime',
             'end_at' => 'datetime',
             'rsvp_enabled' => 'boolean',
+            'admission_enabled' => 'boolean',
+            'admission_closes_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $event) {
+            $event->public_id ??= (string) \Illuminate\Support\Str::ulid();
+        });
+    }
+
+    public function admissions()
+    {
+        return $this->hasMany(EventAdmission::class);
+    }
+
+    public function admissionsOpen(): bool
+    {
+        return $this->admission_enabled && $this->start_at?->isFuture()
+            && (! $this->admission_closes_at || $this->admission_closes_at->isFuture());
     }
 
     public function rsvps()

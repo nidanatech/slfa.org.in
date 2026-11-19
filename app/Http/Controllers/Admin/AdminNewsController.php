@@ -30,7 +30,10 @@ class AdminNewsController extends Controller
             'body' => 'required|string',
             'category' => 'nullable|string',
             'published_at' => 'nullable|date',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
             'cover_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
+            'og_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
             'gallery_images' => 'nullable|array|max:12',
             'gallery_images.*' => 'image|mimes:jpeg,png,webp,avif|max:5120',
         ]);
@@ -38,7 +41,11 @@ class AdminNewsController extends Controller
         if ($request->hasFile('cover_image')) {
             $validated['cover_image_path'] = $request->file('cover_image')->store('news-covers', 'public');
         }
+        if ($request->hasFile('og_image')) {
+            $validated['og_image_path'] = $request->file('og_image')->store('news-social', 'public');
+        }
         unset($validated['cover_image']);
+        unset($validated['og_image']);
         unset($validated['gallery_images']);
         $validated['author_id'] = $request->user()->id;
 
@@ -60,7 +67,10 @@ class AdminNewsController extends Controller
             'body' => 'required|string',
             'category' => 'nullable|string',
             'published_at' => 'nullable|date',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
             'cover_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
+            'og_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
             'gallery_images' => 'nullable|array|max:12',
             'gallery_images.*' => 'image|mimes:jpeg,png,webp,avif|max:5120',
         ]);
@@ -72,7 +82,11 @@ class AdminNewsController extends Controller
                 Storage::disk('public')->delete($oldPath);
             }
         }
+        if ($request->hasFile('og_image')) {
+            $validated['og_image_path'] = $request->file('og_image')->store('news-social', 'public');
+        }
         unset($validated['cover_image']);
+        unset($validated['og_image']);
         unset($validated['gallery_images']);
         $news->update($validated);
         $this->addPhotos($request, $news);

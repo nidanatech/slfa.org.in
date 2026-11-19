@@ -60,18 +60,23 @@ Route::get('/happenings', function () {
 
 Route::get('/news', fn () => redirect()->to(route('happenings').'#news', 301))->name('news');
 
-Route::get('/news/{news}', function (\App\Models\NewsPost $news) {
+Route::get('/news/{legacyNews}', function (int $legacyNews) {
+    $post = \App\Models\NewsPost::findOrFail($legacyNews);
+    return redirect()->route('news.show', $post->public_id, 301);
+})->whereNumber('legacyNews');
+
+Route::get('/news/{news:public_id}', function (\App\Models\NewsPost $news) {
     abort_unless($news->published_at && $news->published_at->lte(now()), 404);
     return Inertia::render('SLFA/NewsDetail', [
         'post' => $news->load('photos'),
     ]);
-})->name('news.show');
+})->whereUlid('news')->name('news.show');
 
 Route::get('/sitemap.xml', function () {
     $urls = collect(['home', 'about', 'happenings', 'contact', 'membership'])
         ->map(fn ($name) => route($name))
-        ->concat(\App\Models\NewsPost::published()->pluck('id')->map(fn ($id) => route('news.show', $id)))
-        ->concat(\App\Models\Event::pluck('id')->map(fn ($id) => route('events.show', $id)));
+        ->concat(\App\Models\NewsPost::published()->pluck('public_id')->map(fn ($id) => route('news.show', $id)))
+        ->concat(\App\Models\Event::pluck('public_id')->map(fn ($id) => route('events.show', $id)));
 
     return response()->view('sitemap', ['urls' => $urls])->header('Content-Type', 'application/xml');
 })->name('sitemap');
@@ -88,7 +93,12 @@ Route::get('/gallery', fn () => redirect()->to(route('happenings').'#news', 301)
 Route::get('/gallery/{album}', [GalleryController::class, 'show'])->name('gallery.show');
 
 Route::get('/events', fn () => redirect()->to(route('happenings').'#events', 301))->name('events');
-Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+Route::get('/events/{legacyEvent}', function (int $legacyEvent) {
+    $event = \App\Models\Event::findOrFail($legacyEvent);
+    return redirect()->route('events.show', $event->public_id, 301);
+})->whereNumber('legacyEvent');
+Route::get('/events/{event:public_id}', [EventController::class, 'show'])->whereUlid('event')->name('events.show');
+Route::post('/events/{event:public_id}/admission', [EventController::class, 'admission'])->whereUlid('event')->middleware('throttle:5,1')->name('events.admission');
 
 // Membership Application (public)
 Route::redirect('/join', '/register')->name('join');
@@ -116,7 +126,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // RSVP for events
-    Route::post('/events/{event}/rsvp', [EventController::class, 'rsvp'])->name('events.rsvp');
+    Route::post('/events/{event:public_id}/rsvp', [EventController::class, 'rsvp'])->whereUlid('event')->name('events.rsvp');
 
     // Documents library
     Route::middleware('can:access-directory')->group(function () {
@@ -163,10 +173,12 @@ Route::middleware(['auth', 'can:access-admin'])->prefix('admin')->name('admin.')
     // Events
     Route::resource('events', AdminEventController::class)->except(['show']);
     Route::get('/events/{event}/attendees', [AdminEventController::class, 'attendees'])->name('events.attendees');
+    Route::patch('/events/{event}/admissions/{admission}', [AdminEventController::class, 'updateAdmission'])->name('events.admissions.update');
 
     // Gallery
     Route::resource('albums', AdminGalleryController::class);
     Route::post('/albums/{album}/upload', [AdminGalleryController::class, 'uploadMedia'])->name('albums.upload');
+    Route::patch('/media/{media}', [AdminGalleryController::class, 'updateMedia'])->name('media.update');
     Route::delete('/media/{media}', [AdminGalleryController::class, 'destroyMedia'])->name('media.destroy');
 
     // Committee

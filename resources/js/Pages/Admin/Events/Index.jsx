@@ -27,7 +27,7 @@ export default function Index({ auth, events }) {
                         <Calendar className="w-6 h-6 mr-2 text-slfa-maroon" />
                         Events
                     </h1>
-                    <p className="text-sm text-gray-500 mt-1">Manage events and RSVPs.</p>
+                    <p className="text-sm text-gray-500 mt-1">Manage events, admissions, and RSVPs.</p>
                 </div>
                 <div>
                     <Link href={route('admin.events.create')} className="bg-slfa-maroon text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-slfa-navy transition flex items-center">
@@ -44,7 +44,7 @@ export default function Index({ auth, events }) {
                                 <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Title</th>
                                 <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Date & Time</th>
                                 <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Location</th>
-                                <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">RSVPs</th>
+                                <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Requests / RSVPs</th>
                                 <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                             </tr>
                         </thead>
@@ -66,7 +66,7 @@ export default function Index({ auth, events }) {
                                         <td className="py-4 px-6 text-center">
                                             <Link href={route('admin.events.attendees', event.id)} className="inline-flex items-center text-slfa-primary hover:underline font-bold">
                                                 <Users className="w-4 h-4 mr-1" />
-                                                {event.rsvps_count || 0}
+                                                {event.admissions_count || 0} / {event.rsvps_count || 0}
                                             </Link>
                                         </td>
                                         <td className="py-4 px-6 text-right space-x-3">

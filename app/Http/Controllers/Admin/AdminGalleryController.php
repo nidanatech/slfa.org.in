@@ -9,6 +9,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AdminGalleryController extends Controller
 {
@@ -40,13 +41,13 @@ class AdminGalleryController extends Controller
 
     public function show(GalleryAlbum $album)
     {
-        $album->load('media', 'event');
+        $album->load('media', 'event.programmeItems');
         return Inertia::render('Admin/Gallery/Show', ['album' => $album, 'events' => Event::orderByDesc('start_at')->get(['id', 'title'])]);
     }
 
     public function edit(GalleryAlbum $album)
     {
-        $album->load('media', 'event');
+        $album->load('media', 'event.programmeItems');
         return Inertia::render('Admin/Gallery/Show', ['album' => $album, 'events' => Event::orderByDesc('start_at')->get(['id', 'title'])]);
     }
 
@@ -59,6 +60,9 @@ class AdminGalleryController extends Controller
             'date' => 'nullable|date',
         ]);
 
+        if ((int) $album->event_id !== (int) $validated['event_id']) {
+            $album->media()->update(['programme_item_id' => null]);
+        }
         $album->update($validated);
 
         return redirect()->route('admin.albums.index')->with('success', 'Album updated.');
@@ -73,7 +77,9 @@ class AdminGalleryController extends Controller
     public function uploadMedia(Request $request, GalleryAlbum $album)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4|max:20480',
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,webp,avif,mp4|max:20480',
+            'programme_item_id' => ['nullable', Rule::exists('event_programme_items', 'id')->where('event_id', $album->event_id)],
+            'caption' => 'nullable|string|max:255',
         ]);
 
         $path = $request->file('file')->store('gallery', 'public');
@@ -82,6 +88,8 @@ class AdminGalleryController extends Controller
         $album->media()->create([
             'path' => $path,
             'type' => $type,
+            'programme_item_id' => $request->input('programme_item_id') ?: null,
+            'caption' => $request->input('caption'),
         ]);
 
         if ($type === 'image' && !$album->cover_image_path) {
@@ -89,6 +97,17 @@ class AdminGalleryController extends Controller
         }
 
         return back()->with('success', 'Media uploaded.');
+    }
+
+    public function updateMedia(Request $request, GalleryMedia $media)
+    {
+        $validated = $request->validate([
+            'programme_item_id' => ['nullable', Rule::exists('event_programme_items', 'id')->where('event_id', $media->album->event_id)],
+            'caption' => 'nullable|string|max:255',
+        ]);
+        $media->update($validated);
+
+        return back()->with('success', 'Photo details updated.');
     }
 
     public function destroyMedia(GalleryMedia $media)

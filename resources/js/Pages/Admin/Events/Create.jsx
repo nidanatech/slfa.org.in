@@ -26,8 +26,13 @@ export default function Create({ auth, event }) {
         child_age_range: event?.child_age_range || '',
         contact_details: event?.contact_details || '',
         rsvp_enabled: event?.rsvp_enabled ?? false,
+        admission_enabled: event?.admission_enabled ?? false,
+        admission_closes_at: localDateTime(event?.admission_closes_at, zone),
+        meta_title: event?.meta_title || '',
+        meta_description: event?.meta_description || '',
+        og_image: null,
         cover_image: null,
-        programme: (event?.programme_items || []).map(item => ({ time: item.time, title: item.title, details: item.details || '' })),
+        programme: (event?.programme_items || []).map(item => ({ id: item.id, time: item.time, title: item.title, details: item.details || '' })),
         sponsors: (event?.sponsors || []).map(item => ({ name: item.name, website_url: item.website_url || '', tier: item.tier || '' })),
     });
 
@@ -73,7 +78,11 @@ export default function Create({ auth, event }) {
                     <label className="block text-sm font-medium">Child age range<input name="child_age_range" className={fieldClass} value={data.child_age_range} onChange={e => setData('child_age_range', e.target.value)} /></label>
                 </div>
                 <label className="flex items-center gap-2 text-sm font-medium"><input name="rsvp_enabled" type="checkbox" checked={Boolean(data.rsvp_enabled)} onChange={e => setData('rsvp_enabled', e.target.checked)} /> Allow member RSVPs</label>
+                <div className="border-t pt-5"><label className="flex items-center gap-2 text-sm font-medium"><input name="admission_enabled" type="checkbox" checked={Boolean(data.admission_enabled)} onChange={e => setData('admission_enabled', e.target.checked)} /> Accept online admission requests</label><p className="mt-2 text-xs text-gray-600">Requests collect contact details and party size. Payment is arranged separately.</p></div>
+                <label className="block text-sm font-medium">Admission closes (event time zone)<input name="admission_closes_at" type="datetime-local" className={fieldClass} value={data.admission_closes_at} onChange={e => setData('admission_closes_at', e.target.value)} />{errors.admission_closes_at && <span className="text-red-700">{errors.admission_closes_at}</span>}</label>
             </section>
+
+            <section className="space-y-5"><h2 className="border-b pb-3 text-lg font-bold">Search and sharing</h2><p className="text-xs text-gray-600">Leave fields blank to use the event title, summary, and cover image.</p><label className="block text-sm font-medium">Meta title<input className={fieldClass} maxLength={255} value={data.meta_title} onChange={e => setData('meta_title', e.target.value)} /></label><label className="block text-sm font-medium">Meta description<textarea className={fieldClass} maxLength={320} rows={3} value={data.meta_description} onChange={e => setData('meta_description', e.target.value)} /></label><label className="block text-sm font-medium">Social share image<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" className={fieldClass} onChange={e => setData('og_image', e.target.files[0] || null)} />{errors.og_image && <span className="text-red-700">{errors.og_image}</span>}</label></section>
 
             <section><div className="flex flex-wrap items-center justify-between gap-3 border-b pb-3"><h2 className="text-lg font-bold">Programme</h2><button type="button" onClick={() => setData('programme', [...data.programme, { time: '', title: '', details: '' }])} className="inline-flex items-center gap-1 text-sm font-bold text-slfa-maroon"><Plus size={16} /> Add item</button></div><p className="mt-2 text-xs text-gray-500">Times use the event’s time zone. Entries appear in this order.</p>
                 <div className="mt-4 space-y-4">{data.programme.map((item, index) => <div key={index} className="grid gap-3 border-b pb-4 md:grid-cols-[8rem_1fr_1fr_auto]"><label className="text-sm">Time<input type="time" className={fieldClass} value={item.time} onChange={e => updateRow('programme', index, 'time', e.target.value)} required /></label><label className="text-sm">Item<input className={fieldClass} value={item.title} onChange={e => updateRow('programme', index, 'title', e.target.value)} required /></label><label className="text-sm">Speaker or details<input className={fieldClass} value={item.details} onChange={e => updateRow('programme', index, 'details', e.target.value)} /></label><button type="button" aria-label={`Remove programme item ${index + 1}`} onClick={() => removeRow('programme', index)} className="self-end p-2 text-red-700"><Trash2 size={18} /></button></div>)}</div>

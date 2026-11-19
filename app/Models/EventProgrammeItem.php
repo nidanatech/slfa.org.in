@@ -12,4 +12,9 @@ class EventProgrammeItem extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function media()
+    {
+        return $this->hasMany(GalleryMedia::class, 'programme_item_id')->orderBy('sort_order')->orderBy('id');
+    }
 }
