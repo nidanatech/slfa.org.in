@@ -18,6 +18,15 @@ export default function NewsDetail({ auth, post }) {
                     <article className="border-t border-[#b7a676] pt-8">
                         <div className="prose prose-lg max-w-none whitespace-pre-wrap text-gray-700">{post.body}</div>
                     </article>
+                    {post.photos?.length > 0 && <section className="mt-12 border-t border-[#b7a676] pt-8" aria-labelledby="story-photos-heading">
+                        <h2 id="story-photos-heading" className="font-abhaya text-3xl font-bold text-gray-950">Photos from this story</h2>
+                        <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                            {post.photos.map(photo => <figure key={photo.id}>
+                                <a href={coverImageUrl(photo.path)} target="_blank" rel="noopener noreferrer" aria-label={`Open photo from ${post.title}`} className="block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#800000]"><img src={coverImageUrl(photo.path)} alt={photo.caption || `Photo from ${post.title}`} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 hover:scale-105" /></a>
+                                {photo.caption && <figcaption className="mt-2 text-sm text-gray-600">{photo.caption}</figcaption>}
+                            </figure>)}
+                        </div>
+                    </section>}
                     <Link href={route('happenings')} className="mt-8 inline-flex items-center font-bold text-[#800000] hover:underline">Explore more news</Link>
                 </div>
             </section>

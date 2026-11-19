@@ -19,7 +19,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         // Load the gallery albums for this event if any
-        $event->load('albums.media');
+        $event->load('albums.media', 'programmeItems', 'sponsors');
 
         return Inertia::render('SLFA/EventDetail', [
             'event' => $event,

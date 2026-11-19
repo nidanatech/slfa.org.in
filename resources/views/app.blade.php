@@ -10,7 +10,6 @@
                 'happenings' => ['News and Events', 'Explore SLFA community news, upcoming gatherings, and past events in South India.'],
                 'news' => ['News and activities', 'Read the latest news and community activities from the Sri Lankan Friendship Association.'],
                 'events' => ['Events', 'Explore upcoming and past Sri Lankan Friendship Association events.'],
-                'gallery' => ['Gallery', 'Browse photos from Sri Lankan Friendship Association events and activities.'],
                 'contact' => ['Contact SLFA', 'Get in touch with the Sri Lankan Friendship Association.'],
                 'join' => ['Join SLFA', 'Learn how to apply for membership with the Sri Lankan Friendship Association.'],
                 'membership' => ['Membership', 'Find out who can apply to SLFA, how applications are reviewed, and how member profiles work.'],
@@ -51,9 +50,22 @@
                     'name' => $event->title,
                     'startDate' => $event->start_at?->toIso8601String(),
                     'endDate' => $event->end_at?->toIso8601String(),
-                    'location' => $event->location,
+                    'location' => [
+                        '@type' => 'Place',
+                        'name' => $event->venue_name ?: $event->location,
+                        'address' => $event->venue_address ?: $event->location,
+                    ],
+                    'organizer' => ['@type' => 'Organization', 'name' => 'SLFA', 'url' => route('home')],
+                    'sponsor' => $event->sponsors->map(fn ($sponsor) => array_filter([
+                        '@type' => 'Organization',
+                        'name' => $sponsor->name,
+                        'url' => $sponsor->website_url,
+                    ]))->all(),
                     'url' => $canonical,
                 ];
+                if ($event->adult_price !== null) {
+                    $contentSchema['offers'] = ['@type' => 'Offer', 'price' => $event->adult_price, 'priceCurrency' => 'INR', 'url' => $canonical];
+                }
             }
         @endphp
         <meta charset="utf-8">

@@ -18,7 +18,7 @@ export default function AdminLayout({ user, children }) {
         { name: 'Admins', href: route('admin.users.index'), icon: Shield, current: url.startsWith('/admin/users') },
         { name: 'News & Updates', href: route('admin.news.index'), icon: FileText, current: url.startsWith('/admin/news') },
         { name: 'Events', href: route('admin.events.index'), icon: Calendar, current: url.startsWith('/admin/events') },
-        { name: 'Gallery', href: route('admin.albums.index'), icon: ImageIcon, current: url.startsWith('/admin/albums') },
+        { name: 'Event photos', href: route('admin.albums.index'), icon: ImageIcon, current: url.startsWith('/admin/albums') },
         { name: 'Documents', href: route('admin.documents.index'), icon: Upload, current: url.startsWith('/admin/documents') },
         { name: 'Payments', href: route('admin.payments.index'), icon: CreditCard, current: url.startsWith('/admin/payments') },
         { name: 'Messages', href: route('admin.messages.index'), icon: MessageSquare, current: url.startsWith('/admin/messages') },

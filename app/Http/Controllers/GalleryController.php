@@ -7,15 +7,12 @@ use Inertia\Inertia;
 
 class GalleryController extends Controller
 {
-    public function index()
-    {
-        return Inertia::render('SLFA/Gallery', [
-            'albums' => GalleryAlbum::withCount('media')->latest()->get(),
-        ]);
-    }
-
     public function show(GalleryAlbum $album)
     {
+        if ($album->event_id) {
+            return redirect()->to(route('events.show', $album->event_id).'#photos', 301);
+        }
+
         $album->load('media', 'event');
 
         return Inertia::render('SLFA/GalleryAlbumDetail', [

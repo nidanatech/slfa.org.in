@@ -23,6 +23,11 @@ class NewsPost extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    public function photos()
+    {
+        return $this->hasMany(NewsPhoto::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     public function scopePublished($query)
     {
         return $query->whereNotNull('published_at')

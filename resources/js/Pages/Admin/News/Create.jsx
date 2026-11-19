@@ -10,6 +10,7 @@ export default function Create({ auth }) {
         body: '',
         published_at: '',
         cover_image: null,
+        gallery_images: [],
     });
 
     const submit = (e) => {
@@ -70,6 +71,13 @@ export default function Create({ auth }) {
                         <label htmlFor="news-cover" className="block text-sm font-medium text-gray-700 mb-1">Cover image (optional)</label>
                         <input id="news-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={e => setData('cover_image', e.target.files[0] || null)} className="w-full border border-gray-300 rounded-lg p-2.5 text-sm" />
                         {errors.cover_image && <p className="text-sm text-red-600 mt-1">{errors.cover_image}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="news-photos" className="block text-sm font-medium text-gray-700 mb-1">Photo gallery (optional)</label>
+                        <input id="news-photos" name="gallery_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/avif" onChange={e => setData('gallery_images', Array.from(e.target.files))} className="w-full border border-gray-300 rounded-lg p-2.5 text-sm" />
+                        <p className="mt-1 text-xs text-gray-500">Up to 12 images, 5 MB each. The first photo becomes the cover if no separate cover is chosen.</p>
+                        {errors.gallery_images && <p className="text-sm text-red-600 mt-1">{errors.gallery_images}</p>}
                     </div>
 
                     <div>

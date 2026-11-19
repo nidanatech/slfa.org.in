@@ -292,7 +292,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         <p className="mt-5 text-lg text-gray-700 font-lato leading-relaxed">Come to a gathering, learn about our work, or apply to become a member. There is a clear next step wherever you start.</p>
                         <div className="mt-8 flex flex-wrap gap-3">
                             <Link href={route('happenings')} className="inline-flex items-center gap-2 border-b border-[#800000] pb-2 text-sm font-bold text-[#800000]">News & events <ArrowRight className="h-4 w-4" /></Link>
-                            <Link href={route('gallery')} className="inline-flex items-center gap-2 border-b border-gray-500 pb-2 text-sm font-bold text-gray-900">See our activities <ArrowRight className="h-4 w-4" /></Link>
+                            <Link href={`${route('happenings')}#news`} className="inline-flex items-center gap-2 border-b border-gray-500 pb-2 text-sm font-bold text-gray-900">See our activities <ArrowRight className="h-4 w-4" /></Link>
                         </div>
                     </div>
                     <div className="border-t border-[#b7a676] pt-6">

@@ -10,6 +10,8 @@ class Event extends Model
         'title', 'description', 'event_type',
         'location', 'start_at', 'end_at',
         'cover_image_path', 'rsvp_enabled',
+        'venue_name', 'venue_address', 'timezone', 'dress_code',
+        'adult_price', 'child_price', 'child_age_range', 'contact_details',
     ];
 
     protected function casts(): array
@@ -29,6 +31,16 @@ class Event extends Model
     public function albums()
     {
         return $this->hasMany(GalleryAlbum::class);
+    }
+
+    public function programmeItems()
+    {
+        return $this->hasMany(EventProgrammeItem::class)->orderBy('sort_order')->orderBy('time');
+    }
+
+    public function sponsors()
+    {
+        return $this->hasMany(EventSponsor::class)->orderBy('sort_order')->orderBy('id');
     }
 
     public function scopeUpcoming($query)

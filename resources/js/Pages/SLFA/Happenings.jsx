@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight, CalendarDays, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
 import { coverImageUrl } from '@/lib/coverImageUrl';
@@ -13,10 +13,10 @@ export default function Happenings({ auth, posts, upcomingEvents = [], pastEvent
 
     return <SLFAWebsiteLayout user={auth.user} darkNav>
         <Head title="News & Events" />
-        <section className="relative flex min-h-[65svh] items-end overflow-hidden bg-gray-950 px-4 pb-20 pt-36 text-white sm:px-6 lg:px-8">
+        <section className="relative flex min-h-[58svh] items-end overflow-hidden bg-gray-950 px-4 pb-14 pt-36 text-white sm:px-6 lg:px-8">
             <PhotoBackdrop images={heroImages} />
             <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-gray-950/25" aria-hidden="true" />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-gray-950/30" aria-hidden="true" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/10 to-gray-950/30" aria-hidden="true" />
             <div className="relative mx-auto w-full max-w-7xl">
                 <p className="font-lato text-xs font-bold uppercase tracking-[0.28em] text-[#D4AF37]">The community, in motion</p>
                 <h1 className="mt-6 font-abhaya text-5xl font-bold leading-[1.05] sm:text-7xl lg:text-8xl">News <em className="font-light text-[#D4AF37]">& Events</em></h1>
@@ -25,17 +25,19 @@ export default function Happenings({ auth, posts, upcomingEvents = [], pastEvent
             </div>
         </section>
 
-        <section id="events" className="scroll-mt-24 bg-[#0b101c] px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-28">
+        <section id="events" className="scroll-mt-24 bg-gray-950 px-4 pb-20 pt-5 text-white sm:px-6 lg:px-8 lg:pb-28">
             <div className="mx-auto max-w-7xl">
                 <p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">Come together</p>
                 <h2 className="mt-5 font-abhaya text-4xl font-bold sm:text-6xl">Upcoming events</h2>
-                {featured ? <div className="mt-10 grid gap-10 border-t border-[#D4AF37]/60 pt-8 lg:grid-cols-2 lg:items-center lg:gap-20">
-                    <div className="relative min-h-80 overflow-hidden bg-[#1d2532]">
-                        <img src={coverImageUrl(featured.cover_image_path) || '/images/cta/gallery27.jpg'} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent" aria-hidden="true" />
+                {featured ? <div className="mt-8 grid gap-8 border-t border-white/20 pt-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
+                    <div>
+                        <p className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">Next gathering · {formatDate(featured.start_at)}</p>
+                        <h3 className="mt-5 max-w-3xl font-abhaya text-3xl font-bold leading-tight sm:text-5xl">{featured.title}</h3>
+                        {featured.location && <p className="mt-5 flex items-start gap-2 text-gray-300"><MapPin size={17} aria-hidden="true" className="mt-1 shrink-0" />{featured.location}</p>}
+                        <Link href={route('events.show', featured.id)} className="mt-8 inline-flex items-center gap-2 border-b border-[#D4AF37] pb-2 text-sm font-bold text-[#D4AF37] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">See event details <ArrowRight size={17} aria-hidden="true" /></Link>
                     </div>
-                    <div><span className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">Next gathering · {formatDate(featured.start_at)}</span><h3 className="mt-5 font-abhaya text-3xl font-bold leading-tight sm:text-5xl">{featured.title}</h3>{featured.location && <p className="mt-5 flex items-center gap-2 text-gray-300"><MapPin size={17} aria-hidden="true" />{featured.location}</p>}<Link href={route('events.show', featured.id)} className="mt-8 inline-flex items-center gap-2 border-b border-[#D4AF37] pb-2 text-sm font-bold text-[#D4AF37] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">View event <ArrowRight size={17} aria-hidden="true" /></Link></div>
-                </div> : <div className="relative mt-10 overflow-hidden border-t border-[#D4AF37]/60 py-16"><PhotoBackdrop images={['/images/cta/gallery27.jpg', '/images/cta/gallery15.jpg']} /><div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/60" aria-hidden="true" /><div className="relative max-w-2xl"><CalendarDays size={30} className="text-[#D4AF37]" aria-hidden="true" /><h3 className="mt-5 font-abhaya text-3xl font-bold sm:text-5xl">The next gathering is being planned</h3><p className="mt-5 text-lg leading-relaxed text-gray-200">Dates and RSVP details will appear here when announced.</p></div></div>}
+                    {featured.cover_image_path ? <img src={coverImageUrl(featured.cover_image_path)} alt="" className="max-h-72 w-full object-contain object-right lg:w-80" /> : <div className="hidden select-none text-right lg:block" aria-hidden="true"><span className="block font-abhaya text-[7rem] leading-none text-[#D4AF37]/70">{new Intl.DateTimeFormat('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(featured.start_at))}</span><span className="font-lato text-sm font-bold uppercase tracking-[0.4em] text-gray-500">{new Intl.DateTimeFormat('en-IN', { month: 'long', timeZone: 'Asia/Kolkata' }).format(new Date(featured.start_at))}</span></div>}
+                </div> : <div className="mt-8 border-t border-white/20 py-8"><h3 className="font-abhaya text-3xl font-bold sm:text-5xl">The next gathering is being planned</h3><p className="mt-4 text-gray-300">Dates and RSVP details will appear here when announced.</p></div>}
                 {upcomingEvents.slice(1).map(event => <Link key={event.id} href={route('events.show', event.id)} className="group grid gap-3 border-t border-white/20 py-5 sm:grid-cols-[11rem_1fr_auto] sm:items-center"><time className="text-sm text-[#D4AF37]">{formatDate(event.start_at)}</time><span className="font-abhaya text-2xl font-bold">{event.title}</span><ArrowRight size={18} aria-hidden="true" className="text-[#D4AF37] transition-transform group-hover:translate-x-1" /></Link>)}
             </div>
         </section>

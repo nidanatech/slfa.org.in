@@ -1,5 +1,5 @@
 import React from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ArrowLeft, Save } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -12,6 +12,7 @@ export default function Edit({ auth, post }) {
         body: post.body || '',
         published_at: post.published_at ? dayjs(post.published_at).format('YYYY-MM-DD') : '',
         cover_image: null,
+        gallery_images: [],
         _method: 'put',
     });
 
@@ -74,6 +75,14 @@ export default function Edit({ auth, post }) {
                         {post.cover_image_path && <img src={coverImageUrl(post.cover_image_path)} alt="Current cover" className="mb-3 h-32 w-auto object-cover" />}
                         <input id="news-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={e => setData('cover_image', e.target.files[0] || null)} className="w-full border border-gray-300 rounded-lg p-2.5 text-sm" />
                         {errors.cover_image && <p className="text-sm text-red-600 mt-1">{errors.cover_image}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="news-photos" className="block text-sm font-medium text-gray-700 mb-1">Add gallery photos</label>
+                        <input id="news-photos" name="gallery_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/avif" onChange={e => setData('gallery_images', Array.from(e.target.files))} className="w-full border border-gray-300 rounded-lg p-2.5 text-sm" />
+                        <p className="mt-1 text-xs text-gray-500">Up to 12 images per upload, 5 MB each.</p>
+                        {errors.gallery_images && <p className="text-sm text-red-600 mt-1">{errors.gallery_images}</p>}
+                        {post.photos?.length > 0 && <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">{post.photos.map(photo => <div key={photo.id}><img src={coverImageUrl(photo.path)} alt={photo.caption || post.title} className="aspect-square w-full object-cover" /><button type="button" onClick={() => { if (window.confirm('Remove this photo?')) router.delete(route('admin.news.photos.destroy', [post.id, photo.id]), { preserveScroll: true }); }} className="mt-1 text-xs font-bold text-red-700 hover:underline">Remove photo</button></div>)}</div>}
                     </div>
 
                     <div>

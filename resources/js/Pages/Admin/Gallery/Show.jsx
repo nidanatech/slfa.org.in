@@ -1,7 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 
-export default function Show({ auth, album }) {
+export default function Show({ auth, album, events = [] }) {
     const details = useForm({ title: album.title, description: album.description || '', date: album.date || '', event_id: album.event_id || '' });
     const upload = useForm({ file: null });
     const remove = useForm({});
@@ -27,6 +27,9 @@ export default function Show({ auth, album }) {
                 <label className="block">Event date
                     <input type="date" className="mt-1 block rounded-md border-gray-300" value={details.data.date}
                         onChange={event => details.setData('date', event.target.value)} />
+                </label>
+                <label className="block">Linked event
+                    <select className="mt-1 block w-full rounded-md border-gray-300" value={details.data.event_id} onChange={event => details.setData('event_id', event.target.value)} required><option value="">Choose an event</option>{events.map(event => <option key={event.id} value={event.id}>{event.title}</option>)}</select>
                 </label>
                 <button disabled={details.processing} className="rounded-md bg-slfa-maroon px-4 py-2 text-white">Save</button>
             </form>

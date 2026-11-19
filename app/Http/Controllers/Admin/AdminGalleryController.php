@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\GalleryAlbum;
 use App\Models\GalleryMedia;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -20,14 +21,14 @@ class AdminGalleryController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Gallery/Create');
+        return Inertia::render('Admin/Gallery/Create', ['events' => Event::orderByDesc('start_at')->get(['id', 'title'])]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'event_id' => 'nullable|exists:events,id',
+            'event_id' => 'required|exists:events,id',
             'description' => 'nullable|string|max:5000',
             'date' => 'nullable|date',
         ]);
@@ -40,20 +41,20 @@ class AdminGalleryController extends Controller
     public function show(GalleryAlbum $album)
     {
         $album->load('media', 'event');
-        return Inertia::render('Admin/Gallery/Show', ['album' => $album]);
+        return Inertia::render('Admin/Gallery/Show', ['album' => $album, 'events' => Event::orderByDesc('start_at')->get(['id', 'title'])]);
     }
 
     public function edit(GalleryAlbum $album)
     {
         $album->load('media', 'event');
-        return Inertia::render('Admin/Gallery/Show', ['album' => $album]);
+        return Inertia::render('Admin/Gallery/Show', ['album' => $album, 'events' => Event::orderByDesc('start_at')->get(['id', 'title'])]);
     }
 
     public function update(Request $request, GalleryAlbum $album)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'event_id' => 'nullable|exists:events,id',
+            'event_id' => 'required|exists:events,id',
             'description' => 'nullable|string|max:5000',
             'date' => 'nullable|date',
         ]);

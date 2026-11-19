@@ -3,11 +3,12 @@ import AdminLayout from '@/Layouts/AdminLayout';
 import { ArrowLeft, Save, ImageIcon } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
-export default function Create({ auth }) {
+export default function Create({ auth, events = [] }) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         description: '',
         date: '',
+        event_id: '',
     });
 
     const handleSubmit = (e) => {
@@ -40,6 +41,12 @@ export default function Create({ auth }) {
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 md:p-8 max-w-2xl">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     
+                    <div>
+                        <label htmlFor="album-event" className="block text-sm font-medium text-gray-700 mb-2">Event</label>
+                        <select id="album-event" value={data.event_id} onChange={e => setData('event_id', e.target.value)} className="w-full border-gray-300 rounded-md" required><option value="">Choose an event</option>{events.map(event => <option key={event.id} value={event.id}>{event.title}</option>)}</select>
+                        {errors.event_id && <p className="text-red-500 text-xs mt-1">{errors.event_id}</p>}
+                    </div>
+
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Album Title</label>
                         <input

@@ -63,12 +63,12 @@ Route::get('/news', fn () => redirect()->to(route('happenings').'#news', 301))->
 Route::get('/news/{news}', function (\App\Models\NewsPost $news) {
     abort_unless($news->published_at && $news->published_at->lte(now()), 404);
     return Inertia::render('SLFA/NewsDetail', [
-        'post' => $news,
+        'post' => $news->load('photos'),
     ]);
 })->name('news.show');
 
 Route::get('/sitemap.xml', function () {
-    $urls = collect(['home', 'about', 'happenings', 'gallery', 'contact', 'membership'])
+    $urls = collect(['home', 'about', 'happenings', 'contact', 'membership'])
         ->map(fn ($name) => route($name))
         ->concat(\App\Models\NewsPost::published()->pluck('id')->map(fn ($id) => route('news.show', $id)))
         ->concat(\App\Models\Event::pluck('id')->map(fn ($id) => route('events.show', $id)));
@@ -84,7 +84,7 @@ Route::get('/contact', function () {
 
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
+Route::get('/gallery', fn () => redirect()->to(route('happenings').'#news', 301))->name('gallery');
 Route::get('/gallery/{album}', [GalleryController::class, 'show'])->name('gallery.show');
 
 Route::get('/events', fn () => redirect()->to(route('happenings').'#events', 301))->name('events');
@@ -158,6 +158,7 @@ Route::middleware(['auth', 'can:access-admin'])->prefix('admin')->name('admin.')
 
     // News
     Route::resource('news', AdminNewsController::class)->except(['show']);
+    Route::delete('/news/{news}/photos/{photo}', [AdminNewsController::class, 'destroyPhoto'])->name('news.photos.destroy');
 
     // Events
     Route::resource('events', AdminEventController::class)->except(['show']);

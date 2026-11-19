@@ -17,16 +17,16 @@ export default function Index({ auth, albums }) {
 
     return (
         <AdminLayout user={auth.user}>
-            <Head title="Manage Gallery" />
+            <Head title="Manage Event Photos" />
             <Toaster position="top-right" />
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 flex items-center">
                         <ImageIcon className="w-6 h-6 mr-2 text-slfa-maroon" />
-                        Gallery Albums
+                        Event Photo Albums
                     </h1>
-                    <p className="text-sm text-gray-500 mt-1">Manage photo albums and images.</p>
+                    <p className="text-sm text-gray-500 mt-1">Manage photos within each event.</p>
                 </div>
                 <div>
                     <Link href={route('admin.albums.create')} className="bg-slfa-maroon text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-slfa-navy transition flex items-center">

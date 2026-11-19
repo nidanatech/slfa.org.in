@@ -20,7 +20,6 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false }) {
         { name: 'About', href: route('about') },
         { name: 'Membership', href: route('membership') },
         { name: 'News & Events', href: route('happenings') },
-        { name: 'Gallery', href: route('gallery') },
         { name: 'Contact', href: route('contact') },
     ];
 

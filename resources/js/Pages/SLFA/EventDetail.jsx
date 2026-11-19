@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import SLFAPageHero from '@/Components/SLFAPageHero';
 import { Calendar, MapPin, Clock, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
+import { coverImageUrl } from '@/lib/coverImageUrl';
 
 export default function EventDetail({ auth, event, isGoing }) {
     
@@ -17,14 +18,16 @@ export default function EventDetail({ auth, event, isGoing }) {
     };
 
     const isPast = new Date(event.start_at) < new Date();
+    const zone = event.timezone || 'Asia/Kolkata';
+    const price = (amount) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
 
     return (
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={event.title} />
 
-            <SLFAPageHero eyebrow={event.event_type || 'SLFA event'} title={event.title} backHref={`${route('happenings')}#events`} backLabel="Back to events" image={event.cover_image_path ? `/storage/${event.cover_image_path}` : null}>
-                <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
-                <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })}</span>
+            <SLFAPageHero eyebrow={event.event_type === 'Other' ? 'SLFA gathering' : event.event_type || 'SLFA event'} title={event.title} backHref={`${route('happenings')}#events`} backLabel="Back to events" image={coverImageUrl(event.cover_image_path)}>
+                <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: zone })}</span>
+                <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: zone })}</span>
                 {event.location && <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-[#D4AF37]" />{event.location}</span>}
             </SLFAPageHero>
 
@@ -45,27 +48,16 @@ export default function EventDetail({ auth, event, isGoing }) {
                                     <p className="text-gray-500 italic">No additional details provided.</p>
                                 )}
 
-                                {/* Related Gallery Albums */}
+                                {event.programme_items?.length > 0 && <section className="mt-12 border-t border-[#b7a676] pt-8" aria-labelledby="event-programme-heading">
+                                    <h3 id="event-programme-heading" className="font-abhaya text-3xl font-bold text-gray-950">Programme</h3>
+                                    <ol className="mt-6 border-t border-[#d5c8a6]">{event.programme_items.map(item => <li key={item.id} className="grid gap-2 border-b border-[#d5c8a6] py-4 sm:grid-cols-[6rem_1fr]"><time className="font-lato text-sm font-bold text-[#8b6915]">{new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'UTC' }).format(new Date(`2000-01-01T${item.time}:00Z`))}</time><div><h4 className="font-abhaya text-xl font-bold text-gray-950">{item.title}</h4>{item.details && <p className="mt-1 text-sm leading-relaxed text-gray-600">{item.details}</p>}</div></li>)}</ol>
+                                </section>}
+
+                                {event.sponsors?.length > 0 && <section className="mt-12 border-t border-[#b7a676] pt-8" aria-labelledby="event-sponsors-heading"><h3 id="event-sponsors-heading" className="font-abhaya text-3xl font-bold text-gray-950">Sponsors & partners</h3><div className="mt-5 flex flex-wrap gap-x-8 gap-y-4">{event.sponsors.map(sponsor => sponsor.website_url ? <a key={sponsor.id} href={sponsor.website_url} target="_blank" rel="sponsored noopener noreferrer" className="border-b border-[#800000] pb-1 font-bold text-[#800000] hover:text-gray-950">{sponsor.name} ↗</a> : <span key={sponsor.id} className="font-bold text-gray-700">{sponsor.name}</span>)}</div></section>}
+
+                                {/* Photos stay with their event rather than a separate gallery index. */}
                                 {event.albums && event.albums.length > 0 && (
-                                    <div className="mt-12 pt-8 border-t border-gray-100">
-                                        <h3 className="text-xl font-bold text-slfa-navy mb-6">Event Gallery</h3>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {event.albums.map(album => (
-                                                <Link key={album.id} href={route('gallery.show', album.id)} className="group block overflow-hidden border-t border-[#b7a676] pt-3">
-                                                    <div className="h-32 bg-gray-200 relative">
-                                                        {album.cover_image_path ? (
-                                                            <img src={`/storage/${album.cover_image_path}`} alt={album.title} className="w-full h-full object-cover group-hover:scale-105 transition" />
-                                                        ) : (
-                                                            <div className="w-full h-full bg-slfa-navy flex items-center justify-center"><span className="text-white text-xs">No Cover</span></div>
-                                                        )}
-                                                    </div>
-                                                    <div className="p-3">
-                                                        <h4 className="font-bold text-sm text-slfa-navy group-hover:text-slfa-coral">{album.title}</h4>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
+                                    <section id="photos" className="mt-12 scroll-mt-24 border-t border-[#b7a676] pt-8" aria-labelledby="event-photos-heading"><h3 id="event-photos-heading" className="font-abhaya text-3xl font-bold text-gray-950">Event photos</h3>{event.albums.map(album => <div key={album.id} className="mt-6"><h4 className="mb-3 font-abhaya text-xl font-bold text-gray-800">{album.title}</h4><div className="grid gap-4 sm:grid-cols-2">{album.media?.map(item => item.type === 'video' ? <video key={item.id} controls src={`/storage/${item.path}`} className="aspect-[4/3] w-full bg-gray-950 object-cover" /> : <a key={item.id} href={`/storage/${item.path}`} target="_blank" rel="noopener noreferrer"><img src={`/storage/${item.path}`} alt={item.caption || `Photo from ${event.title}`} loading="lazy" className="aspect-[4/3] w-full object-cover" /></a>)}</div></div>)}</section>
                                 )}
                             </article>
                         </div>
@@ -129,7 +121,11 @@ export default function EventDetail({ auth, event, isGoing }) {
 
                             <div className="border-t border-[#b7a676] pt-6">
                                 <h3 className="font-abhaya text-xl font-bold text-gray-950">Location</h3>
-                                <p className="mt-3 flex items-start gap-2 text-sm text-gray-600"><MapPin className="h-5 w-5 shrink-0 text-[#B99425]" />{event.location || 'Location to be announced'}</p>
+                                <p className="mt-3 flex items-start gap-2 text-sm text-gray-600"><MapPin className="h-5 w-5 shrink-0 text-[#B99425]" />{event.venue_name || event.location || 'Location to be announced'}</p>
+                                {event.venue_address && <p className="mt-2 pl-7 text-sm text-gray-600">{event.venue_address}</p>}
+                                {event.dress_code && <p className="mt-5 text-sm text-gray-700"><strong>Dress code:</strong> {event.dress_code}</p>}
+                                {(event.adult_price !== null || event.child_price !== null) && <div className="mt-5 border-t border-[#d5c8a6] pt-4 text-sm text-gray-700"><h4 className="font-bold">Admission</h4>{event.adult_price !== null && <p className="mt-2">Adults: {price(event.adult_price)}</p>}{event.child_price !== null && <p className="mt-1">Children{event.child_age_range ? ` (${event.child_age_range})` : ''}: {price(event.child_price)}</p>}</div>}
+                                {event.contact_details && <p className="mt-5 border-t border-[#d5c8a6] pt-4 text-sm text-gray-700"><strong>For information:</strong> {event.contact_details}</p>}
                             </div>
                         </div>
 
