@@ -2,6 +2,9 @@ import { Head, Link } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import { Image as ImageIcon, Camera, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import PhotoBackdrop from '@/Components/PhotoBackdrop';
+
+const galleryHeroImages = ['/images/cta/gallery27.jpg', '/images/cta/gallery15.jpg', '/images/cta/gallery9.jpg'];
 
 export default function Gallery({ auth, albums }) {
     return (
@@ -10,8 +13,8 @@ export default function Gallery({ auth, albums }) {
 
             {/* ── Dark Hero Banner ── */}
             <section className="relative pt-36 pb-24 bg-gray-950 overflow-hidden">
-                <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.06, 0.15, 0.06] }} transition={{ duration: 12, repeat: Infinity }} className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37] rounded-full blur-[180px] pointer-events-none mix-blend-screen" />
-                <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.08, 0.18, 0.08] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#800000] rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+                <PhotoBackdrop images={galleryHeroImages} />
+                <div className="absolute inset-0 bg-gray-950/75" aria-hidden="true" />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center gap-5">
@@ -26,7 +29,7 @@ export default function Gallery({ auth, albums }) {
             </section>
 
             {/* ── Albums Grid ── */}
-            <div className="bg-[#FAF8F4] min-h-screen py-20">
+            <div className="bg-[#f5f1e9] min-h-screen py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {albums.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -38,7 +41,7 @@ export default function Gallery({ auth, albums }) {
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: idx * 0.07 }}
                                 >
-                                    <Link href={route('gallery.show', album.id)} className="group block rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500">
+                                    <Link href={route('gallery.show', album.id)} className="group block overflow-hidden border-t border-[#b7a676] pt-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#800000]">
                                         {/* Full-bleed image with overlay */}
                                         <div className="relative aspect-[4/3] overflow-hidden bg-gray-900">
                                             {album.cover_image_path ? (
@@ -81,7 +84,7 @@ export default function Gallery({ auth, albums }) {
                         </div>
                     ) : (
                         <div className="text-center py-32">
-                            <div className="w-20 h-20 rounded-full bg-white border-2 border-[#D4AF37]/30 flex items-center justify-center mx-auto mb-6">
+                            <div className="w-20 h-20 border border-[#D4AF37]/30 flex items-center justify-center mx-auto mb-6">
                                 <Camera className="w-8 h-8 text-[#D4AF37]" />
                             </div>
                             <p className="text-gray-500 font-lato text-lg mb-2">No gallery albums yet.</p>

@@ -3,6 +3,9 @@ import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import { MapPin, Phone, Mail, Send } from 'lucide-react';
 import InputError from '@/Components/InputError';
 import { motion } from 'motion/react';
+import PhotoBackdrop from '@/Components/PhotoBackdrop';
+
+const contactHeroImages = ['/images/hero-ocean-bg-slfa.jpg', '/images/sigiriya-rock.jpg'];
 
 export default function Contact({ auth, flash }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -43,8 +46,8 @@ export default function Contact({ auth, flash }) {
 
             {/* ── Dark Hero Banner ── */}
             <section className="relative pt-36 pb-24 bg-gray-950 overflow-hidden">
-                <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.06, 0.14, 0.06] }} transition={{ duration: 12, repeat: Infinity }} className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37] rounded-full blur-[180px] pointer-events-none mix-blend-screen" />
-                <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.07, 0.16, 0.07] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#800000] rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+                <PhotoBackdrop images={contactHeroImages} />
+                <div className="absolute inset-0 bg-gray-950/80" aria-hidden="true" />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex flex-col items-center gap-5">
@@ -59,7 +62,7 @@ export default function Contact({ auth, flash }) {
             </section>
 
             {/* ── Contact Body ── */}
-            <div className="bg-[#FAF8F4] min-h-screen py-20">
+            <div className="bg-[#f5f1e9] min-h-screen py-20">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
@@ -76,9 +79,9 @@ export default function Contact({ auth, flash }) {
                                     <motion.div
                                         key={idx}
                                         initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
-                                        className="group flex items-start gap-5 bg-white border border-gray-100 hover:border-[#D4AF37]/30 p-6 rounded-2xl transition-all duration-400 hover:shadow-md"
+                                        className="group flex items-start gap-5 border-t border-[#b7a676] py-5"
                                     >
-                                        <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center shrink-0 group-hover:bg-[#D4AF37]/20 transition-colors duration-300">
+                                        <div className="w-12 h-12 flex items-center justify-center shrink-0">
                                             <item.icon className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.5} />
                                         </div>
                                         <div>
@@ -92,7 +95,7 @@ export default function Contact({ auth, flash }) {
 
                         {/* ─ Contact Form ─ */}
                         <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-                            <div className="bg-white border border-gray-100 p-8 md:p-10 rounded-3xl shadow-sm">
+                            <div className="border-t border-[#b7a676] pt-8">
                                 <h3 className="text-2xl font-abhaya font-bold text-gray-900 mb-2">Send Us a Message</h3>
                                 <p className="text-gray-500 font-lato text-sm mb-8">Send your question to the SLFA committee.</p>
 

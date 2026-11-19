@@ -1,43 +1,73 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight, HeartHandshake, UsersRound, CalendarDays } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
+import PhotoBackdrop from '@/Components/PhotoBackdrop';
 
-const areas = [
-    { icon: UsersRound, title: 'Belonging', text: 'A welcoming network for people with Sri Lankan roots across South India.' },
-    { icon: CalendarDays, title: 'Culture', text: 'Gatherings and shared experiences that keep traditions present for every generation.' },
-    { icon: HeartHandshake, title: 'Support', text: 'People coming together to help one another and strengthen the wider community.' },
+const heroImages = ['/images/sigiriya-rock.jpg', '/images/kandyan-srilankandance.jpg', '/images/Sri-Lanka-Culture.webp'];
+const cultureImages = ['/images/kandyan-srilankandance.jpg', '/images/barathanatyam.avif', '/images/kathakali-kerala.jpg'];
+
+const connections = [
+    ['01', 'Belonging', 'A welcoming place for people with Sri Lankan roots to meet and stay connected in South India.'],
+    ['02', 'Culture', 'Gatherings and shared experiences that keep traditions present for every generation.'],
+    ['03', 'Support', 'A community that looks out for one another and creates lasting relationships.'],
 ];
 
-function CommitteeCard({ member }) {
-    return <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-[#D4AF37]/60 bg-[#30251b] font-abhaya text-3xl text-[#D4AF37]">
-            {member.photo_path ? <img src={`/storage/${member.photo_path}`} alt="" loading="lazy" className="h-full w-full object-cover" /> : member.name?.charAt(0)}
+function CommitteeList({ title, members }) {
+    if (!members.length) return null;
+
+    return <div className="mt-12">
+        <h3 className="border-b border-white/20 pb-4 font-lato text-xs font-bold uppercase tracking-[0.24em] text-[#D4AF37]">{title}</h3>
+        <div className="grid gap-x-12 md:grid-cols-2">
+            {members.map(member => <div key={member.id} className="flex min-w-0 items-center gap-5 border-b border-white/10 py-5">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 font-abhaya text-2xl text-[#D4AF37]">
+                    {member.photo_path ? <img src={`/storage/${member.photo_path}`} alt="" loading="lazy" width="64" height="64" className="h-full w-full object-cover" /> : member.name?.charAt(0)}
+                </div>
+                <div className="min-w-0"><h4 className="font-abhaya text-xl font-bold text-white">{member.name}</h4><p className="mt-1 font-lato text-xs uppercase tracking-wider text-[#D4AF37]">{member.role}</p></div>
+            </div>)}
         </div>
-        <h3 className="font-abhaya text-xl font-bold text-white">{member.name}</h3>
-        <p className="mt-1 font-lato text-xs font-bold uppercase tracking-widest text-[#D4AF37]">{member.role}</p>
-    </article>;
+    </div>;
 }
 
 export default function About({ auth, leadershipSetup = [], executiveCommittee = [] }) {
     return <SLFAWebsiteLayout user={auth.user} darkNav>
         <Head title="About SLFA" />
-        <section className="relative overflow-hidden bg-gray-950 px-4 pb-20 pt-36 text-white sm:px-6 lg:px-8">
-            <div className="absolute inset-0 bg-cover bg-center opacity-40" style={{ backgroundImage: "url('/images/sigiriya-rock.jpg')" }} aria-hidden="true" />
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/85 to-gray-950/30" aria-hidden="true" />
-            <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-                <div><p className="font-lato text-xs font-bold uppercase tracking-[0.28em] text-[#D4AF37]">About the association</p><h1 className="mt-5 max-w-3xl font-abhaya text-5xl font-bold leading-[1.05] text-balance sm:text-7xl">Friendship across <span className="italic font-light text-[#D4AF37]">borders</span></h1><p className="mt-6 max-w-2xl font-lato text-lg leading-relaxed text-gray-200">The Sri Lankan Friendship Association of South India brings together people of Sri Lankan origin through friendship, cultural connection, and mutual support.</p><div className="mt-8 flex flex-wrap gap-3"><Link href={route('membership')} className="rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-bold text-gray-950 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Explore membership</Link><Link href={route('happenings')} className="rounded-full border border-white/40 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">See what’s happening</Link></div></div>
-                <div className="rounded-3xl border border-white/20 bg-gray-950/70 p-7 backdrop-blur-md sm:p-9"><span className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">Our story</span><p className="mt-5 font-abhaya text-2xl leading-relaxed text-white sm:text-3xl">A place to meet, celebrate, and look out for one another while making South India home.</p><div className="mt-6 border-t border-white/15 pt-5 text-sm leading-relaxed text-gray-300">From community gatherings to professional connections, SLFA creates ways for members to stay connected.</div></div>
+
+        <section className="relative flex min-h-[78svh] items-end overflow-hidden bg-gray-950 px-4 pb-20 pt-36 text-white sm:px-6 lg:px-8">
+            <PhotoBackdrop images={heroImages} />
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-gray-950/25" aria-hidden="true" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-gray-950/40" aria-hidden="true" />
+            <div className="relative mx-auto w-full max-w-7xl">
+                <p className="font-lato text-xs font-bold uppercase tracking-[0.28em] text-[#D4AF37]">Sri Lankan Friendship Association of South India</p>
+                <h1 className="mt-6 max-w-4xl font-abhaya text-5xl font-bold leading-[1.02] text-balance sm:text-7xl lg:text-8xl">A community built on <em className="font-light text-[#D4AF37]">connection</em></h1>
+                <p className="mt-7 max-w-2xl font-lato text-lg leading-relaxed text-gray-200">We bring together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.</p>
+                <a href="#our-purpose" className="mt-10 inline-flex items-center gap-3 border-b border-[#D4AF37] pb-2 font-lato text-xs font-bold uppercase tracking-[0.16em] text-[#D4AF37] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">Discover our purpose <ArrowRight size={16} aria-hidden="true" /></a>
             </div>
         </section>
 
-        <section className="bg-[#f5f1e9] px-4 py-16 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20"><div><p className="font-lato text-xs font-bold uppercase tracking-[0.25em] text-[#9a7714]">Why we exist</p><h2 className="mt-3 font-abhaya text-4xl font-bold leading-tight text-gray-950 sm:text-5xl">A community with <span className="italic text-[#800000]">purpose</span></h2></div><div className="grid gap-4 sm:grid-cols-2"><article className="rounded-3xl border border-[#d8d0c3] bg-white p-7 shadow-[0_12px_35px_rgba(20,24,34,0.04)]"><span className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#9a7714]">01 / Mission</span><h3 className="mt-5 font-abhaya text-2xl font-bold text-gray-950">Bring people together</h3><p className="mt-3 leading-relaxed text-gray-600">Create a welcoming platform for Sri Lankans in South India to meet, preserve cultural ties, and support one another.</p></article><article className="rounded-3xl border border-[#d8d0c3] bg-white p-7 shadow-[0_12px_35px_rgba(20,24,34,0.04)]"><span className="font-lato text-xs font-bold uppercase tracking-[0.2em] text-[#9a7714]">02 / Vision</span><h3 className="mt-5 font-abhaya text-2xl font-bold text-gray-950">Keep connections growing</h3><p className="mt-3 leading-relaxed text-gray-600">Build lasting social, cultural, and professional relationships that strengthen the community across generations.</p></article></div></div></div></section>
+        <section id="our-purpose" className="scroll-mt-20 bg-[#f5f1e9] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+            <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
+                <div><p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#9a7714]">Why we exist</p><h2 className="mt-5 font-abhaya text-4xl font-bold leading-tight text-gray-950 sm:text-6xl">Friendship with <em className="font-light text-[#800000]">purpose</em></h2></div>
+                <div className="space-y-12 lg:pt-2">
+                    <div className="border-t border-[#b7a676] pt-6"><span className="font-lato text-xs font-bold uppercase tracking-[0.22em] text-[#8b6915]">Our mission</span><h3 className="mt-4 font-abhaya text-3xl font-bold text-gray-950">Bring people together</h3><p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-700">Create opportunities for Sri Lankans in South India to meet, preserve cultural ties, and support one another.</p></div>
+                    <div className="border-t border-[#b7a676] pt-6"><span className="font-lato text-xs font-bold uppercase tracking-[0.22em] text-[#8b6915]">Our vision</span><h3 className="mt-4 font-abhaya text-3xl font-bold text-gray-950">Keep connections growing</h3><p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-700">Build lasting social, cultural, and professional relationships that strengthen the community across generations.</p></div>
+                </div>
+            </div>
+        </section>
 
-        <section className="bg-[#0b101c] px-4 py-16 text-white sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="font-lato text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37]">What we do</p><h2 className="mt-3 font-abhaya text-4xl font-bold sm:text-5xl">Connection, made real</h2><div className="mt-8 grid gap-4 md:grid-cols-3">{areas.map(({ icon: Icon, title, text }) => <article key={title} className="rounded-3xl border border-white/10 bg-white/[0.04] p-7"><div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10"><Icon size={23} className="text-[#D4AF37]" aria-hidden="true" /></div><h3 className="font-abhaya text-2xl font-bold">{title}</h3><p className="mt-3 leading-relaxed text-gray-300">{text}</p></article>)}</div></div></section>
+        <section className="relative overflow-hidden bg-gray-950 px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-28">
+            <PhotoBackdrop images={cultureImages} position="center 38%" />
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/85 to-gray-950/40" aria-hidden="true" />
+            <div className="relative mx-auto max-w-7xl">
+                <p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">The ways we connect</p>
+                <h2 className="mt-5 max-w-2xl font-abhaya text-4xl font-bold leading-tight sm:text-6xl">A place for everyone to <em className="font-light text-[#D4AF37]">belong</em></h2>
+                <div className="mt-14 max-w-4xl border-t border-white/30">
+                    {connections.map(([number, title, description]) => <div key={number} className="grid gap-2 border-b border-white/30 py-6 sm:grid-cols-[5rem_13rem_1fr] sm:items-start sm:gap-5"><span className="font-lato text-xs font-bold tracking-widest text-[#D4AF37]">{number}</span><h3 className="font-abhaya text-2xl font-bold">{title}</h3><p className="max-w-lg leading-relaxed text-gray-200">{description}</p></div>)}
+                </div>
+            </div>
+        </section>
 
-        <section className="bg-[#f5f1e9] px-4 py-16 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center"><div><p className="font-lato text-xs font-bold uppercase tracking-[0.25em] text-[#9a7714]">The association today</p><h2 className="mt-3 font-abhaya text-4xl font-bold text-gray-950 sm:text-5xl">Built by people, for people</h2><p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-600">Members come together for cultural gatherings, community initiatives, and opportunities to form lasting relationships. See the latest activity and find a way to take part.</p><Link href={route('happenings')} className="mt-7 inline-flex items-center gap-2 rounded-full bg-gray-950 px-6 py-3 text-sm font-bold text-white hover:bg-[#800000] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#800000]">News & events <ArrowRight size={17} aria-hidden="true" /></Link></div><div className="relative min-h-72 overflow-hidden rounded-[2rem] bg-gray-950"><img src="/images/kandyan-srilankandance.jpg" alt="Sri Lankan cultural dance performance" loading="lazy" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-gray-950/85 to-transparent" aria-hidden="true" /><span className="absolute bottom-6 left-6 font-abhaya text-2xl font-bold text-white">Culture that brings us together</span></div></div></section>
+        {(leadershipSetup.length > 0 || executiveCommittee.length > 0) && <section className="bg-[#101723] px-4 py-20 text-white sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">The people behind the association</p><h2 className="mt-5 font-abhaya text-4xl font-bold sm:text-6xl">Our committee</h2><CommitteeList title="Leadership" members={leadershipSetup} /><CommitteeList title="Executive members" members={executiveCommittee} /></div></section>}
 
-        {(leadershipSetup.length > 0 || executiveCommittee.length > 0) && <section className="bg-gray-950 px-4 py-16 text-white sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="font-lato text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37]">People behind SLFA</p><h2 className="mt-3 font-abhaya text-4xl font-bold sm:text-5xl">Our committee</h2>{leadershipSetup.length > 0 && <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{leadershipSetup.map(member => <CommitteeCard key={member.id} member={member} />)}</div>}{executiveCommittee.length > 0 && <><h3 className="mt-12 font-abhaya text-2xl font-bold">Executive members</h3><div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{executiveCommittee.map(member => <CommitteeCard key={member.id} member={member} />)}</div></>}</div></section>}
-
-        <section className="bg-[#800000] px-4 py-16 text-white sm:px-6 lg:px-8"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-7 md:flex-row md:items-center"><div><p className="font-lato text-xs font-bold uppercase tracking-[0.25em] text-[#F5D576]">Your next chapter</p><h2 className="mt-3 font-abhaya text-4xl font-bold sm:text-5xl">Make room for connection</h2><p className="mt-3 max-w-xl text-white/80">Meet the community, learn how membership works, and apply online when you are ready.</p></div><Link href={route('membership')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#D4AF37] px-7 py-3.5 text-sm font-bold text-gray-950 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Explore membership <ArrowRight size={17} aria-hidden="true" /></Link></div></section>
+        <section className="relative overflow-hidden bg-gray-950 px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-28"><PhotoBackdrop images={['/images/Sri-Lanka-Culture.webp', '/images/sigiriya-rock.jpg']} /><div className="absolute inset-0 bg-gray-950/75" aria-hidden="true" /><div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 lg:flex-row lg:items-end"><div><p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">Your next chapter</p><h2 className="mt-5 max-w-2xl font-abhaya text-4xl font-bold leading-tight sm:text-6xl">Find your place in the community</h2><p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-200">Explore membership, meet the community, and apply online when you are ready.</p></div><Link href={route('membership')} className="inline-flex shrink-0 items-center gap-3 border-b border-[#D4AF37] pb-2 font-lato text-sm font-bold uppercase tracking-wider text-[#D4AF37] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">Explore membership <ArrowRight size={17} aria-hidden="true" /></Link></div></section>
     </SLFAWebsiteLayout>;
 }

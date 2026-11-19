@@ -2,7 +2,6 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import SLFAPageHero from '@/Components/SLFAPageHero';
-import SLFAPageCard from '@/Components/SLFAPageCard';
 import { Calendar, MapPin, Clock, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 
 export default function EventDetail({ auth, event, isGoing }) {
@@ -23,19 +22,19 @@ export default function EventDetail({ auth, event, isGoing }) {
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={event.title} />
 
-            <SLFAPageHero eyebrow={event.event_type || 'SLFA event'} title={event.title} backHref={route('happenings')} backLabel="Back to events" image={event.cover_image_path ? `/storage/${event.cover_image_path}` : null}>
+            <SLFAPageHero eyebrow={event.event_type || 'SLFA event'} title={event.title} backHref={`${route('happenings')}#events`} backLabel="Back to events" image={event.cover_image_path ? `/storage/${event.cover_image_path}` : null}>
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
                 <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[#D4AF37]" />{new Date(event.start_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })}</span>
                 {event.location && <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-[#D4AF37]" />{event.location}</span>}
             </SLFAPageHero>
 
-            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         
                         {/* Main Content */}
                         <div className="lg:col-span-2">
-                            <SLFAPageCard as="article" className="border-t-4 border-t-[#D4AF37]">
+                            <article className="border-t border-[#b7a676] pt-7">
                                 <h2 className="mb-6 font-abhaya text-3xl font-bold text-gray-950">About this event</h2>
                                 
                                 {event.description ? (
@@ -52,7 +51,7 @@ export default function EventDetail({ auth, event, isGoing }) {
                                         <h3 className="text-xl font-bold text-slfa-navy mb-6">Event Gallery</h3>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {event.albums.map(album => (
-                                                <Link key={album.id} href={route('gallery.show', album.id)} className="group block overflow-hidden rounded-2xl bg-[#FAF8F4] transition hover:shadow-md">
+                                                <Link key={album.id} href={route('gallery.show', album.id)} className="group block overflow-hidden border-t border-[#b7a676] pt-3">
                                                     <div className="h-32 bg-gray-200 relative">
                                                         {album.cover_image_path ? (
                                                             <img src={`/storage/${album.cover_image_path}`} alt={album.title} className="w-full h-full object-cover group-hover:scale-105 transition" />
@@ -68,14 +67,14 @@ export default function EventDetail({ auth, event, isGoing }) {
                                         </div>
                                     </div>
                                 )}
-                            </SLFAPageCard>
+                            </article>
                         </div>
 
                         {/* Sidebar / RSVP */}
                         <div className="space-y-6 animate-fade-up-delay-1">
                             
                             {event.rsvp_enabled && !isPast && (
-                                <SLFAPageCard className="border-t-4 border-t-[#D4AF37]">
+                                <div className="border-t border-[#b7a676] pt-7">
                                     <h3 className="mb-4 font-abhaya text-2xl font-bold text-gray-950">Are you attending?</h3>
                                     
                                     {!auth.user ? (
@@ -118,20 +117,20 @@ export default function EventDetail({ auth, event, isGoing }) {
                                             </div>
                                         </div>
                                     )}
-                                </SLFAPageCard>
+                                </div>
                             )}
 
                             {isPast && (
-                                <div className="bg-gray-100 p-6 rounded-xl border border-gray-200 text-center">
+                                <div className="border-t border-[#b7a676] py-6">
                                     <h3 className="font-bold text-gray-600 mb-2">Event Concluded</h3>
                                     <p className="text-sm text-gray-500">This event has already taken place.</p>
                                 </div>
                             )}
 
-                            <SLFAPageCard>
+                            <div className="border-t border-[#b7a676] pt-6">
                                 <h3 className="font-abhaya text-xl font-bold text-gray-950">Location</h3>
                                 <p className="mt-3 flex items-start gap-2 text-sm text-gray-600"><MapPin className="h-5 w-5 shrink-0 text-[#B99425]" />{event.location || 'Location to be announced'}</p>
-                            </SLFAPageCard>
+                            </div>
                         </div>
 
                     </div>

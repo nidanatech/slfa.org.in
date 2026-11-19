@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Head } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { Calendar, MapPin, Globe2, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import HeroMap from '@/Components/HeroMap';
 import CanvasFlag from '@/Components/CanvasFlag';
+import PhotoBackdrop from '@/Components/PhotoBackdrop';
+
+const happeningsImages = ['/images/cta/gallery27.jpg', '/images/cta/gallery15.jpg', '/images/cta/gallery4.jpg'];
 
 export default function Home({ auth, latestNews, upcomingEvents }) {
     const featuredEvent = upcomingEvents?.[0];
@@ -252,98 +255,61 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                 </div>
             </section>
 
-            {/* Minimalist News & Events Grid */}
-            <section className="bg-[#f5f1e9] py-16 md:py-20 border-t border-[#D4AF37]/20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-10">
-                        <div>
-                            <span className="uppercase tracking-[0.3em] text-xs font-bold text-[#9A7714] font-lato block mb-4">Updates</span>
-                            <h2 className="text-5xl md:text-6xl font-abhaya font-extrabold text-gray-950 leading-tight">
-                                Community <br /><span className="italic font-light text-[#D4AF37]">Happenings</span>
-                            </h2>
-                        </div>
+            {/* Community updates */}
+            <section className="relative overflow-hidden bg-gray-950 py-20 text-white md:py-28">
+                <PhotoBackdrop images={happeningsImages} />
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/60" aria-hidden="true" />
+                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <span className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">From the community</span>
+                    <div className="mt-4 flex flex-col justify-between gap-7 md:flex-row md:items-end">
+                        <h2 className="font-abhaya text-4xl font-bold leading-tight sm:text-6xl">Community <em className="font-light text-[#D4AF37]">happenings</em></h2>
+                        <Link href={route('happenings')} className="inline-flex items-center gap-2 self-start border-b border-[#D4AF37] pb-2 text-sm font-bold text-[#D4AF37] md:self-auto">All news & events <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
                     </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                        {/* News Column */}
-                        <div className="space-y-8">
-                            <h3 className="text-xl font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-lato mb-8 border-b border-gray-200 pb-4">Latest News</h3>
-                            {latestNews && latestNews.length > 0 ? latestNews.map((post, idx) => (
-                                <motion.div
-                                    key={post.id}
-                                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
-                                    className="group flex gap-5 items-start rounded-2xl border border-[#d8d0c3] bg-white p-6 shadow-[0_12px_35px_rgba(20,24,34,0.04)]"
-                                >
-                                    <div className="text-center w-16 pt-1">
-                                        <div className="text-2xl font-abhaya font-bold text-slfa-navy group-hover:text-slfa-maroon transition-colors">{new Date(post.published_at).getDate()}</div>
-                                        <div className="text-xs font-bold uppercase tracking-widest text-gray-400">{new Date(post.published_at).toLocaleString('default', { month: 'short' })}</div>
-                                    </div>
-                                    <div className="flex-1">
-                                        <h4 className="text-2xl font-abhaya font-bold text-slfa-navy group-hover:text-slfa-maroon transition-colors mb-3 leading-tight">
-                                            <Link href={route('news.show', post.id)}>{post.title}</Link>
-                                        </h4>
-                                        <p className="text-gray-500 font-lato font-light line-clamp-2">{post.body.substring(0, 150)}...</p>
-                                    </div>
-                                </motion.div>
-                            )) : (
-                                <p className="text-gray-500 font-abhaya text-xl italic font-light">No updates available at this time.</p>
-                            )}
+                    <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-20">
+                        <div>
+                            <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Latest news</h3>
+                            {latestNews?.length ? latestNews.map(post => <Link key={post.id} href={route('news.show', post.id)} className="group flex gap-5 border-b border-white/20 py-5">
+                                <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(post.published_at))}</time>
+                                <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{post.title}</span>
+                            </Link>) : <p className="py-6 text-gray-300">News will appear here as it is published.</p>}
                         </div>
-
-                        {/* Events Column */}
-                        <div className="space-y-8">
-                            <h3 className="text-xl font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-lato mb-8 border-b border-gray-200 pb-4">Upcoming Events</h3>
-                            {upcomingEvents && upcomingEvents.length > 0 ? upcomingEvents.map((event, idx) => (
-                                <motion.div
-                                    key={event.id}
-                                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
-                                    className="group relative overflow-hidden rounded-[2rem] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 p-8"
-                                >
-                                    <div className="absolute top-0 right-0 w-24 h-24 bg-slfa-teal/5 rounded-bl-[4rem] group-hover:bg-slfa-teal/10 transition-colors duration-500"></div>
-                                    <h4 className="text-2xl font-abhaya font-bold text-slfa-navy mb-4 leading-tight">
-                                        <Link href={route('events.show', event.id)} className="before:absolute before:inset-0">
-                                            {event.title}
-                                        </Link>
-                                    </h4>
-                                    <div className="flex flex-col gap-2 text-sm text-gray-500 font-lato">
-                                        <span className="flex items-center"><Calendar className="w-4 h-4 mr-3 opacity-50" /> {new Date(event.start_at).toLocaleDateString()}</span>
-                                        {event.location && <span className="flex items-center"><Globe2 className="w-4 h-4 mr-3 opacity-50" /> {event.location}</span>}
-                                    </div>
-                                </motion.div>
-                            )) : (
-                                <p className="text-gray-500 font-abhaya text-xl italic font-light">No upcoming events right now.</p>
-                            )}
+                        <div>
+                            <h3 className="border-b border-white/30 pb-4 font-lato text-xs font-bold uppercase tracking-[0.23em] text-[#D4AF37]">Upcoming events</h3>
+                            {upcomingEvents?.length ? upcomingEvents.map(event => <Link key={event.id} href={route('events.show', event.id)} className="group flex gap-5 border-b border-white/20 py-5">
+                                <time className="w-20 shrink-0 font-lato text-xs text-[#D4AF37]">{new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</time>
+                                <span className="font-abhaya text-xl font-bold leading-tight text-white group-hover:text-[#D4AF37]">{event.title}</span>
+                            </Link>) : <p className="py-6 text-gray-300">The next gathering is being planned.</p>}
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className="bg-[#0b101c] py-16 md:py-20 border-t border-[#D4AF37]/20 text-white">
+            <section className="bg-[#f5f1e9] py-20 md:py-28 border-t border-[#D4AF37]/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
                     <div>
                         <span className="uppercase tracking-[0.3em] text-xs font-bold text-[#9A7714] font-lato">Get involved</span>
-                        <h2 className="mt-4 text-4xl sm:text-5xl font-abhaya font-bold text-white leading-tight">Find your place in the community</h2>
-                        <p className="mt-5 text-lg text-gray-300 font-lato leading-relaxed">Come to a gathering, learn about our work, or apply to become a member. There is a clear next step wherever you start.</p>
+                        <h2 className="mt-4 text-4xl sm:text-5xl font-abhaya font-bold text-gray-950 leading-tight">Find your place in the community</h2>
+                        <p className="mt-5 text-lg text-gray-700 font-lato leading-relaxed">Come to a gathering, learn about our work, or apply to become a member. There is a clear next step wherever you start.</p>
                         <div className="mt-8 flex flex-wrap gap-3">
-                            <Link href={route('happenings')} className="inline-flex items-center gap-2 rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-bold text-gray-950 hover:bg-white transition-colors">News & events <ArrowRight className="h-4 w-4" /></Link>
-                            <Link href={route('gallery')} className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition-colors">See our activities <ArrowRight className="h-4 w-4" /></Link>
+                            <Link href={route('happenings')} className="inline-flex items-center gap-2 border-b border-[#800000] pb-2 text-sm font-bold text-[#800000]">News & events <ArrowRight className="h-4 w-4" /></Link>
+                            <Link href={route('gallery')} className="inline-flex items-center gap-2 border-b border-gray-500 pb-2 text-sm font-bold text-gray-900">See our activities <ArrowRight className="h-4 w-4" /></Link>
                         </div>
                     </div>
-                    <div className="rounded-3xl bg-white/[0.05] p-7 sm:p-9 border border-[#D4AF37]/25">
-                        <h3 className="text-2xl font-abhaya font-bold text-white">Membership at a glance</h3>
+                    <div className="border-t border-[#b7a676] pt-6">
+                        <h3 className="text-2xl font-abhaya font-bold text-gray-950">Membership at a glance</h3>
                         <ol className="mt-6 space-y-6">
                             {[
                                 ['Check eligibility', 'Adults in South India with a connection to Sri Lanka can apply.'],
                                 ['Apply online', 'Create an account and submit your membership details for review.'],
                                 ['Stay connected', 'Sign in to see your application status and update your profile.'],
                             ].map(([title, description], index) => (
-                                <li key={title} className="flex gap-4">
-                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#D4AF37] text-sm font-bold text-gray-950">{index + 1}</span>
-                                    <div><h4 className="font-bold text-white">{title}</h4><p className="mt-1 text-sm text-gray-300 leading-relaxed">{description}</p></div>
+                                <li key={title} className="flex gap-4 border-b border-[#d8d0c3] pb-5">
+                                    <span className="w-8 shrink-0 text-sm font-bold text-[#9a7714]">0{index + 1}</span>
+                                    <div><h4 className="font-bold text-gray-950">{title}</h4><p className="mt-1 text-sm text-gray-700 leading-relaxed">{description}</p></div>
                                 </li>
                             ))}
                         </ol>
-                        <Link href={route('membership')} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#D4AF37] hover:underline">Read membership details <ArrowRight className="h-4 w-4" /></Link>
+                        <Link href={route('membership')} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#800000] hover:underline">Read membership details <ArrowRight className="h-4 w-4" /></Link>
                     </div>
                 </div>
             </section>

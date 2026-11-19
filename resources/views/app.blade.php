@@ -32,6 +32,7 @@
                 '@type' => 'Organization',
                 'name' => 'SriLankan Friendship Association of South India',
                 'url' => route('home'),
+                'logo' => asset('images/slfa-logo.webp'),
             ];
             $contentSchema = null;
             if ($name === 'news.show' && isset($post)) {
@@ -105,7 +106,8 @@
         @viteReactRefresh
         @vite(['resources/js/app.jsx'])
 
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" href="/favicon.png">
+        <link rel="apple-touch-icon" href="/images/favvicon.png">
 
         @inertiaHead
     </head>

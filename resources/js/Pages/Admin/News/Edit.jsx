@@ -3,18 +3,21 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ArrowLeft, Save } from 'lucide-react';
 import dayjs from 'dayjs';
+import { coverImageUrl } from '@/lib/coverImageUrl';
 
 export default function Edit({ auth, post }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post: submitPost, processing, errors } = useForm({
         title: post.title || '',
         category: post.category || '',
         body: post.body || '',
         published_at: post.published_at ? dayjs(post.published_at).format('YYYY-MM-DD') : '',
+        cover_image: null,
+        _method: 'put',
     });
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('admin.news.update', post.id));
+        submitPost(route('admin.news.update', post.id), { forceFormData: true });
     };
 
     return (
@@ -64,6 +67,13 @@ export default function Edit({ auth, post }) {
                             />
                             {errors.published_at && <p className="text-sm text-red-600 mt-1">{errors.published_at}</p>}
                         </div>
+                    </div>
+
+                    <div>
+                        <label htmlFor="news-cover" className="block text-sm font-medium text-gray-700 mb-1">Replace cover image (optional)</label>
+                        {post.cover_image_path && <img src={coverImageUrl(post.cover_image_path)} alt="Current cover" className="mb-3 h-32 w-auto object-cover" />}
+                        <input id="news-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={e => setData('cover_image', e.target.files[0] || null)} className="w-full border border-gray-300 rounded-lg p-2.5 text-sm" />
+                        {errors.cover_image && <p className="text-sm text-red-600 mt-1">{errors.cover_image}</p>}
                     </div>
 
                     <div>

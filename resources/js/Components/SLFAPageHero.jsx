@@ -1,10 +1,11 @@
 import { Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
+import PhotoBackdrop from '@/Components/PhotoBackdrop';
 
-export default function SLFAPageHero({ eyebrow, title, description, backHref, backLabel, image, children }) {
+export default function SLFAPageHero({ eyebrow, title, description, backHref, backLabel, image, images, children }) {
     return (
         <section className="relative overflow-hidden bg-gray-950 pt-36 pb-20 text-white sm:pt-40 sm:pb-24">
-            {image && <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />}
+            {images?.length ? <PhotoBackdrop images={images} /> : image && <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />}
             <div className="absolute inset-0 bg-gradient-to-br from-gray-950/70 via-gray-950/85 to-[#220e13]/90" aria-hidden="true" />
             <div className="absolute -right-28 -top-32 h-96 w-96 rounded-full bg-[#D4AF37]/10 blur-3xl" aria-hidden="true" />
             <div className="absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-[#800000]/25 blur-3xl" aria-hidden="true" />

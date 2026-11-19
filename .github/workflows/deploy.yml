@@ -98,7 +98,7 @@ jobs:
           echo '| Path | HTTP status |' >> "$GITHUB_STEP_SUMMARY"
           echo '| --- | --- |' >> "$GITHUB_STEP_SUMMARY"
           failed=0
-          for path in / /favicon.svg /images/slfa-bg.png /about /membership /happenings /events /news; do
+          for path in / /favicon.png /images/slfa-crest.webp /about /membership /happenings /events /news; do
             status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$base_url$path" || true)
             printf '| `%s` | %s |\n' "$path" "$status" >> "$GITHUB_STEP_SUMMARY"
             if [ "$status" != "200" ]; then

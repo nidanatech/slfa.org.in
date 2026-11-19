@@ -15,14 +15,14 @@ export default function GalleryAlbumDetail({ auth, album }) {
                 {album.event && <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{album.event.title}</span>}
             </SLFAPageHero>
 
-            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 sm:gap-6">
                         {album.media.map((item, index) => (
                             <button
                                 type="button"
                                 key={item.id} 
-                                className="aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-white text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
+                                className="aspect-square overflow-hidden bg-gray-950 text-left transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
                                 style={{ animationDelay: `${(index % 10) * 0.05}s` }}
                                 onClick={() => setSelectedMedia(item)}
                                 aria-label={`View ${item.caption || `${item.type} ${index + 1}`}`}
@@ -43,7 +43,7 @@ export default function GalleryAlbumDetail({ auth, album }) {
                         ))}
 
                         {album.media.length === 0 && (
-                            <div className="col-span-full rounded-3xl border border-gray-100 bg-white py-20 text-center shadow-sm">
+                            <div className="col-span-full border-t border-[#b7a676] py-20 text-center">
                                 <p className="text-gray-500">No media available in this album.</p>
                             </div>
                         )}
