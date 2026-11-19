@@ -72,7 +72,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                             setData('current_password', e.target.value)
                         }
                         type="password"
-                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                         autoComplete="current-password"
                     />
 
@@ -91,7 +91,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                         autoComplete="new-password"
                     />
 
@@ -111,7 +111,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                             setData('password_confirmation', e.target.value)
                         }
                         type="password"
-                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                         autoComplete="new-password"
                     />
 

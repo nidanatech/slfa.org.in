@@ -32,11 +32,11 @@ export default function Directory({ auth, members, filters, cities }) {
 
             <SLFAPageHero eyebrow="Members only" title={<>Your community <span className="italic font-light text-[#D4AF37]">directory</span></>} description="Find and connect with SLFA members who have chosen to appear in the directory." />
 
-            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     
                     {/* Filters & Search */}
-                    <div className="mb-8 rounded-3xl border border-gray-100 bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.04)] md:p-7">
+                    <div className="mb-10 border-y border-[#b7a676] py-6">
                         <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4">
                             
                             <div className="flex-1 relative">
@@ -44,14 +44,14 @@ export default function Directory({ auth, members, filters, cities }) {
                                 <input 
                                     type="text" 
                                     placeholder="Search by name, company, or profession..."
-                                    className="w-full rounded-xl border-gray-200 bg-[#FAF8F4] pl-10 shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                                    className="w-full rounded-none border-[#cbbb93] bg-white/70 pl-10 focus:border-[#800000] focus:ring-[#800000]"
                                     value={searchParams.search}
                                     onChange={(e) => setSearchParams({...searchParams, search: e.target.value})}
                                 />
                             </div>
 
                             <select 
-                                className="rounded-xl border-gray-200 bg-[#FAF8F4] shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                                className="rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                                 value={searchParams.city}
                                 onChange={(e) => handleParamChange('city', e.target.value)}
                             >
@@ -62,7 +62,7 @@ export default function Directory({ auth, members, filters, cities }) {
                             </select>
 
                             <select 
-                                className="rounded-xl border-gray-200 bg-[#FAF8F4] shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                                className="rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                                 value={searchParams.type}
                                 onChange={(e) => handleParamChange('type', e.target.value)}
                             >
@@ -72,7 +72,7 @@ export default function Directory({ auth, members, filters, cities }) {
                             </select>
 
                             <select 
-                                className="rounded-xl border-gray-200 bg-[#FAF8F4] shadow-sm focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                                className="rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                                 value={searchParams.sort}
                                 onChange={(e) => handleParamChange('sort', e.target.value)}
                             >
@@ -92,7 +92,7 @@ export default function Directory({ auth, members, filters, cities }) {
                             <Link 
                                 key={member.id} 
                                 href={route('directory.show', member.id)}
-                                className={`flex h-full flex-col rounded-3xl border bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl ${member.featured ? 'border-[#D4AF37] ring-1 ring-[#D4AF37]/30' : 'border-gray-100'}`}
+                                className={`flex h-full flex-col border-t p-5 transition-colors hover:bg-white/60 ${member.featured ? 'border-[#9a7714]' : 'border-[#b7a676]'}`}
                                 style={{ animationDelay: `${(index % 8) * 0.05}s` }}
                             >
                                 <div className="flex items-center gap-4 mb-4">
@@ -105,7 +105,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-slfa-navy text-lg leading-tight">{member.full_name}</h3>
-                                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full mt-1 inline-block ${member.membership_type === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                                        <span className="mt-1 inline-block text-xs font-semibold uppercase tracking-wide text-[#8b6915]">
                                             {member.membership_type}
                                         </span>
                                     </div>
@@ -126,7 +126,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                     )}
                                 </div>
 
-                                <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-3 text-sm font-semibold text-[#800000]">
+                                <div className="mt-auto flex items-center justify-between border-t border-[#d5c8a6] pt-3 text-sm font-semibold text-[#800000]">
                                     View Profile <ChevronRight className="w-4 h-4" />
                                 </div>
                             </Link>
@@ -134,7 +134,7 @@ export default function Directory({ auth, members, filters, cities }) {
                     </div>
 
                     {members.data.length === 0 && (
-                        <div className="rounded-3xl border border-gray-100 bg-white p-12 text-center shadow-sm">
+                        <div className="border-t border-[#b7a676] py-12 text-center">
                             <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                             <h3 className="text-xl font-bold text-slfa-navy mb-2">No members found</h3>
                             <p className="text-gray-500">Try adjusting your search or filters.</p>

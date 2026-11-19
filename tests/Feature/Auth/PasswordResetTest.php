@@ -21,6 +21,7 @@ class PasswordResetTest extends TestCase
 
     public function test_reset_password_link_can_be_requested(): void
     {
+        config()->set('mail.default', 'smtp');
         Notification::fake();
 
         $user = User::factory()->create();
@@ -32,6 +33,7 @@ class PasswordResetTest extends TestCase
 
     public function test_reset_password_screen_can_be_rendered(): void
     {
+        config()->set('mail.default', 'smtp');
         Notification::fake();
 
         $user = User::factory()->create();
@@ -49,6 +51,7 @@ class PasswordResetTest extends TestCase
 
     public function test_password_can_be_reset_with_valid_token(): void
     {
+        config()->set('mail.default', 'smtp');
         Notification::fake();
 
         $user = User::factory()->create();
@@ -69,5 +72,13 @@ class PasswordResetTest extends TestCase
 
             return true;
         });
+    }
+
+    public function test_log_mailer_does_not_claim_a_reset_email_was_sent(): void
+    {
+        config()->set('mail.default', 'log');
+
+        $this->post('/forgot-password', ['email' => 'kannan@nidanatech.com'])
+            ->assertSessionHasErrors('email');
     }
 }

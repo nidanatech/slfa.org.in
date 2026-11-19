@@ -10,15 +10,15 @@ export default function MemberProfile({ auth, member }) {
 
             <SLFAPageHero eyebrow="Member directory" title={member.full_name} description={member.membership_type === 'business' ? 'Business member profile' : 'Individual member profile'} backHref={route('directory')} backLabel="Back to directory" />
 
-            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                     
-                    <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]">
-                        <div className="p-8 md:p-12">
+                    <div className="border-t border-[#b7a676]">
+                        <div className="py-8 md:py-12">
                             <div className="flex flex-col md:flex-row gap-8 items-start">
                                 
                                 {/* Avatar */}
-                                <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#D4AF37]/15 text-5xl font-bold text-[#9A7714] shadow-inner md:h-36 md:w-36">
+                                <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden bg-[#D4AF37]/15 text-5xl font-bold text-[#9A7714] md:h-36 md:w-36">
                                     {member.photo_path ? (
                                         <img src={`/storage/${member.photo_path}`} alt="" className="w-full h-full object-cover" />
                                     ) : (
@@ -32,11 +32,11 @@ export default function MemberProfile({ auth, member }) {
                                         <div>
                                             <h2 className="font-abhaya text-3xl font-bold text-gray-950">{member.full_name}</h2>
                                             <div className="flex flex-wrap gap-2 mt-2">
-                                                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${member.membership_type === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                                                <span className="text-xs font-semibold uppercase tracking-wide text-[#8b6915]">
                                                     {member.membership_type === 'business' ? 'Business Member' : 'Individual Member'}
                                                 </span>
                                                 {member.member_id_string && (
-                                                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#D4AF37]/15 text-[#9A7714]">
+                                                    <span className="text-xs font-semibold text-[#9A7714]">
                                                         ID: {member.member_id_string}
                                                     </span>
                                                 )}
@@ -46,7 +46,7 @@ export default function MemberProfile({ auth, member }) {
                                     </div>
 
                                     {/* Info Grid */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 mt-8 border-t border-gray-100 pt-8">
+                                    <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 border-t border-[#d5c8a6] pt-8 md:grid-cols-2">
                                         
                                         {member.occupation && (
                                             <div className="flex items-start">

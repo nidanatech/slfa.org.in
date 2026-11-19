@@ -28,9 +28,9 @@ export default function Edit({ mustVerifyEmail, status, membership, directoryVis
             <Head title="Profile" />
             <SLFAPageHero eyebrow="Your account" title={<>Your <span className="italic font-light text-[#D4AF37]">profile</span></>} description="Keep your account details current and choose what you share with the member community." />
 
-            <section className="bg-[#FAF8F4] py-16 sm:py-20">
-                <div className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6 lg:px-8">
-                    <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+            <section className="bg-[#f5f1e9] py-16 sm:py-20">
+                <div className="mx-auto max-w-5xl space-y-12 px-4 sm:px-6 lg:px-8">
+                    <div className="border-t border-[#b7a676] pt-8">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
@@ -39,7 +39,7 @@ export default function Edit({ mustVerifyEmail, status, membership, directoryVis
                     </div>
 
                     {membership && (
-                        <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+                        <div className="border-t border-[#b7a676] pt-8">
                             <form onSubmit={updateMembership} className="max-w-xl space-y-5">
                                 <h2 className="font-abhaya text-2xl font-bold text-gray-950">Membership details</h2>
                                 <p className="text-sm text-gray-600">Update your details and choose your directory visibility.</p>
@@ -57,17 +57,17 @@ export default function Edit({ mustVerifyEmail, status, membership, directoryVis
                                             type={key === 'personal_email' ? 'email' : 'text'}
                                             value={membershipForm.data[key]}
                                             onChange={(event) => membershipForm.setData(key, event.target.value)}
-                                            className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                                            className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                                         />
                                         {membershipForm.errors[key] && <span className="text-red-600">{membershipForm.errors[key]}</span>}
                                     </label>
                                 ))}
-                                <label className="flex items-center gap-2 rounded-xl bg-[#FAF8F4] p-4 text-sm text-gray-700">
+                                <label className="flex items-center gap-2 border-t border-[#d5c8a6] py-4 text-sm text-gray-700">
                                     <input type="checkbox" checked={membershipForm.data.directory_visible}
                                         onChange={(event) => membershipForm.setData('directory_visible', event.target.checked)} />
                                     Show my profile in the private member directory
                                 </label>
-                                <label className="flex items-center gap-2 rounded-xl bg-[#FAF8F4] p-4 text-sm text-gray-700">
+                                <label className="flex items-center gap-2 border-t border-[#d5c8a6] py-4 text-sm text-gray-700">
                                     <input type="checkbox" checked={membershipForm.data.show_contact_info}
                                         onChange={(event) => membershipForm.setData('show_contact_info', event.target.checked)} />
                                     Share my email and mobile number with other active members
@@ -79,11 +79,11 @@ export default function Edit({ mustVerifyEmail, status, membership, directoryVis
                         </div>
                     )}
 
-                    <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+                    <div className="border-t border-[#b7a676] pt-8">
                         <UpdatePasswordForm className="max-w-xl" />
                     </div>
 
-                    <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+                    <div className="border-t border-[#b7a676] pt-8">
                         <DeleteUserForm className="max-w-xl" />
                     </div>
                 </div>

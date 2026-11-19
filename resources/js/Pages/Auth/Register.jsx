@@ -141,17 +141,14 @@ export default function Register() {
     const connections = ["Origin", "Ancestral", "Trade / Employment", "Education", "Spouse is a SriLankan"];
 
     return (
-        <div className="flex min-h-screen w-full font-lato antialiased bg-slfa-cream">
+        <div className="flex min-h-screen w-full bg-[#f5f1e9] font-lato antialiased">
             <Head title="Membership Application - SLFA" />
             <Toaster position="top-right" />
 
             {/* Left Side - Info & Branding */}
-            <div 
-                className="hidden w-1/3 flex-col justify-between p-12 text-white lg:flex relative overflow-hidden shadow-2xl z-10"
-                style={{ background: 'linear-gradient(135deg, #0d1e3d 0%, #1a365d 100%)' }}
-            >
-                <div className="absolute inset-0 bg-slfa-navy mix-blend-multiply opacity-50"></div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none font-abhaya text-[10rem] font-bold" aria-hidden="true">SLFA</div>
+            <div className="relative hidden w-1/3 flex-col justify-between overflow-hidden bg-gray-950 p-12 text-white lg:flex">
+                <img src="/images/sigiriya-rock.jpg" alt="" className="absolute inset-0 h-full w-full object-cover opacity-35" />
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-gray-950/75 to-gray-950/55" aria-hidden="true" />
                 
                 <div className="relative z-10">
                     <Link href="/" className="flex items-center group">
@@ -160,16 +157,16 @@ export default function Register() {
                 </div>
 
                 <div className="relative z-10">
-                    <h2 className="text-4xl font-abhaya font-extrabold text-white leading-tight tracking-tight mb-4">
-                        Join the <span className="text-transparent bg-clip-text bg-gradient-to-r from-slfa-primary to-slfa-accent">Community</span>
+                    <h2 className="mb-4 font-abhaya text-5xl font-bold leading-tight text-white">
+                        Join the <em className="font-normal text-[#D4AF37]">community</em>
                     </h2>
-                    <div className="kolam-divider text-slfa-primary mb-6 justify-start"><span className="kolam-dot"></span></div>
+                    <div className="mb-6 h-px w-20 bg-[#D4AF37]" aria-hidden="true" />
                     <p className="text-white/80 font-lato text-base font-light leading-relaxed mb-8">
                         Apply for SLFA membership to connect with fellow Sri Lankans, discover business networking opportunities, and participate in our cultural events across South India.
                     </p>
 
-                    <div className="mt-8 bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10 shadow-inner overflow-y-auto max-h-[45vh] custom-scrollbar">
-                        <h3 className="text-xl font-abhaya font-bold text-slfa-primary mb-3 flex items-center gap-2">
+                    <div className="mt-8 max-h-[45vh] overflow-y-auto border-t border-white/25 pt-5 custom-scrollbar">
+                        <h3 className="mb-3 flex items-center gap-2 font-abhaya text-xl font-bold text-[#D4AF37]">
                             <Info className="w-5 h-5" /> Eligibility
                         </h3>
                         <p className="text-white/80 text-sm font-light leading-relaxed mb-4">
@@ -179,7 +176,7 @@ export default function Register() {
                             The Company or a Body Corporate can also be admitted as a member in this association. The admission of the Company or Body Corporate shall be subject to the approval of the majority of the Executive Committee members. The said company or Body Corporate on admission as member shall be represented by two authorized persons of its Board resolved in this regard as members in this association.
                         </p>
                         
-                        <h3 className="text-xl font-abhaya font-bold text-slfa-primary mb-3 flex items-center gap-2">
+                        <h3 className="mb-3 flex items-center gap-2 font-abhaya text-xl font-bold text-[#D4AF37]">
                             <CreditCard className="w-5 h-5" /> Admission and Subscription Fees
                         </h3>
                         <p className="text-white/80 text-sm font-light leading-relaxed">
@@ -194,7 +191,7 @@ export default function Register() {
             </div>
 
             {/* Right Side - Form Wizard */}
-            <div className="flex w-full flex-col bg-white px-6 py-10 lg:w-2/3 lg:px-16 relative shadow-[-20px_0_40px_rgba(0,0,0,0.05)] z-20 overflow-y-auto">
+            <div className="relative flex w-full flex-col overflow-y-auto bg-[#f5f1e9] px-6 py-10 lg:w-2/3 lg:px-16">
                 <div className="absolute top-6 right-8">
                     <Link href="/" className="flex items-center gap-2 text-slfa-navy/60 hover:text-slfa-primary transition-colors text-sm font-bold tracking-wide uppercase font-lato group">
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -204,7 +201,7 @@ export default function Register() {
 
                 <div className="mx-auto w-full max-w-2xl mt-10">
                     <div className="mb-10 text-center">
-                        <h2 className="text-3xl font-abhaya font-extrabold text-slfa-navy mb-2 tracking-tight">Membership Application</h2>
+                        <h2 className="mb-2 font-abhaya text-4xl font-bold text-gray-950">Membership application</h2>
                         <p className="text-gray-500 font-lato">Complete the form below to apply for membership.</p>
                     </div>
 

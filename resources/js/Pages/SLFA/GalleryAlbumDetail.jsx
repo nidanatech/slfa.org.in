@@ -11,7 +11,7 @@ export default function GalleryAlbumDetail({ auth, album }) {
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={`${album.title} - Gallery`} />
 
-            <SLFAPageHero eyebrow="Community memories" title={album.title} description={album.description} backHref={route('gallery')} backLabel="Back to gallery" image={album.cover_image_path ? `/storage/${album.cover_image_path}` : null}>
+            <SLFAPageHero eyebrow="Community memories" title={album.title} description={album.description} backHref={`${route('happenings')}#news`} backLabel="Back to news & events" image={album.cover_image_path ? `/storage/${album.cover_image_path}` : null}>
                 {album.event && <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{album.event.title}</span>}
             </SLFAPageHero>
 

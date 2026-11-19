@@ -12,9 +12,9 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
     const renderFeedItem = (item) => {
         if (item.type === 'news') {
             return (
-                <div key={`${item.type}-${item.id}`} className="mb-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl">
+                <article key={`${item.type}-${item.id}`} className="border-t border-[#b7a676] py-6">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/15">
+                        <div className="flex h-10 w-10 items-center justify-center text-[#9A7714]">
                             <FileText className="h-5 w-5 text-[#9A7714]" />
                         </div>
                         <div>
@@ -23,26 +23,26 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                         </div>
                     </div>
                     {item.image_url && (
-                        <div className="mb-4 -mx-6">
+                        <div className="mb-4">
                             <img src={item.image_url} alt={item.title} className="w-full h-64 object-cover" />
                         </div>
                     )}
                     <h3 className="text-xl font-abhaya font-bold text-gray-900 mb-2">{item.title}</h3>
                     <p className="text-gray-600 font-light mb-4">{item.excerpt}</p>
-                    <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
+                    <div className="flex items-center justify-between border-t border-[#d5c8a6] pt-4">
                         <Link href={route('news.show', item.id)} className="flex items-center gap-1 text-sm font-bold text-[#800000] transition-colors hover:text-gray-950">
                             Read Full Post <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
-                </div>
+                </article>
             );
         }
 
         if (item.type === 'event') {
             return (
-                <div key={`${item.type}-${item.id}`} className="mb-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl">
+                <article key={`${item.type}-${item.id}`} className="border-t border-[#b7a676] py-6">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/15">
+                        <div className="flex h-10 w-10 items-center justify-center text-[#9A7714]">
                             <Calendar className="h-5 w-5 text-[#9A7714]" />
                         </div>
                         <div>
@@ -51,14 +51,14 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                         </div>
                     </div>
                     {item.image_url && (
-                        <div className="mb-4 -mx-6">
+                        <div className="mb-4">
                             <img src={item.image_url} alt={item.title} className="w-full h-64 object-cover" />
                         </div>
                     )}
                     <h3 className="text-xl font-abhaya font-bold text-gray-900 mb-2">{item.title}</h3>
                     <p className="text-gray-600 font-light mb-4">{item.excerpt}</p>
                     
-                    <div className="bg-gray-50 rounded-xl p-4 mb-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="mb-4 flex flex-col gap-4 border-t border-[#d5c8a6] pt-4 sm:flex-row sm:items-center">
                         <div className="flex items-center gap-2 text-sm text-gray-700">
                             <Clock className="w-4 h-4 text-gray-400" />
                             <span>{dayjs(item.date).format('h:mm A')}</span>
@@ -71,12 +71,12 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                         )}
                     </div>
 
-                    <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
+                    <div className="flex items-center justify-between border-t border-[#d5c8a6] pt-4">
                         <Link href={route('events.show', item.id)} className="flex items-center gap-1 text-sm font-bold text-[#800000] transition-colors hover:text-gray-950">
                             View Event Details <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
-                </div>
+                </article>
             );
         }
     };
@@ -87,10 +87,10 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
 
             <SLFAPageHero eyebrow="Member space" title={<>Welcome back, <span className="italic font-light text-[#D4AF37]">{user.name}</span></>} description="Your community updates, events, and membership links in one place." />
 
-            <section className="min-h-[40vh] bg-[#FAF8F4] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {user.account_status !== 'active' && (
-                        <p className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
+                        <p className="mb-6 border-l-2 border-amber-700 bg-amber-50 p-4 text-amber-900">
                             {user.account_status === 'pending'
                                 ? 'Your membership application is awaiting committee review.'
                                 : 'Your membership is currently inactive. Please contact SLFA for details.'}
@@ -100,9 +100,9 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                     <div className="flex flex-col lg:flex-row gap-8">
                         {/* LEFT SIDEBAR (Profile & Navigation) */}
                         <div className="w-full lg:w-1/4 flex flex-col gap-6">
-                            <div className="flex flex-col items-center rounded-3xl border border-gray-100 bg-white p-6 text-center shadow-sm">
-                                <div className="w-24 h-24 bg-gradient-to-tr from-slfa-primary to-slfa-accent rounded-full p-1 mb-4">
-                                    <div className="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+                            <div className="flex flex-col items-center border-t border-[#b7a676] py-6 text-center">
+                                <div className="mb-4 h-24 w-24 border border-[#b7a676] p-1">
+                                    <div className="flex h-full w-full items-center justify-center overflow-hidden">
                                         <UserCircle className="w-20 h-20 text-gray-300" />
                                     </div>
                                 </div>
@@ -117,26 +117,26 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                 </Link>
                             </div>
 
-                            <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
-                                <div className="p-4 border-b border-gray-100 bg-gray-50">
+                            <div className="border-t border-[#b7a676]">
+                                <div className="border-b border-[#d5c8a6] py-4">
                                     <h3 className="font-bold text-slfa-navy font-lato tracking-wide text-sm uppercase">Navigation</h3>
                                 </div>
-                                <div className="p-2 flex flex-col">
-                                    {user.account_status === 'active' && <Link href={route('directory')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
-                                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
-                                            <Users className="w-4 h-4 text-blue-500" />
+                                <div className="flex flex-col">
+                                    {user.account_status === 'active' && <Link href={route('directory')} className="flex items-center gap-3 border-b border-[#d5c8a6] py-3 text-gray-700 transition-colors hover:text-[#800000]">
+                                        <div className="flex h-8 w-8 items-center justify-center">
+                                            <Users className="h-4 w-4 text-[#9A7714]" />
                                         </div>
                                         Member Directory
                                     </Link>}
-                                    <Link href={route('happenings')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
-                                        <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
-                                            <Calendar className="w-4 h-4 text-purple-500" />
+                                    <Link href={route('happenings')} className="flex items-center gap-3 border-b border-[#d5c8a6] py-3 text-gray-700 transition-colors hover:text-[#800000]">
+                                        <div className="flex h-8 w-8 items-center justify-center">
+                                            <Calendar className="h-4 w-4 text-[#9A7714]" />
                                         </div>
                                         Events Calendar
                                     </Link>
-                                    {user.account_status === 'active' && <Link href={route('documents')} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium">
-                                        <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center">
-                                            <FileText className="w-4 h-4 text-green-500" />
+                                    {user.account_status === 'active' && <Link href={route('documents')} className="flex items-center gap-3 border-b border-[#d5c8a6] py-3 text-gray-700 transition-colors hover:text-[#800000]">
+                                        <div className="flex h-8 w-8 items-center justify-center">
+                                            <FileText className="h-4 w-4 text-[#9A7714]" />
                                         </div>
                                         Document Library
                                     </Link>}
@@ -156,7 +156,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                 {feed.length > 0 ? (
                                     feed.map(item => renderFeedItem(item))
                                 ) : (
-                                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center">
+                                    <div className="flex flex-col items-center border-t border-[#b7a676] py-12 text-center">
                                         <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                                             <FileText className="w-8 h-8 text-gray-400" />
                                         </div>
@@ -169,15 +169,15 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
 
                         {/* RIGHT SIDEBAR (Widgets) */}
                         <div className="w-full lg:w-1/4 flex flex-col gap-6">
-                            <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
-                                <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
+                            <div className="border-t border-[#b7a676]">
+                                <div className="flex items-center justify-between border-b border-[#d5c8a6] py-4">
                                     <h3 className="font-bold text-slfa-navy font-lato tracking-wide text-sm uppercase">Upcoming Events</h3>
                                     <Link href={route('happenings')} className="text-xs text-slfa-primary hover:underline">View All</Link>
                                 </div>
-                                <div className="p-4 flex flex-col gap-4">
+                                <div className="flex flex-col gap-4 py-4">
                                     {upcomingEvents.length > 0 ? upcomingEvents.map(event => (
                                         <div key={event.id} className="flex gap-4 items-start group">
-                                            <div className="flex flex-col items-center justify-center w-12 h-12 bg-gray-50 rounded-xl border border-gray-100 shrink-0">
+                                            <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center border border-[#d5c8a6]">
                                                 <span className="text-xs text-slfa-accent font-bold uppercase">{dayjs(event.start_at).format('MMM')}</span>
                                                 <span className="text-lg font-extrabold text-slfa-navy leading-none">{dayjs(event.start_at).format('D')}</span>
                                             </div>

@@ -42,7 +42,7 @@ export default function UpdateProfileInformation({
 
                     <TextInput
                         id="name"
-                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         required
@@ -59,7 +59,7 @@ export default function UpdateProfileInformation({
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full rounded-xl border-gray-200 bg-[#FAF8F4] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
