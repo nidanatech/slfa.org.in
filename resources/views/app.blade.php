@@ -45,7 +45,7 @@
                 'name' => 'Sri Lankan Friendship Association of South India',
                 'url' => route('home'),
                 'logo' => asset('images/slfa-logo.webp'),
-                'sameAs' => ['https://slfa.org.in/'],
+                'sameAs' => ['https://slfa.org.in/', 'https://www.facebook.com/slfaorg'],
             ];
             $contentSchema = null;
             if ($name === 'news.show' && $post) {

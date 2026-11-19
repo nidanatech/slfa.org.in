@@ -57,7 +57,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
 
     return (
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
-            <Head title="Home" />
+            <Head title="Sri Lankan Friendship Association of South India" />
 
             {/* Hero */}
             <section className="relative min-h-[100svh] bg-gray-950 overflow-hidden flex items-center pt-28 pb-16 sm:pt-32 sm:pb-20">

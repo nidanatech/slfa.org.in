@@ -147,20 +147,36 @@ export default function Directory({ auth, members, filters, cities }) {
                     {/* Pagination */}
                     {members.links.length > 3 && (
                         <div className="mt-12 flex justify-center gap-2">
-                            {members.links.map((link, i) => (
-                                <Link
-                                    key={i}
-                                    href={link.url}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}
-                                    className={`rounded-full px-4 py-2 ${
-                                        link.active 
-                                            ? 'bg-gray-950 text-white font-bold'
-                                            : !link.url 
-                                                ? 'text-gray-400 cursor-not-allowed'
+                            {members.links.map((link, i) => {
+                                const label = link.label
+                                    .replace('&laquo;', '«')
+                                    .replace('&raquo;', '»');
+
+                                if (!link.url) {
+                                    return (
+                                        <span
+                                            key={i}
+                                            className="rounded-full px-4 py-2 text-gray-400 cursor-not-allowed"
+                                        >
+                                            {label}
+                                        </span>
+                                    );
+                                }
+
+                                return (
+                                    <Link
+                                        key={i}
+                                        href={link.url}
+                                        className={`rounded-full px-4 py-2 ${
+                                            link.active
+                                                ? 'bg-gray-950 text-white font-bold'
                                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                                    }`}
-                                />
-                            ))}
+                                        }`}
+                                    >
+                                        {label}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     )}
 
