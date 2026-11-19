@@ -96,17 +96,13 @@ jobs:
           base_url="${SITE_URL%/}"
           echo '| Path | HTTP status |' >> "$GITHUB_STEP_SUMMARY"
           echo '| --- | --- |' >> "$GITHUB_STEP_SUMMARY"
+          failed=0
           for path in / /favicon.svg /membership /events; do
             status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$base_url$path" || true)
             printf '| `%s` | %s |\n' "$path" "$status" >> "$GITHUB_STEP_SUMMARY"
-          done
-          for attempt in 1 2 3; do
-            status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$SITE_URL" || true)
-            if [ "$status" = "200" ]; then
-              echo "Website returned HTTP 200"
-              exit 0
+            if [ "$status" != "200" ]; then
+              echo "Public route $path returned HTTP $status"
+              failed=1
             fi
-            echo "Attempt $attempt returned HTTP $status"
-            sleep 5
           done
-          exit 1
+          exit "$failed"
