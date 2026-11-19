@@ -2,7 +2,7 @@ name: Deploy to Hostinger
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ master ]
 
 jobs:
   deploy:
@@ -80,3 +80,18 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             php artisan storage:link || true
+
+      - name: Verify public website
+        env:
+          SITE_URL: https://venerable-mistyrose-quetzal-21.hostingersite.com/
+        run: |
+          for attempt in 1 2 3; do
+            status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$SITE_URL" || true)
+            if [ "$status" = "200" ]; then
+              echo "Website returned HTTP 200"
+              exit 0
+            fi
+            echo "Attempt $attempt returned HTTP $status"
+            sleep 5
+          done
+          exit 1
