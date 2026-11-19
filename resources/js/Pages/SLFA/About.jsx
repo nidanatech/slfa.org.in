@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
+import { useState } from 'react';
 
 const heroImages = ['/images/sigiriya-rock.jpg', '/images/kandyan-srilankandance.jpg', '/images/Sri-Lanka-Culture.webp'];
 const cultureImages = ['/images/kandyan-srilankandance.jpg', '/images/barathanatyam.avif', '/images/kathakali-kerala.jpg'];
@@ -12,17 +13,32 @@ const connections = [
     ['03', 'Support', 'A community that looks out for one another and creates lasting relationships.'],
 ];
 
-function CommitteeList({ title, members }) {
-    return <div className="mt-12">
-        <h3 className="border-b border-white/20 pb-4 font-lato text-xs font-bold uppercase tracking-[0.24em] text-[#D4AF37]">{title}</h3>
-        {members.length ? <div className="grid gap-x-12 md:grid-cols-2">
-            {members.map(member => <div key={member.id} className="flex min-w-0 items-center gap-5 border-b border-white/10 py-5">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 font-abhaya text-2xl text-[#D4AF37]">
-                    {member.photo_path ? <img src={`/storage/${member.photo_path}`} alt="" loading="lazy" width="64" height="64" className="h-full w-full object-cover" /> : member.name?.charAt(0)}
-                </div>
-                <div className="min-w-0"><h4 className="font-abhaya text-xl font-bold text-white">{member.name}</h4><p className="mt-1 font-lato text-xs uppercase tracking-wider text-[#D4AF37]">{member.role}</p></div>
-            </div>)}
-        </div> : <p className="border-b border-white/10 py-6 text-sm text-gray-300">Profiles will appear here once published by SLFA.</p>}
+function CommitteePortrait({ member, columns }) {
+    const [photoFailed, setPhotoFailed] = useState(false);
+    const initials = member.name?.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+
+    return <article className={`w-full max-w-[17rem] text-center sm:max-w-none sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.75rem)] ${columns === 4 ? 'xl:w-[calc(25%-2rem)]' : ''}`}>
+        <div className="mx-auto aspect-[4/5] w-44 overflow-hidden rounded-t-[1.6rem] rounded-b-md bg-gradient-to-br from-[#343b48] via-[#192331] to-[#0b111b] shadow-[0_20px_40px_-24px_rgba(22,22,22,0.4)] sm:w-48 lg:w-52">
+            {member.photo_path && !photoFailed
+                ? <img src={`/storage/${member.photo_path}`} alt="" loading="lazy" width="208" height="260" onError={() => setPhotoFailed(true)} className="h-full w-full object-cover object-top" />
+                : <div className="flex h-full w-full items-center justify-center font-abhaya text-6xl text-[#d6bb70]" aria-hidden="true">{initials}</div>}
+        </div>
+        <h4 className="mt-5 font-abhaya text-[1.65rem] font-bold leading-[1.05] text-[#101723]">{member.name}</h4>
+        <p className="mt-3 font-lato text-xs font-bold uppercase tracking-[0.14em] text-[#9d531b]">{member.role}</p>
+        {member.company && <p className="mt-2 font-lato text-sm text-gray-600">{member.company}</p>}
+        {member.designation && <p className="mt-1 font-lato text-xs text-gray-500">{member.designation}</p>}
+    </article>;
+}
+
+function CommitteeList({ title, members, columns }) {
+    return <div className="mt-16 border-t border-[#d5c8a6] pt-10 sm:mt-20">
+        <h3 className="text-center font-abhaya text-3xl font-bold text-[#101723] sm:text-4xl">{title}</h3>
+        <div className="mx-auto mt-4 h-px w-20 bg-[#a67725]" aria-hidden="true" />
+        {members.length
+            ? <div className="mx-auto mt-10 flex max-w-6xl flex-wrap justify-center gap-x-6 gap-y-14 lg:gap-x-10">
+                {members.map(member => <CommitteePortrait key={member.id} member={member} columns={columns} />)}
+            </div>
+            : <p className="mt-10 text-center text-gray-600">Profiles will appear here once published by SLFA.</p>}
     </div>;
 }
 
@@ -64,7 +80,7 @@ export default function About({ auth, leadershipSetup = [], executiveCommittee =
             </div>
         </section>
 
-        <section id="committee" className="scroll-mt-20 bg-[#101723] px-4 py-20 text-white sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">The people behind the association</p><h2 className="mt-5 font-abhaya text-4xl font-bold sm:text-6xl">Our committee</h2><CommitteeList title="Management" members={leadershipSetup} /><CommitteeList title="Executive Committee" members={executiveCommittee} /></div></section>
+        <section id="committee" className="scroll-mt-20 bg-[#f8f4ed] px-4 py-20 sm:px-6 lg:px-8 lg:py-28"><div className="mx-auto max-w-7xl"><div className="text-center"><p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#9a7714]">The people behind the association</p><h2 className="mt-4 font-abhaya text-5xl font-bold text-[#101723] sm:text-7xl">Our committee</h2><p className="mx-auto mt-4 max-w-2xl font-lato text-base leading-relaxed text-gray-600">Meet the people guiding SLFA and bringing our community together.</p></div><CommitteeList title="Management" members={leadershipSetup} columns={3} /><CommitteeList title="Executive Committee" members={executiveCommittee} columns={4} /></div></section>
 
         <section className="relative overflow-hidden bg-gray-950 px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-28"><PhotoBackdrop images={['/images/Sri-Lanka-Culture.webp', '/images/sigiriya-rock.jpg']} /><div className="absolute inset-0 bg-gray-950/75" aria-hidden="true" /><div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 lg:flex-row lg:items-end"><div><p className="font-lato text-xs font-bold uppercase tracking-[0.27em] text-[#D4AF37]">Your next chapter</p><h2 className="mt-5 max-w-2xl font-abhaya text-4xl font-bold leading-tight sm:text-6xl">Find your place in the community</h2><p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-200">Explore membership, meet the community, and apply online when you are ready.</p></div><Link href={route('membership')} className="inline-flex shrink-0 items-center gap-3 border-b border-[#D4AF37] pb-2 font-lato text-sm font-bold uppercase tracking-wider text-[#D4AF37] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">Explore membership <ArrowRight size={17} aria-hidden="true" /></Link></div></section>
     </SLFAWebsiteLayout>;
