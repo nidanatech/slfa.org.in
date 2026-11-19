@@ -4,7 +4,7 @@ import BrandMark from '@/Components/BrandMark';
 import {
     LayoutDashboard, Users, FileText, Calendar,
     Image as ImageIcon, Upload, Menu, X, CreditCard,
-    MessageSquare, Settings, LogOut, Bell, Shield
+    MessageSquare, Settings, LogOut, Bell, Shield, UserCircle
 } from 'lucide-react';
 
 export default function AdminLayout({ user, children }) {
@@ -23,6 +23,7 @@ export default function AdminLayout({ user, children }) {
         { name: 'Payments', href: route('admin.payments.index'), icon: CreditCard, current: url.startsWith('/admin/payments') },
         { name: 'Messages', href: route('admin.messages.index'), icon: MessageSquare, current: url.startsWith('/admin/messages') },
         { name: 'Committee', href: route('admin.committee.index'), icon: Settings, current: url.startsWith('/admin/committee') },
+        { name: 'My account', href: route('profile.edit'), icon: UserCircle, current: url.startsWith('/profile') },
     ];
 
     return (

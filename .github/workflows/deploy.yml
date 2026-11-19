@@ -67,11 +67,14 @@ jobs:
 
       - name: Post-Deployment Commands
         uses: appleboy/ssh-action@v1.2.0
+        env:
+          SLFA_ADMIN_PASSWORD: ${{ secrets.SLFA_ADMIN_PASSWORD }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT || 65002 }}
+          envs: SLFA_ADMIN_PASSWORD
           script: |
             set -e
             cd "${{ secrets.TARGET_DIR }}"
@@ -79,6 +82,13 @@ jobs:
             chmod -R 775 storage bootstrap/cache
 
             php artisan migrate --force
+            if [ ! -f storage/app/.admin-password-bootstrapped ]; then
+              : "${SLFA_ADMIN_PASSWORD:?SLFA_ADMIN_PASSWORD GitHub Actions secret is required for first deployment}"
+              php artisan db:seed --class=AdminUserSeeder --force
+              touch storage/app/.admin-password-bootstrapped
+              chmod 600 storage/app/.admin-password-bootstrapped
+            fi
+            unset SLFA_ADMIN_PASSWORD
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache

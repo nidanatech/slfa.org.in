@@ -20,6 +20,7 @@ class UserProfile extends Model
         'membership_fee_received' => 'date',
         'payment_date' => 'date',
         'date_of_enrollment' => 'date',
+        'application_declaration_at' => 'datetime',
     ];
 
     public function user()

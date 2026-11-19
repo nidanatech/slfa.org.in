@@ -2,7 +2,9 @@
 
 ## Set the administrator password
 
-The requested admin account is `kannan@nidanatech.com`. If the migration created it, its password is random and unknown. On the **hosting server**, from the Laravel project directory, run the seeder with a password entered privately at the shell prompt:
+The requested admin account is `kannan@nidanatech.com`. The first deployment after configuring the `SLFA_ADMIN_PASSWORD` GitHub Actions secret runs the seeder once on Hostinger. A marker in `storage/app` prevents later deployments from overwriting a password changed by the administrator.
+
+To set a different password directly on the **hosting server**, from the Laravel project directory, run the seeder with a password entered privately at the shell prompt:
 
 ```bash
 read -r -s -p 'New admin password: ' SLFA_ADMIN_PASSWORD

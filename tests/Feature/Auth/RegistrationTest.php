@@ -24,14 +24,16 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+            'password' => 'StrongPass123',
+            'password_confirmation' => 'StrongPass123',
             'membership_type' => 'individual',
             'directory_consent' => false,
+            'accept_declaration' => true,
             'profile' => [
-                'address' => 'Chennai',
+                'address' => 'Chennai, Tamil Nadu, India',
                 'mobile' => '9000000000',
-                'connection_with_srilanka' => ['Ancestry'],
+                'date_of_birth' => now()->subYears(25)->toDateString(),
+                'connection_with_srilanka' => ['Ancestral'],
             ],
             'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
         ]);
@@ -41,5 +43,85 @@ class RegistrationTest extends TestCase
         $this->assertDatabaseHas('members', ['email' => 'test@example.com', 'directory_visible' => false]);
         $path = \App\Models\User::where('email', 'test@example.com')->firstOrFail()->profile->id_proof_path;
         Storage::disk('local')->assertExists($path);
+        $this->assertNotNull(\App\Models\User::where('email', 'test@example.com')->firstOrFail()->profile->application_declaration_at);
+    }
+
+    public function test_business_application_requires_two_complete_representatives(): void
+    {
+        Storage::fake('local');
+        $data = [
+            'name' => 'Primary Contact',
+            'email' => 'business@example.com',
+            'password' => 'StrongPass123',
+            'password_confirmation' => 'StrongPass123',
+            'membership_type' => 'business',
+            'directory_consent' => false,
+            'accept_declaration' => true,
+            'profile' => [
+                'address' => '123 Beach Road, Chennai',
+                'mobile' => '+91 9000000000',
+                'business_name' => 'Example Trading Ltd',
+                'nature_of_business' => 'Company',
+                'date_of_incorporation' => '2019-01-01',
+                'connection_with_srilanka' => ['Trade / Employment'],
+            ],
+            'business_reps' => [
+                ['name' => 'First Representative', 'designation' => 'Director', 'email' => 'first@example.com', 'contact_number' => '+91 9000000001'],
+                ['name' => 'Second Representative', 'designation' => 'Director', 'email' => 'second@example.com', 'contact_number' => '+91 9000000002'],
+            ],
+            'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
+        ];
+
+        $this->post('/register', array_replace($data, ['business_reps' => [$data['business_reps'][0]]]))
+            ->assertSessionHasErrors('business_reps');
+        $this->assertDatabaseMissing('users', ['email' => 'business@example.com']);
+
+        $this->post('/register', $data)->assertRedirect(route('dashboard', absolute: false));
+        $this->assertDatabaseHas('business_representatives', ['name' => 'Second Representative']);
+        $this->assertDatabaseHas('members', ['email' => 'business@example.com', 'membership_type' => 'business', 'full_name' => 'Example Trading Ltd']);
+    }
+
+    public function test_underage_applicant_and_missing_declaration_are_rejected(): void
+    {
+        $this->post('/register', [
+            'name' => 'Young Applicant',
+            'email' => 'young@example.com',
+            'password' => 'StrongPass123',
+            'password_confirmation' => 'StrongPass123',
+            'membership_type' => 'individual',
+            'directory_consent' => false,
+            'profile' => [
+                'address' => '123 Beach Road, Chennai',
+                'mobile' => '9000000000',
+                'date_of_birth' => now()->subYears(16)->toDateString(),
+                'connection_with_srilanka' => ['Origin'],
+            ],
+            'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
+        ])->assertSessionHasErrors(['profile.date_of_birth', 'accept_declaration']);
+
+        $this->assertDatabaseMissing('users', ['email' => 'young@example.com']);
+    }
+
+    public function test_added_family_member_must_have_name_and_relationship(): void
+    {
+        $this->post('/register', [
+            'name' => 'Adult Applicant',
+            'email' => 'adult@example.com',
+            'password' => 'StrongPass123',
+            'password_confirmation' => 'StrongPass123',
+            'membership_type' => 'individual',
+            'directory_consent' => false,
+            'accept_declaration' => true,
+            'profile' => [
+                'address' => '123 Beach Road, Chennai',
+                'mobile' => '9000000000',
+                'date_of_birth' => now()->subYears(25)->toDateString(),
+                'connection_with_srilanka' => ['Origin'],
+            ],
+            'family_members' => [['name' => 'Child', 'relationship' => '']],
+            'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
+        ])->assertSessionHasErrors('family_members.0.relationship');
+
+        $this->assertDatabaseMissing('users', ['email' => 'adult@example.com']);
     }
 }
