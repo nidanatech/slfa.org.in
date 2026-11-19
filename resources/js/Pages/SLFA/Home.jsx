@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, Head } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import { MapPin, ArrowRight } from 'lucide-react';
@@ -11,12 +11,49 @@ const happeningsImages = ['/images/cta/gallery27.jpg', '/images/cta/gallery15.jp
 export default function Home({ auth, latestNews, upcomingEvents }) {
     const featuredEvent = upcomingEvents?.[0];
     const reducedMotion = useReducedMotion();
-    const [ripples, setRipples] = useState([]);
-    const addRipple = (event) => {
-        if (reducedMotion || event.pointerType !== 'mouse' || event.target.closest('a, button')) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        const id = `${Date.now()}-${Math.random()}`;
-        setRipples(current => [...current.slice(-2), { id, x: event.clientX - bounds.left, y: event.clientY - bounds.top }]);
+    const oceanRef = useRef(null);
+    const jqueryRef = useRef(null);
+    const rippleReadyRef = useRef(false);
+    const lastRippleRef = useRef(0);
+
+    useEffect(() => {
+        if (reducedMotion || !oceanRef.current) return undefined;
+        let active = true;
+        let $;
+
+        async function startRipples() {
+            try {
+                const jquery = await import('jquery');
+                await import('jquery.ripples');
+                if (!active || !oceanRef.current) return;
+                $ = jquery.default;
+                $(oceanRef.current).ripples({ resolution: 256, dropRadius: 16, perturbance: 0.025, interactive: false });
+                jqueryRef.current = $;
+                rippleReadyRef.current = true;
+            } catch (error) {
+                // WebGL is optional; keep the ocean image visible on unsupported devices.
+                rippleReadyRef.current = false;
+            }
+        }
+
+        startRipples();
+        return () => {
+            active = false;
+            if (rippleReadyRef.current && oceanRef.current && $) {
+                $(oceanRef.current).ripples('destroy');
+            }
+            rippleReadyRef.current = false;
+            jqueryRef.current = null;
+        };
+    }, [reducedMotion]);
+
+    const moveOcean = (event) => {
+        if (reducedMotion || !rippleReadyRef.current || event.pointerType !== 'mouse' || !oceanRef.current) return;
+        const now = performance.now();
+        if (now - lastRippleRef.current < 90) return;
+        lastRippleRef.current = now;
+        const bounds = oceanRef.current.getBoundingClientRect();
+        jqueryRef.current?.(oceanRef.current).ripples('drop', event.clientX - bounds.left, event.clientY - bounds.top, 14, 0.045);
     };
     const fadeUp = {
         hidden: { opacity: 0, y: 30 },
@@ -25,11 +62,11 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
 
     const carouselImages = [
         "/images/sigiriya-rock.jpg",
-        "/images/kandyan-srilankandance.jpg",
-        "/images/kalaripayuttu.webp",
-        "/images/Sri-Lanka-Culture.webp",
-        "/images/barathanatyam.avif",
-        "/images/kathakali-kerala.jpg"
+        "/images/carousel/kandyan-light.webp",
+        "/images/carousel/kalaripayuttu-light.webp",
+        "/images/carousel/sri-lanka-culture-light.webp",
+        "/images/carousel/bharatanatyam-light.webp",
+        "/images/carousel/kathakali-light.webp"
     ];
     const [currentImageIdx, setCurrentImageIdx] = useState(0);
 
@@ -68,11 +105,11 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             <Head title="Sri Lankan Friendship Association of South India" />
 
             {/* Hero */}
-            <section onPointerDown={addRipple} className="relative min-h-[100svh] overflow-hidden flex items-center bg-[#0d5079] pt-28 pb-24 sm:pt-32 sm:pb-28">
-                <img src="/images/hero-ocean-bg-slfa.jpg" alt="" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-center" aria-hidden="true" />
+            <section onPointerMove={moveOcean} className="relative min-h-[100svh] overflow-hidden flex items-center bg-[#0d5079] pt-28 pb-24 sm:pt-32 sm:pb-28">
+                <div ref={oceanRef} className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/hero-ocean-bg-slfa.jpg)' }} aria-hidden="true" />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#073a60]/45 via-[#0b4f79]/50 to-[#dcecf2]/55" aria-hidden="true" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#063650]/30 via-transparent to-[#073b5a]/20" aria-hidden="true" />
-                <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden="true">{ripples.map(ripple => <span key={ripple.id} className="ocean-ripple absolute" style={{ left: ripple.x, top: ripple.y }} onAnimationEnd={() => setRipples(current => current.filter(item => item.id !== ripple.id))} />)}</div>
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_42%,rgba(255,255,255,0.12)_75%,rgba(255,255,255,0.32)_100%)]" aria-hidden="true" />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
                     <motion.div
@@ -93,7 +130,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             aria-hidden="true"
                         >
                             <div className="w-full max-w-[840px]">
-                                <CanvasFlag src="/images/slfa-bg.png" />
+                                <CanvasFlag src="/images/slfa-bg.png" animate={!reducedMotion} />
                             </div>
                         </motion.div>
 

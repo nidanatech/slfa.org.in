@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 
 export default function CanvasFlag({ 
     src = '/images/slfa-bg.png', 
-    className = '' 
+    className = '',
+    animate = true
 }) {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
@@ -11,7 +12,6 @@ export default function CanvasFlag({
     const requestRef = useRef(null);
     
     // Animation state
-    const timeRef = useRef(0);
 
     useEffect(() => {
         const img = new Image();
@@ -36,13 +36,13 @@ export default function CanvasFlag({
         // Physics / Wave Configuration
         // Base wave
         const freq1 = 0.05;
-        const speed1 = 0.08;
-        const amp1 = 20;
+        const speed1 = 0.012;
+        const amp1 = 12;
         
         // Secondary ripple
         const freq2 = 0.15;
-        const speed2 = 0.12;
-        const amp2 = 6;
+        const speed2 = 0.018;
+        const amp2 = 4;
 
         let width = 0;
         let height = 0;
@@ -64,17 +64,12 @@ export default function CanvasFlag({
             canvas.height = height + (maxAmplitude * 2);
             canvas.style.width = `${width}px`;
             canvas.style.height = `${height + (maxAmplitude * 2)}px`;
+            if (!animate) render(0);
         };
 
-        // Initial resize
-        resize();
-        
-        // Handle window resize
-        window.addEventListener('resize', resize);
-
-        const render = () => {
-            timeRef.current += 1;
-            const t = timeRef.current;
+        const render = (timestamp) => {
+            // Use elapsed time so the movement is equally gentle on 60 Hz and 120 Hz screens.
+            const t = timestamp / (1000 / 60);
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -137,9 +132,11 @@ export default function CanvasFlag({
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
             
-            requestRef.current = requestAnimationFrame(render);
+            if (animate) requestRef.current = requestAnimationFrame(render);
         };
 
+        resize();
+        window.addEventListener('resize', resize);
         requestRef.current = requestAnimationFrame(render);
 
         return () => {
@@ -148,7 +145,7 @@ export default function CanvasFlag({
                 cancelAnimationFrame(requestRef.current);
             }
         };
-    }, [imageLoaded, src]);
+    }, [imageLoaded, src, animate]);
 
     return (
         <div ref={containerRef} className={`w-full flex justify-center items-center ${className}`}>
