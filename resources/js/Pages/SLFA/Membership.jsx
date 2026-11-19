@@ -23,7 +23,7 @@ export default function Membership({ auth }) {
             <Head title="Membership" />
             <SLFAPageHero eyebrow="Belong to SLFA" title={<>Connect, contribute, <span className="italic font-light text-[#D4AF37]">belong.</span></>} description="Join a community for Sri Lankan heritage, shared experiences, and lasting connections across South India.">
                 <Link href={route('register')} className="inline-flex items-center gap-2 rounded-full bg-[#D4AF37] px-7 py-3 font-bold uppercase tracking-wider text-gray-950 transition-colors hover:bg-white">Apply for membership <ArrowRight className="h-4 w-4" /></Link>
-                <Link href={route('events')} className="inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/10">Explore events</Link>
+                <Link href={route('happenings')} className="inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/10">Explore events</Link>
             </SLFAPageHero>
 
             <section className="bg-[#FAF8F4] py-20 sm:py-24">

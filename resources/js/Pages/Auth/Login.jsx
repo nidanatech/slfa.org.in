@@ -3,6 +3,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import BrandMark from '@/Components/BrandMark';
 
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -34,13 +35,7 @@ export default function Login({ status, canResetPassword }) {
             >
                 {/* Cultural background pattern/watermark */}
                 <div className="absolute inset-0 bg-slfa-navy mix-blend-multiply opacity-50"></div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-                    <img 
-                        src="/storage/legacy/logo_white.png" 
-                        alt="SLFA Watermark" 
-                        className="w-[600px] h-[600px] object-contain filter grayscale mix-blend-screen" 
-                    />
-                </div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none font-abhaya text-[15rem] font-bold" aria-hidden="true">SLFA</div>
                 
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-slfa-primary rounded-full blur-[100px] opacity-20 mix-blend-screen"></div>
@@ -48,7 +43,7 @@ export default function Login({ status, canResetPassword }) {
 
                 <div className="relative z-10">
                     <Link href="/" className="flex items-center group">
-                        <img src="/storage/legacy/logo_white.png" alt="SLFA Logo" className="h-16 object-contain drop-shadow-md" />
+                        <BrandMark />
                     </Link>
                 </div>
 

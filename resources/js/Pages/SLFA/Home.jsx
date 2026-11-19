@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Head } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { Calendar, MapPin, Globe2, ArrowRight, Download } from 'lucide-react';
+import { Calendar, MapPin, Globe2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import HeroMap from '@/Components/HeroMap';
 import CanvasFlag from '@/Components/CanvasFlag';
@@ -127,7 +127,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         </motion.div>
 
                         <motion.div variants={fadeUp} className="relative z-20 w-full max-w-3xl mt-7 sm:mt-9">
-                            <Link href={featuredEvent ? route('events.show', featuredEvent.id) : route('events')} className="group flex flex-col sm:flex-row sm:items-center gap-5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F0D36A] to-[#D4AF37] p-5 sm:p-6 text-left text-gray-950 shadow-[0_18px_60px_rgba(212,175,55,0.22)] ring-1 ring-white/20 transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_65px_rgba(212,175,55,0.34)]">
+                            <Link href={featuredEvent ? route('events.show', featuredEvent.id) : route('happenings')} className="group flex flex-col sm:flex-row sm:items-center gap-5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F0D36A] to-[#D4AF37] p-5 sm:p-6 text-left text-gray-950 shadow-[0_18px_60px_rgba(212,175,55,0.22)] ring-1 ring-white/20 transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_65px_rgba(212,175,55,0.34)]">
                                 <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-gray-950 text-[#F0D36A] font-lato">
                                     {featuredEvent ? (
                                         <>
@@ -253,7 +253,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
             </section>
 
             {/* Minimalist News & Events Grid */}
-            <section className="bg-[#faf9f7] py-20 md:py-24 border-t border-gray-100">
+            <section className="bg-[#f5f1e9] py-16 md:py-20 border-t border-[#D4AF37]/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-10">
                         <div>
@@ -264,7 +264,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                         {/* News Column */}
                         <div className="space-y-8">
                             <h3 className="text-xl font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-lato mb-8 border-b border-gray-200 pb-4">Latest News</h3>
@@ -272,7 +272,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                                 <motion.div
                                     key={post.id}
                                     initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
-                                    className="group cursor-pointer flex gap-8 items-start"
+                                    className="group flex gap-5 items-start rounded-2xl border border-[#d8d0c3] bg-white p-6 shadow-[0_12px_35px_rgba(20,24,34,0.04)]"
                                 >
                                     <div className="text-center w-16 pt-1">
                                         <div className="text-2xl font-abhaya font-bold text-slfa-navy group-hover:text-slfa-maroon transition-colors">{new Date(post.published_at).getDate()}</div>
@@ -318,19 +318,19 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                 </div>
             </section>
 
-            <section className="bg-white py-20 md:py-24 border-t border-gray-100">
+            <section className="bg-[#0b101c] py-16 md:py-20 border-t border-[#D4AF37]/20 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
                     <div>
                         <span className="uppercase tracking-[0.3em] text-xs font-bold text-[#9A7714] font-lato">Get involved</span>
-                        <h2 className="mt-4 text-4xl sm:text-5xl font-abhaya font-bold text-gray-950 leading-tight">Find your place in the community</h2>
-                        <p className="mt-5 text-lg text-gray-600 font-lato leading-relaxed">Come to a gathering, learn about our work, or apply to become a member. There is a clear next step wherever you start.</p>
+                        <h2 className="mt-4 text-4xl sm:text-5xl font-abhaya font-bold text-white leading-tight">Find your place in the community</h2>
+                        <p className="mt-5 text-lg text-gray-300 font-lato leading-relaxed">Come to a gathering, learn about our work, or apply to become a member. There is a clear next step wherever you start.</p>
                         <div className="mt-8 flex flex-wrap gap-3">
-                            <Link href={route('events')} className="inline-flex items-center gap-2 rounded-full bg-gray-950 px-6 py-3 text-sm font-bold text-white hover:bg-[#800000] transition-colors">Explore events <ArrowRight className="h-4 w-4" /></Link>
-                            <Link href={route('gallery')} className="inline-flex items-center gap-2 rounded-full border border-gray-300 px-6 py-3 text-sm font-bold text-gray-900 hover:border-[#800000] transition-colors">See our activities <ArrowRight className="h-4 w-4" /></Link>
+                            <Link href={route('happenings')} className="inline-flex items-center gap-2 rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-bold text-gray-950 hover:bg-white transition-colors">News & events <ArrowRight className="h-4 w-4" /></Link>
+                            <Link href={route('gallery')} className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition-colors">See our activities <ArrowRight className="h-4 w-4" /></Link>
                         </div>
                     </div>
-                    <div className="rounded-3xl bg-[#FAF8F4] p-7 sm:p-9 border border-gray-100">
-                        <h3 className="text-2xl font-abhaya font-bold text-gray-950">Membership at a glance</h3>
+                    <div className="rounded-3xl bg-white/[0.05] p-7 sm:p-9 border border-[#D4AF37]/25">
+                        <h3 className="text-2xl font-abhaya font-bold text-white">Membership at a glance</h3>
                         <ol className="mt-6 space-y-6">
                             {[
                                 ['Check eligibility', 'Adults in South India with a connection to Sri Lanka can apply.'],
@@ -339,11 +339,11 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             ].map(([title, description], index) => (
                                 <li key={title} className="flex gap-4">
                                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#D4AF37] text-sm font-bold text-gray-950">{index + 1}</span>
-                                    <div><h4 className="font-bold text-gray-950">{title}</h4><p className="mt-1 text-sm text-gray-600 leading-relaxed">{description}</p></div>
+                                    <div><h4 className="font-bold text-white">{title}</h4><p className="mt-1 text-sm text-gray-300 leading-relaxed">{description}</p></div>
                                 </li>
                             ))}
                         </ol>
-                        <Link href={route('membership')} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#800000] hover:underline">Read membership details <ArrowRight className="h-4 w-4" /></Link>
+                        <Link href={route('membership')} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#D4AF37] hover:underline">Read membership details <ArrowRight className="h-4 w-4" /></Link>
                     </div>
                 </div>
             </section>
@@ -391,22 +391,7 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                                 Apply Online Now
                             </Link>
 
-                            {/* Secondary Offline Actions */}
-                            <div className="flex flex-col items-center mt-4 w-full">
-                                <div className="flex items-center gap-4 text-xs text-gray-300 font-lato uppercase tracking-[0.2em] mb-6 w-full max-w-md opacity-80">
-                                    <span className="h-px bg-white/20 flex-1"></span>
-                                    <span>Or download offline forms</span>
-                                    <span className="h-px bg-white/20 flex-1"></span>
-                                </div>
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <a href="/storage/legacy/Individual-Membership-form.png" download className="group bg-black/30 backdrop-blur-sm border border-white/20 text-gray-200 hover:text-white hover:bg-white/10 hover:border-white/40 px-8 py-3 rounded-full font-lato text-xs uppercase tracking-widest font-bold transition-all duration-300 flex items-center justify-center">
-                                        <Download className="w-3 h-3 mr-2" /> Individual Form
-                                    </a>
-                                    <a href="/storage/legacy/Business-Membership-form.png" download className="group bg-black/30 backdrop-blur-sm border border-white/20 text-gray-200 hover:text-white hover:bg-white/10 hover:border-white/40 px-8 py-3 rounded-full font-lato text-xs uppercase tracking-widest font-bold transition-all duration-300 flex items-center justify-center">
-                                        <Download className="w-3 h-3 mr-2" /> Business Form
-                                    </a>
-                                </div>
-                            </div>
+                            <Link href={route('membership')} className="text-sm font-bold text-[#D4AF37] hover:text-white transition-colors">Learn how membership works</Link>
                         </div>
                     </motion.div>
                 </div>

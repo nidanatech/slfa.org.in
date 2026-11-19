@@ -6,6 +6,7 @@ import TextInput from '@/Components/TextInput';
 import { Mail, Lock, User, ArrowRight, ArrowLeft, Building2, Users, MapPin, Phone, Briefcase, Calendar, Link as LinkIcon, CheckCircle2, Info, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import toast, { Toaster } from 'react-hot-toast';
+import BrandMark from '@/Components/BrandMark';
 
 export default function Register() {
     const [step, setStep] = useState(1);
@@ -150,17 +151,11 @@ export default function Register() {
                 style={{ background: 'linear-gradient(135deg, #0d1e3d 0%, #1a365d 100%)' }}
             >
                 <div className="absolute inset-0 bg-slfa-navy mix-blend-multiply opacity-50"></div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-                    <img 
-                        src="/storage/legacy/logo_white.png" 
-                        alt="SLFA Watermark" 
-                        className="w-[800px] h-[800px] object-contain filter grayscale mix-blend-screen -ml-32" 
-                    />
-                </div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none font-abhaya text-[10rem] font-bold" aria-hidden="true">SLFA</div>
                 
                 <div className="relative z-10">
                     <Link href="/" className="flex items-center group">
-                        <img src="/storage/legacy/logo_white.png" alt="SLFA Logo" className="h-14 object-contain drop-shadow-md" />
+                        <BrandMark />
                     </Link>
                 </div>
 
