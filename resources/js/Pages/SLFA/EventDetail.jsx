@@ -4,9 +4,10 @@ import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import SLFAPageHero from '@/Components/SLFAPageHero';
 import { Calendar, MapPin, Clock, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 import { coverImageUrl } from '@/lib/coverImageUrl';
+import MediaSlideshow from '@/Components/MediaSlideshow';
 
-function EventMedia({ media = [], title }) {
-    return <div className="mt-5 grid gap-4 sm:grid-cols-2">{media.map(item => item.type === 'video' ? <video key={item.id} controls src={`/storage/${item.path}`} className="aspect-[4/3] w-full bg-gray-950 object-cover" /> : <a key={item.id} href={`/storage/${item.path}`} target="_blank" rel="noopener noreferrer"><img src={`/storage/${item.path}`} alt={item.caption || `Photo from ${title}`} loading="lazy" className="aspect-[4/3] w-full object-cover" />{item.caption && <span className="mt-2 block text-sm text-gray-600">{item.caption}</span>}</a>)}</div>;
+function EventMedia({ media = [], title, onOpen }) {
+    return <div className="mt-5 grid gap-4 sm:grid-cols-2">{media.map(item => <button key={item.id} type="button" onClick={() => onOpen(item.id)} aria-label={`Open ${item.caption || `${title} photo`} in slideshow`} className="group text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#800000]">{item.type === 'video' ? <video muted playsInline src={`/storage/${item.path}`} className="aspect-[4/3] w-full bg-gray-950 object-cover" /> : <img src={`/storage/${item.path}`} alt={item.caption || `Photo from ${title}`} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />}{item.caption && <span className="mt-2 block text-sm text-gray-600">{item.caption}</span>}</button>)}</div>;
 }
 
 export default function EventDetail({ auth, event, isGoing, admissionsOpen, flash }) {
@@ -24,6 +25,9 @@ export default function EventDetail({ auth, event, isGoing, admissionsOpen, flas
 
     const isPast = new Date(event.start_at) < new Date();
     const otherMedia = (event.albums || []).flatMap(album => album.media || []).filter(item => !item.programme_item_id);
+    const allMedia = [...(event.programme_items || []).flatMap(item => item.media || []), ...otherMedia];
+    const [slideIndex, setSlideIndex] = useState(null);
+    const openMedia = id => setSlideIndex(allMedia.findIndex(item => item.id === id));
     const zone = event.timezone || 'Asia/Kolkata';
     const price = (amount) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
 
@@ -56,12 +60,12 @@ export default function EventDetail({ auth, event, isGoing, admissionsOpen, flas
 
                                 {event.programme_items?.length > 0 && <section className="mt-12 border-t border-[#b7a676] pt-8" aria-labelledby="event-programme-heading">
                                     <h3 id="event-programme-heading" className="font-abhaya text-3xl font-bold text-gray-950">Programme</h3>
-                                    <ol id={isPast ? 'photos' : undefined} className="mt-6 scroll-mt-24 border-t border-[#d5c8a6]">{event.programme_items.map(item => <li id={`programme-${item.id}`} key={item.id} className="grid scroll-mt-24 gap-2 border-b border-[#d5c8a6] py-6 sm:grid-cols-[6rem_1fr]"><time className="font-lato text-sm font-bold text-[#8b6915]">{new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'UTC' }).format(new Date(`2000-01-01T${item.time}:00Z`))}</time><div><h4 className="font-abhaya text-2xl font-bold text-gray-950">{item.title}</h4>{item.details && <p className="mt-1 text-sm leading-relaxed text-gray-600">{item.details}</p>}{isPast && item.media?.length > 0 && <EventMedia media={item.media} title={item.title} />}</div></li>)}</ol>
+                                    <ol id={isPast ? 'photos' : undefined} className="mt-6 scroll-mt-24 border-t border-[#d5c8a6]">{event.programme_items.map(item => <li id={`programme-${item.id}`} key={item.id} className="grid scroll-mt-24 gap-2 border-b border-[#d5c8a6] py-6 sm:grid-cols-[6rem_1fr]"><time className="font-lato text-sm font-bold text-[#8b6915]">{new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'UTC' }).format(new Date(`2000-01-01T${item.time}:00Z`))}</time><div><h4 className="font-abhaya text-2xl font-bold text-gray-950">{item.title}</h4>{item.details && <p className="mt-1 text-sm leading-relaxed text-gray-600">{item.details}</p>}{isPast && item.media?.length > 0 && <EventMedia media={item.media} title={item.title} onOpen={openMedia} />}</div></li>)}</ol>
                                 </section>}
 
                                 {event.sponsors?.length > 0 && <section className="mt-12 border-t border-[#b7a676] pt-8" aria-labelledby="event-sponsors-heading"><h3 id="event-sponsors-heading" className="font-abhaya text-3xl font-bold text-gray-950">Sponsors & partners</h3><div className="mt-5 flex flex-wrap gap-x-8 gap-y-4">{event.sponsors.map(sponsor => sponsor.website_url ? <a key={sponsor.id} href={sponsor.website_url} target="_blank" rel="sponsored noopener noreferrer" className="border-b border-[#800000] pb-1 font-bold text-[#800000] hover:text-gray-950">{sponsor.name} ↗</a> : <span key={sponsor.id} className="font-bold text-gray-700">{sponsor.name}</span>)}</div></section>}
 
-                                {isPast && otherMedia.length > 0 && <section id={event.programme_items?.length ? undefined : 'photos'} className="mt-12 scroll-mt-24 border-t border-[#b7a676] pt-8"><h3 className="font-abhaya text-3xl font-bold text-gray-950">More moments</h3><EventMedia media={otherMedia} title={event.title} /></section>}
+                                {isPast && otherMedia.length > 0 && <section id={event.programme_items?.length ? undefined : 'photos'} className="mt-12 scroll-mt-24 border-t border-[#b7a676] pt-8"><h3 className="font-abhaya text-3xl font-bold text-gray-950">More moments</h3><EventMedia media={otherMedia} title={event.title} onOpen={openMedia} /></section>}
                             </article>
                         </div>
 
@@ -138,6 +142,7 @@ export default function EventDetail({ auth, event, isGoing, admissionsOpen, flas
                     </div>
                 </div>
             </section>
+            {slideIndex !== null && slideIndex >= 0 && <MediaSlideshow items={allMedia} initialIndex={slideIndex} onClose={() => setSlideIndex(null)} title={event.title} srcForItem={item => `/storage/${item.path}`} />}
         </SLFAWebsiteLayout>
     );
 }

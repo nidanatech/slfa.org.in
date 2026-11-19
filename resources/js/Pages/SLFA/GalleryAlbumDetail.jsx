@@ -3,9 +3,10 @@ import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import SLFAPageHero from '@/Components/SLFAPageHero';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
+import MediaSlideshow from '@/Components/MediaSlideshow';
 
 export default function GalleryAlbumDetail({ auth, album }) {
-    const [selectedMedia, setSelectedMedia] = useState(null);
+    const [slideIndex, setSlideIndex] = useState(null);
 
     return (
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
@@ -24,7 +25,7 @@ export default function GalleryAlbumDetail({ auth, album }) {
                                 key={item.id} 
                                 className="aspect-square overflow-hidden bg-gray-950 text-left transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
                                 style={{ animationDelay: `${(index % 10) * 0.05}s` }}
-                                onClick={() => setSelectedMedia(item)}
+                                onClick={() => setSlideIndex(index)}
                                 aria-label={`View ${item.caption || `${item.type} ${index + 1}`}`}
                             >
                                 {item.type === 'video' ? (
@@ -51,25 +52,7 @@ export default function GalleryAlbumDetail({ auth, album }) {
                 </div>
             </section>
 
-            {/* Lightbox Modal */}
-            {selectedMedia && (
-                <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setSelectedMedia(null)}>
-                    <button type="button" aria-label="Close image" className="absolute top-4 right-4 text-white hover:text-[#D4AF37] transition bg-white/10 rounded-full p-2">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                    
-                    <div className="max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center" onClick={e => e.stopPropagation()}>
-                        {selectedMedia.type === 'video' ? (
-                            <video src={`/storage/${selectedMedia.path}`} controls autoPlay className="max-w-full max-h-[80vh] rounded shadow-2xl"></video>
-                        ) : (
-                            <img src={`/storage/${selectedMedia.path}`} alt="" className="max-w-full max-h-[80vh] object-contain rounded shadow-2xl" />
-                        )}
-                        {selectedMedia.caption && (
-                            <p className="text-white mt-4 text-center">{selectedMedia.caption}</p>
-                        )}
-                    </div>
-                </div>
-            )}
+            {slideIndex !== null && <MediaSlideshow items={album.media} initialIndex={slideIndex} onClose={() => setSlideIndex(null)} title={album.title} srcForItem={item => `/storage/${item.path}`} />}
         </SLFAWebsiteLayout>
     );
 }
