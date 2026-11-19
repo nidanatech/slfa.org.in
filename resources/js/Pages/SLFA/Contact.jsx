@@ -5,7 +5,7 @@ import InputError from '@/Components/InputError';
 import { motion } from 'motion/react';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
 
-const contactHeroImages = ['/images/hero-ocean-bg-slfa.jpg', '/images/sigiriya-rock.jpg'];
+const contactHeroImages = ['/images/sigiriya-rock.jpg', '/images/Sri-Lanka-Culture.webp'];
 
 export default function Contact({ auth, flash }) {
     const { data, setData, post, processing, errors, reset } = useForm({

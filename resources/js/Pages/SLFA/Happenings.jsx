@@ -4,7 +4,7 @@ import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import PhotoBackdrop from '@/Components/PhotoBackdrop';
 import { coverImageUrl } from '@/lib/coverImageUrl';
 
-const heroImages = ['/images/hero-ocean-bg-slfa.jpg', '/images/kandyan-srilankandance.jpg', '/images/Sri-Lanka-Culture.webp'];
+const heroImages = ['/images/kandyan-srilankandance.jpg', '/images/Sri-Lanka-Culture.webp'];
 const formatDate = (value, month = 'long') => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month, year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 const summary = (body = '') => body.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 

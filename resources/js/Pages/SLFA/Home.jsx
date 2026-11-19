@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Head } from '@inertiajs/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
-import { Calendar, MapPin, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import HeroMap from '@/Components/HeroMap';
 import CanvasFlag from '@/Components/CanvasFlag';
@@ -129,29 +129,17 @@ export default function Home({ auth, latestNews, upcomingEvents }) {
                             </div>
                         </motion.div>
 
-                        <motion.div variants={fadeUp} className="relative z-20 w-full max-w-3xl mt-7 sm:mt-9">
-                            <Link href={featuredEvent ? route('events.show', featuredEvent.id) : route('happenings')} className="group flex flex-col sm:flex-row sm:items-center gap-5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F0D36A] to-[#D4AF37] p-5 sm:p-6 text-left text-gray-950 shadow-[0_18px_60px_rgba(212,175,55,0.22)] ring-1 ring-white/20 transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_65px_rgba(212,175,55,0.34)]">
-                                <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-gray-950 text-[#F0D36A] font-lato">
-                                    {featuredEvent ? (
-                                        <>
-                                            <span className="text-2xl font-bold leading-none">{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { day: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
-                                            <span className="text-xs font-bold uppercase">{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' })}</span>
-                                        </>
-                                    ) : <Calendar className="h-7 w-7" aria-hidden="true" />}
+                        <motion.div variants={fadeUp} className="relative z-20 mt-9 w-full max-w-3xl border-t border-[#D4AF37]/45 pt-5 text-left sm:mt-11">
+                            <Link href={featuredEvent ? route('events.show', featuredEvent.id) : route('happenings')} className="group grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37]">
+                                <div className="min-w-0">
+                                    <span className="font-lato text-[11px] font-bold uppercase tracking-[0.22em] text-[#D4AF37]">Upcoming event</span>
+                                    <h2 className="mt-2 font-abhaya text-2xl font-bold leading-tight text-white transition-colors group-hover:text-[#F0D36A] sm:text-3xl">{featuredEvent ? featuredEvent.title : 'Find your next SLFA gathering'}</h2>
+                                    {featuredEvent ? <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-lato text-sm text-gray-300">
+                                        <span>{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
+                                        {featuredEvent.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 shrink-0 text-[#D4AF37]" aria-hidden="true" />{featuredEvent.location}</span>}
+                                    </span> : <p className="mt-2 font-lato text-sm text-gray-300">See what is coming up in the community.</p>}
                                 </div>
-                                <div className="min-w-0 flex-1">
-                                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] font-lato">Upcoming events</span>
-                                    <h2 className="mt-1 text-xl sm:text-2xl font-abhaya font-bold leading-tight">{featuredEvent ? featuredEvent.title : 'Find your next SLFA gathering'}</h2>
-                                    {featuredEvent ? (
-                                        <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-lato text-gray-800">
-                                            <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4 shrink-0" aria-hidden="true" />{new Date(featuredEvent.start_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
-                                            {featuredEvent.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />{featuredEvent.location}</span>}
-                                        </span>
-                                    ) : (
-                                        <p className="mt-1.5 text-sm font-lato text-gray-800">Dates will appear here when the next event is announced.</p>
-                                    )}
-                                </div>
-                                <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-gray-950 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white font-lato group-hover:bg-[#800000] transition-colors">{featuredEvent ? 'View event' : 'Explore events'} <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></span>
+                                <span className="inline-flex items-center gap-2 border-b border-[#D4AF37]/70 pb-1 font-lato text-xs font-bold uppercase tracking-wider text-[#D4AF37] sm:mb-1">{featuredEvent ? 'Event details' : 'Explore events'} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
                             </Link>
                         </motion.div>
                     </motion.div>
