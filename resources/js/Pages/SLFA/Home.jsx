@@ -4,6 +4,7 @@ import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Pla
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import CommunityWord from '@/Components/CommunityWord';
+import CoastlineMap from '@/Components/CoastlineMap';
 import { coverImageUrl } from '@/lib/coverImageUrl';
 
 const cultureImages = [
@@ -49,7 +50,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
 
                 </div>
                 <div className="cream-map">
-                    <img src="/images/south-india-sri-lanka-light.webp" alt="Watercolour map of South India in green and Sri Lanka in gold" width="1024" height="1280" fetchPriority="high" />
+                    <CoastlineMap />
                     <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true"><ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" /><path className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" /><circle cx="95" cy="155" r="5" fill="#1b7a4a" /><circle cx="360" cy="465" r="5" fill="#e67e22" /></svg>
                     <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption>Friendships that feel like home</figcaption></figure>
                     <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption>Our heritage, celebrated</figcaption></figure>
@@ -119,9 +120,9 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         {latestNews?.length ? latestNews.slice(0, 3).map(post => <article key={post.id}>
                             <Link href={route('news.show', post.public_id)} className="cream-news-link">
                                 {post.cover_image_path ? <div className="cream-photo"><img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" /></div> : <div className="cream-photo cream-photo-placeholder" aria-hidden="true">SLFA</div>}
-                                <time dateTime={post.published_at}>{dateLabel(post.published_at)}</time>
+                                <div className="cream-news-copy"><time dateTime={post.published_at}>{dateLabel(post.published_at)}</time>
                                 <h3>{post.title}</h3>
-                                <span className="cream-link">Read story <ArrowRight size={15} /></span>
+                                <span className="cream-link">Read story <ArrowRight size={15} /></span></div>
                             </Link>
                         </article>) : <p>Stories from the community will appear here as they are published.</p>}
                     </div>
