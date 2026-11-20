@@ -36,6 +36,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
             <link rel="preload" as="image" href="/images/south-india-sri-lanka-light.webp" />
         </Head>
         <div className="cream-home">
+            <div className="cream-hero-surface">
             <section className="cream-hero cream-container" aria-labelledby="home-title">
                 <div className="cream-hero-copy">
                     <p className="cream-eyebrow">Sri Lankan Friendship Association of South India</p>
@@ -67,21 +68,21 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 </div>
             </section>
 
-            <section className="cream-section cream-container" aria-labelledby="community-title">
-                <div className="cream-story">
-                    <div>
+            </div>
+            <section className="cream-community-background" aria-labelledby="community-title">
+                <div className="cream-community-slides" aria-hidden="true">
+                    <AnimatePresence initial={false}>
+                        <motion.img key={imageIndex} src={cultureImages[imageIndex]} alt="" loading="lazy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 1.4 }} />
+                    </AnimatePresence>
+                </div>
+                <div className="cream-community-veil" aria-hidden="true" />
+                <div className="cream-container cream-community-content">
+                    <div className="cream-community-copy">
                         <p className="cream-eyebrow">Friendship across borders</p>
                         <h2 id="community-title" className="cream-title"><span className="sr-only">A community built on connection</span><span aria-hidden="true">A <CommunityWord /><br />built on <em>connection.</em></span></h2>
                         <p>SLFA brings together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.</p>
                         <p>From celebrating our heritage to helping one another, there is a place here to belong, contribute, and grow.</p>
                         <Link href={route('about')} className="cream-link">Meet the association <ArrowRight size={17} /></Link>
-                    </div>
-                    <div className="cream-culture-wrap">
-                    <div className="cream-culture" aria-hidden="true">
-                        <AnimatePresence initial={false}>
-                            <motion.img key={imageIndex} src={cultureImages[imageIndex]} alt="" loading="lazy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 1.4 }} />
-                        </AnimatePresence>
-                    </div>
                     <div className="cream-culture-controls" role="group" aria-label="Cultural photographs">
                         <span>Culture that connects us <small>{imageIndex + 1} / {cultureImages.length}</small></span>
                         <button type="button" aria-label="Previous cultural photograph" onClick={() => { setPaused(true); setImageIndex(index => (index + cultureImages.length - 1) % cultureImages.length); }}><ChevronLeft size={18} /></button>
@@ -90,6 +91,8 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                     </div>
                     </div>
                 </div>
+            </section>
+            <section className="cream-section cream-container" aria-label="Ways to connect with the community">
                 <div className="cream-connections">
                     {connections.map((item, index) => <motion.article key={item.title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
                         <div className="cream-photo"><img src={item.image} alt={item.alt} loading="lazy" width="1024" height="768" /></div>

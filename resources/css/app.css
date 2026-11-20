@@ -426,3 +426,26 @@ section.bg-\[\#faf9f7\] {
   .cream-news-editorial article:not(:first-child) .cream-news-link { column-gap: 16px; grid-template-columns: 34% 1fr; }
   .cream-news-editorial article:not(:first-child) h3 { font-size: 20px; }
 }
+
+/* Match the watercolor's warm ground, then let cultural photographs fill the story. */
+.cream-hero-surface { background: #f8f1e5; }
+.cream-hero::before { display: none; }
+.cream-map > img { mix-blend-mode: multiply; opacity: 1; }
+.slfa-cream nav { background: rgba(248,241,229,.97); }
+.cream-community-background { position: relative; isolation: isolate; overflow: hidden; background: #faf7f2; }
+.cream-community-slides { position: absolute; inset: 0; z-index: -2; }
+.cream-community-slides img { position: absolute; right: 0; top: 0; width: 72%; height: 100%; object-fit: cover; object-position: center 35%; }
+.cream-community-veil { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg,#faf7f2 12%,#faf7f2f2 35%,#faf7f2b3 50%,#faf7f210 78%),linear-gradient(0deg,#faf7f2,transparent 18%,transparent 85%,#faf7f270); }
+.cream-community-content { padding-block: 90px 64px; min-height: 580px; display: flex; align-items: center; }
+.cream-community-copy { width: 51%; max-width: 590px; }
+.cream-community-copy > p:not(.cream-eyebrow) { font-size: 17px; font-weight: 300; line-height: 1.85; color: #46534a; margin: 20px 0; }
+.cream-community-copy > .cream-link { margin-top: 8px; }
+.cream-community-copy .cream-culture-controls { margin-top: 36px; max-width: 360px; border-color: #cdd4c1; }
+.cream-community-background + section .cream-connections { margin-top: 0; }
+@media(max-width: 767px) {
+  .cream-community-content { padding-block: 56px 80px; min-height: 650px; }
+  .cream-community-copy { width: 100%; }
+  .cream-community-slides img { width: 100%; object-position: 65% center; }
+  .cream-community-veil { background: linear-gradient(90deg,#faf7f2f5,#faf7f2d9 65%,#faf7f2b3),linear-gradient(0deg,#faf7f2,transparent 25%,transparent 85%,#faf7f2); }
+  .cream-community-copy > p:not(.cream-eyebrow) { font-size: 16px; }
+}
