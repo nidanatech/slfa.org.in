@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Head } from '@inertiajs/react';
-import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Play, HeartHandshake, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import CommunityWord from '@/Components/CommunityWord';
@@ -15,9 +15,9 @@ const cultureImages = [
 ];
 const dateLabel = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 const connections = [
-    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', Icon: HeartHandshake },
-    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', Icon: Sparkles },
-    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', Icon: Users },
+    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/themes/shared-roots.webp' },
+    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/themes/shared-celebrations.webp' },
+    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/themes/shared-possibilities.webp' },
 ];
 
 export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
@@ -46,6 +46,18 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <Link href={auth.user ? route('dashboard') : route('register')} className="cream-button">{auth.user ? 'Your membership' : 'Apply for membership'} <ArrowRight size={17} /></Link>
                         <Link href={route('about')} className="cream-link">Explore the association <ArrowRight size={17} /></Link>
                     </div>
+
+                </div>
+                <div className="cream-map">
+                    <img src="/images/south-india-sri-lanka-light.webp" alt="Watercolour map of South India in green and Sri Lanka in gold" width="1024" height="1280" fetchPriority="high" />
+                    <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true"><ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" /><path className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" /><circle cx="95" cy="155" r="5" fill="#1b7a4a" /><circle cx="360" cy="465" r="5" fill="#e67e22" /></svg>
+                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption>Friendships that feel like home</figcaption></figure>
+                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption>Our heritage, celebrated</figcaption></figure>
+                    <p>Two places. A shared sense of belonging.</p>
+                </div>
+            </section>
+            <div className="cream-hero-event-band">
+                <div className="cream-container">
                     <div className="cream-event">
                         {event ? <div className="cream-date-stamp" aria-hidden="true"><span>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</span><small>{new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</small></div> : <CalendarDays className="cream-event-icon" size={26} aria-hidden="true" />}
                         <div>
@@ -59,26 +71,18 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         </div>
                     </div>
                 </div>
-                <div className="cream-map">
-                    <img src="/images/south-india-sri-lanka-light.webp" alt="Watercolour map of South India in green and Sri Lanka in gold" width="1024" height="1280" fetchPriority="high" />
-                    <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true"><ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" /><path className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" /><circle cx="95" cy="155" r="5" fill="#1b7a4a" /><circle cx="360" cy="465" r="5" fill="#e67e22" /></svg>
-                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption>Friendships that feel like home</figcaption></figure>
-                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption>Our heritage, celebrated</figcaption></figure>
-                    <p>Two places. A shared sense of belonging.</p>
-                </div>
-            </section>
-
+            </div>
             </div>
             <div className="cream-section-bridge" aria-hidden="true"><span /><i /><span /></div>
             <section className="cream-section cream-container" aria-label="Ways to connect with the community">
                 <div className="cream-connections cream-connections-pillars">
-                    {connections.map(({ title, description, Icon }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
-                        <div className="cream-pillar-head">
-                            <span className="cream-pillar-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.75} /></span>
+                    {connections.map(({ title, description, image }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
+                        <img className="cream-pillar-background" src={image} alt="" aria-hidden="true" loading="lazy" width="1200" height="800" />
+                        <div className="cream-pillar-content">
                             <span className="cream-story-number">0{index + 1}</span>
+                            <h3>{title}</h3>
+                            <p>{description}</p>
                         </div>
-                        <h3>{title}</h3>
-                        <p>{description}</p>
                     </motion.article>)}
                 </div>
             </section>
