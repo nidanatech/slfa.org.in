@@ -73,7 +73,6 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 </div>
             </div>
             </div>
-            <div className="cream-section-bridge" aria-hidden="true"><span /><i /><span /></div>
             <section className="cream-section cream-container" aria-label="Ways to connect with the community">
                 <div className="cream-connections cream-connections-pillars">
                     {connections.map(({ title, description, image }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
@@ -113,7 +112,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
             <section className="cream-section cream-updates" aria-labelledby="updates-title">
                 <div className="cream-container">
                     <div className="cream-section-heading">
-                        <div><p className="cream-eyebrow">Life at SLFA</p><h2 id="updates-title" className="cream-title">Our community, <em>in motion.</em></h2></div>
+                        <div><p className="cream-eyebrow">News & community stories</p><h2 id="updates-title" className="cream-title">Life at <em>SLFA</em></h2><p className="cream-updates-intro">The people, gatherings, and shared moments that bring us together.</p></div>
                         <Link href={route('happenings')} className="cream-link">All news & events <ArrowRight size={17} /></Link>
                     </div>
                     <div className="cream-news-grid cream-news-editorial">

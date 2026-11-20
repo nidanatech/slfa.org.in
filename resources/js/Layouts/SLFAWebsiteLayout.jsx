@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
 import BrandMark from '@/Components/BrandMark';
 
 export default function SLFAWebsiteLayout({ children, user, darkNav = false, vibrant = false, cream = false }) {
@@ -132,6 +132,30 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
                 {children}
             </main>
 
+            {cream ? <footer className="cream-site-footer">
+                <div className="cream-container">
+                    <div className="cream-footer-grid">
+                        <div className="cream-footer-brand">
+                            <Link href={route('home')} aria-label="SLFA home"><BrandMark /></Link>
+                            <h2>Friendship. Culture.<br /><span>Connection.</span></h2>
+                            <p>Sri Lankan Friendship Association of South India brings our community together through shared heritage, friendship, and mutual support.</p>
+                            <small>Registration No. 234/2019</small>
+                        </div>
+                        <nav aria-label="Footer navigation" className="cream-footer-nav">
+                            <h3>Explore SLFA</h3>
+                            <ul>{navLinks.map(link => <li key={link.name}><Link href={link.href}>{link.name}</Link></li>)}</ul>
+                        </nav>
+                        <div className="cream-footer-contact">
+                            <h3>Stay connected</h3>
+                            <address>164/27B, Dr. P. J. Thomas Avenue,<br />Injambakkam, Chennai 600115</address>
+                            <a href="tel:+919884088808">+91 98840 88808</a>
+                            <a href="mailto:info@slfa.org.in">info@slfa.org.in</a>
+                            <a href="https://www.facebook.com/slfaorg" target="_blank" rel="noopener noreferrer">Follow us on Facebook <ArrowUpRight size={14} className="inline-block align-middle" aria-hidden="true" /></a>
+                        </div>
+                    </div>
+                    <div className="cream-footer-bottom"><p>© {new Date().getFullYear()} SLFA. All rights reserved.</p><span>Connecting Sri Lankans in South India.</span></div>
+                </div>
+            </footer> : <>
             {/* Dark Footer */}
             <footer className="bg-gray-950 border-t border-[#D4AF37]/20 pt-24 pb-12 relative overflow-hidden">
                 {/* Subtle rangoli background and gradient for footer */}
@@ -186,6 +210,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
                     </div>
                 </div>
             </footer>
+            </>}
         </div>
     );
 }
