@@ -69,6 +69,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
             </section>
 
             </div>
+            <div className="cream-section-bridge" aria-hidden="true"><span /><i /><span /></div>
             <section className="cream-community-background" aria-labelledby="community-title">
                 <div className="cream-community-slides" aria-hidden="true">
                     <AnimatePresence initial={false}>

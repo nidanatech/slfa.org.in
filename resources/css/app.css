@@ -391,9 +391,9 @@ section.bg-\[\#faf9f7\] {
 .cream-culture-controls button:hover { background: #e8eddf; }
 .cream-culture-controls button:focus-visible { outline: 2px solid #1b7a4a; outline-offset: 2px; }
 .cream-connections { align-items: start; gap: 38px; }
-.cream-connections article:nth-child(2) { padding-top: 44px; }
-.cream-connections .cream-photo { aspect-ratio: 4/4.5; border-radius: 46% 46% 2px 2px; }
-.cream-connections article:nth-child(2) .cream-photo { border-radius: 2px; aspect-ratio: 4/3.7; }
+.cream-connections article:nth-child(2) { padding-top: 0; }
+.cream-connections .cream-photo { aspect-ratio: 4/3; border-radius: 4px; }
+.cream-connections article:nth-child(2) .cream-photo { border-radius: 4px; aspect-ratio: 4/3; }
 .cream-story-number { display: inline-block; font-size: 12px; color: #965015; margin-right: 12px; vertical-align: middle; }
 .cream-news-editorial { grid-template-columns: 1.15fr 1fr; gap: 30px 48px; }
 .cream-news-editorial article:first-child { grid-row: span 2; }
@@ -420,7 +420,7 @@ section.bg-\[\#faf9f7\] {
   .cream-map-portrait figcaption { font-size: 10px; }
   .cream-event { padding: 20px 10px; gap: 12px; }
   .cream-connections article:nth-child(2) { padding-top: 0; }
-  .cream-connections .cream-photo, .cream-connections article:nth-child(2) .cream-photo { aspect-ratio: 4/3; border-radius: 2px 54px 2px 2px; }
+  .cream-connections .cream-photo, .cream-connections article:nth-child(2) .cream-photo { aspect-ratio: 4/3; border-radius: 4px; }
   .cream-news-editorial { grid-template-columns: 1fr; }
   .cream-news-editorial article:first-child { grid-row: auto; }
   .cream-news-editorial article:not(:first-child) .cream-news-link { column-gap: 16px; grid-template-columns: 34% 1fr; }
@@ -436,7 +436,7 @@ section.bg-\[\#faf9f7\] {
 .cream-community-slides { position: absolute; inset: 0; z-index: -2; }
 .cream-community-slides img { position: absolute; right: 0; top: 0; width: 72%; height: 100%; object-fit: cover; object-position: center 35%; }
 .cream-community-veil { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg,#faf7f2 12%,#faf7f2f2 35%,#faf7f2b3 50%,#faf7f210 78%),linear-gradient(0deg,#faf7f2,transparent 18%,transparent 85%,#faf7f270); }
-.cream-community-content { padding-block: 90px 64px; min-height: 580px; display: flex; align-items: center; }
+.cream-community-content { padding-block: 64px; min-height: 550px; display: flex; align-items: center; }
 .cream-community-copy { width: 51%; max-width: 590px; }
 .cream-community-copy > p:not(.cream-eyebrow) { font-size: 17px; font-weight: 300; line-height: 1.85; color: #46534a; margin: 20px 0; }
 .cream-community-copy > .cream-link { margin-top: 8px; }
@@ -449,3 +449,19 @@ section.bg-\[\#faf9f7\] {
   .cream-community-veil { background: linear-gradient(90deg,#faf7f2f5,#faf7f2d9 65%,#faf7f2b3),linear-gradient(0deg,#faf7f2,transparent 25%,transparent 85%,#faf7f2); }
   .cream-community-copy > p:not(.cream-eyebrow) { font-size: 16px; }
 }
+
+/* A short, branded transition from the warm hero into the cultural backdrop. */
+.cream-section-bridge {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(180deg, #f8f1e5 0%, #faf7f2 100%);
+}
+.cream-section-bridge span { height: 1px; width: min(22vw, 180px); }
+.cream-section-bridge span:first-child { background: linear-gradient(90deg, transparent, #dba057); }
+.cream-section-bridge span:last-child { background: linear-gradient(90deg, #6c9679, transparent); }
+.cream-section-bridge i { width: 8px; height: 8px; border: 1px solid #b69359; transform: rotate(45deg); }
+.cream-connections .cream-photo img { object-position: center 35%; }
+@media(max-width: 767px) { .cream-section-bridge { height: 36px; } }
