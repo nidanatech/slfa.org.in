@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Head } from '@inertiajs/react';
-import { ArrowRight, CalendarDays, MapPin } from 'lucide-react';
+import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import CommunityWord from '@/Components/CommunityWord';
@@ -24,11 +24,12 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
     const event = upcomingEvents?.[0];
     const reducedMotion = useReducedMotion();
     const [imageIndex, setImageIndex] = useState(0);
+    const [paused, setPaused] = useState(false);
     useEffect(() => {
-        if (reducedMotion) return undefined;
+        if (reducedMotion || paused) return undefined;
         const timer = window.setInterval(() => setImageIndex(index => (index + 1) % cultureImages.length), 6500);
         return () => window.clearInterval(timer);
-    }, [reducedMotion]);
+    }, [reducedMotion, paused]);
 
     return <SLFAWebsiteLayout user={auth.user} cream>
         <Head title="Sri Lankan Friendship Association of South India">
@@ -45,7 +46,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <Link href={route('about')} className="cream-link">Explore the association <ArrowRight size={17} /></Link>
                     </div>
                     <div className="cream-event">
-                        <CalendarDays className="cream-event-icon" size={26} aria-hidden="true" />
+                        {event ? <div className="cream-date-stamp" aria-hidden="true"><span>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</span><small>{new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</small></div> : <CalendarDays className="cream-event-icon" size={26} aria-hidden="true" />}
                         <div>
                             <p className="cream-eyebrow">Upcoming event</p>
                             <h2>{event?.title || 'Find your next SLFA gathering'}</h2>
@@ -59,6 +60,9 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 </div>
                 <div className="cream-map">
                     <img src="/images/south-india-sri-lanka-light.webp" alt="Watercolour map of South India in green and Sri Lanka in gold" width="1024" height="1280" fetchPriority="high" />
+                    <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true"><ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" /><path className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" /><circle cx="95" cy="155" r="5" fill="#1b7a4a" /><circle cx="360" cy="465" r="5" fill="#e67e22" /></svg>
+                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption>Friendships that feel like home</figcaption></figure>
+                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption>Our heritage, celebrated</figcaption></figure>
                     <p>Two places. A shared sense of belonging.</p>
                 </div>
             </section>
@@ -72,17 +76,25 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <p>From celebrating our heritage to helping one another, there is a place here to belong, contribute, and grow.</p>
                         <Link href={route('about')} className="cream-link">Meet the association <ArrowRight size={17} /></Link>
                     </div>
+                    <div className="cream-culture-wrap">
                     <div className="cream-culture" aria-hidden="true">
                         <AnimatePresence initial={false}>
                             <motion.img key={imageIndex} src={cultureImages[imageIndex]} alt="" loading="lazy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 1.4 }} />
                         </AnimatePresence>
                     </div>
+                    <div className="cream-culture-controls" role="group" aria-label="Cultural photographs">
+                        <span>Culture that connects us <small>{imageIndex + 1} / {cultureImages.length}</small></span>
+                        <button type="button" aria-label="Previous cultural photograph" onClick={() => { setPaused(true); setImageIndex(index => (index + cultureImages.length - 1) % cultureImages.length); }}><ChevronLeft size={18} /></button>
+                        {!reducedMotion && <button type="button" aria-label={paused ? 'Play cultural slideshow' : 'Pause cultural slideshow'} onClick={() => setPaused(value => !value)}>{paused ? <Play size={15} /> : <Pause size={15} />}</button>}
+                        <button type="button" aria-label="Next cultural photograph" onClick={() => { setPaused(true); setImageIndex(index => (index + 1) % cultureImages.length); }}><ChevronRight size={18} /></button>
+                    </div>
+                    </div>
                 </div>
                 <div className="cream-connections">
-                    {connections.map(item => <article key={item.title}>
+                    {connections.map((item, index) => <motion.article key={item.title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
                         <div className="cream-photo"><img src={item.image} alt={item.alt} loading="lazy" width="1024" height="768" /></div>
-                        <h3>{item.title}</h3><p>{item.description}</p>
-                    </article>)}
+                        <h3><span className="cream-story-number">0{index + 1}</span>{item.title}</h3><p>{item.description}</p>
+                    </motion.article>)}
                 </div>
             </section>
 
@@ -92,7 +104,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <div><p className="cream-eyebrow">Life at SLFA</p><h2 id="updates-title" className="cream-title">Our community, <em>in motion.</em></h2></div>
                         <Link href={route('happenings')} className="cream-link">All news & events <ArrowRight size={17} /></Link>
                     </div>
-                    <div className="cream-news-grid">
+                    <div className="cream-news-grid cream-news-editorial">
                         {latestNews?.length ? latestNews.slice(0, 3).map(post => <article key={post.id}>
                             <Link href={route('news.show', post.public_id)} className="cream-news-link">
                                 {post.cover_image_path ? <div className="cream-photo"><img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" /></div> : <div className="cream-photo cream-photo-placeholder" aria-hidden="true">SLFA</div>}
@@ -111,6 +123,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <p className="cream-eyebrow">A place for you</p>
                         <h2 id="membership-title" className="cream-title">Make yourself <em>at home.</em></h2>
                         <p>Connect with fellow members, celebrate our heritage, and take part in community life across South India.</p>
+                        <div className="cream-membership-photo"><img src="/images/cta/gallery27.jpg" alt="SLFA members gathered for a community celebration" loading="lazy" width="1024" height="768" /><span>There is a place here for you.</span></div>
                         <div className="cream-actions"><Link href={auth.user ? route('dashboard') : route('register')} className="cream-button">{auth.user ? 'Your membership' : 'Apply for membership'} <ArrowRight size={17} /></Link><Link href={route('membership')} className="cream-link">Membership details <ArrowRight size={15} /></Link></div>
                     </div>
                     <ol>
