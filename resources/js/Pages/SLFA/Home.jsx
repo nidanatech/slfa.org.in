@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Head } from '@inertiajs/react';
-import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Play, HeartHandshake, Sparkles, Users } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import CommunityWord from '@/Components/CommunityWord';
@@ -15,9 +15,9 @@ const cultureImages = [
 ];
 const dateLabel = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 const connections = [
-    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/cta/gallery15.jpg', alt: 'SLFA members spending time together at a gathering' },
-    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/cta/gallery27.jpg', alt: 'Members gathered at an SLFA community event' },
-    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/cta/gallery4.jpg', alt: 'Members taking part in an association meeting' },
+    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', Icon: HeartHandshake },
+    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', Icon: Sparkles },
+    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', Icon: Users },
 ];
 
 export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
@@ -70,6 +70,18 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
 
             </div>
             <div className="cream-section-bridge" aria-hidden="true"><span /><i /><span /></div>
+            <section className="cream-section cream-container" aria-label="Ways to connect with the community">
+                <div className="cream-connections cream-connections-pillars">
+                    {connections.map(({ title, description, Icon }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
+                        <div className="cream-pillar-head">
+                            <span className="cream-pillar-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.75} /></span>
+                            <span className="cream-story-number">0{index + 1}</span>
+                        </div>
+                        <h3>{title}</h3>
+                        <p>{description}</p>
+                    </motion.article>)}
+                </div>
+            </section>
             <section className="cream-community-background" aria-labelledby="community-title">
                 <div className="cream-community-slides" aria-hidden="true">
                     <AnimatePresence initial={false}>
@@ -91,14 +103,6 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <button type="button" aria-label="Next cultural photograph" onClick={() => { setPaused(true); setImageIndex(index => (index + 1) % cultureImages.length); }}><ChevronRight size={18} /></button>
                     </div>
                     </div>
-                </div>
-            </section>
-            <section className="cream-section cream-container" aria-label="Ways to connect with the community">
-                <div className="cream-connections">
-                    {connections.map((item, index) => <motion.article key={item.title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
-                        <div className="cream-photo"><img src={item.image} alt={item.alt} loading="lazy" width="1024" height="768" /></div>
-                        <h3><span className="cream-story-number">0{index + 1}</span>{item.title}</h3><p>{item.description}</p>
-                    </motion.article>)}
                 </div>
             </section>
 
