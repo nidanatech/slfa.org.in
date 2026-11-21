@@ -52,7 +52,7 @@ export default function MediaSlideshow({ items, initialIndex, onClose, title = '
         >
             <div className="flex h-full flex-col">
                 <header className="flex min-h-16 shrink-0 items-center justify-between gap-4 border-b border-white/15 px-4 sm:px-8">
-                    <div className="min-w-0"><p className="truncate font-abhaya text-lg font-bold sm:text-xl">{title}</p><p className="text-xs text-white/65" aria-live="polite">{index + 1} of {items.length}</p></div>
+                    <div className="min-w-0"><p className="truncate font-abhaya text-lg font-light sm:text-xl">{title}</p><p className="text-xs text-white/65" aria-live="polite">{index + 1} of {items.length}</p></div>
                     <div className="flex items-center gap-2">
                         {items.length > 1 && <button type="button" onClick={() => setPlaying(value => !value)} aria-label={playing ? 'Pause slideshow' : 'Play slideshow'} className="rounded-full p-3 text-white hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">{playing ? <Pause size={21} /> : <Play size={21} />}</button>}
                         <button type="button" onClick={close} aria-label="Close slideshow" className="rounded-full p-3 text-white hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]"><X size={24} /></button>

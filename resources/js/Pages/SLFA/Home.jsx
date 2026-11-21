@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import CommunityWord from '@/Components/CommunityWord';
 import CoastlineMap from '@/Components/CoastlineMap';
+import { InterestExplorer, PhotoJournal, EventCountdown } from '@/Components/CommunityPlay';
 import { coverImageUrl } from '@/lib/coverImageUrl';
 
 const cultureImages = [
@@ -41,8 +42,8 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
             <section className="cream-hero cream-container" aria-labelledby="home-title">
                 <div className="cream-hero-copy">
                     <p className="cream-eyebrow">Sri Lankan Friendship Association of South India</p>
-                    <h1 id="home-title">Connecting Sri Lankans <span>in South India.</span></h1>
-                    <p className="cream-intro">Shared roots. New friendships. A community to call your own.</p>
+                    <h1 id="home-title">Shared roots.<span>New friendships.</span></h1>
+                    <p className="cream-intro">Connecting Sri Lankans in South India. A community to call your own.</p>
                     <div className="cream-actions">
                         <Link href={auth.user ? route('dashboard') : route('register')} className="cream-button">{auth.user ? 'Your membership' : 'Apply for membership'} <ArrowRight size={17} /></Link>
                         <Link href={route('about')} className="cream-link">Explore the association <ArrowRight size={17} /></Link>
@@ -52,8 +53,8 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 <div className="cream-map">
                     <CoastlineMap />
                     <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true"><ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" /><path className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" /><circle cx="95" cy="155" r="5" fill="#1b7a4a" /><circle cx="360" cy="465" r="5" fill="#e67e22" /></svg>
-                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption>Friendships that feel like home</figcaption></figure>
-                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption>Our heritage, celebrated</figcaption></figure>
+                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption><Link href={route('membership')}>Find your community <ArrowRight size={14} /></Link></figcaption></figure>
+                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption><Link href={route('happenings')}>Celebrate together <ArrowRight size={14} /></Link></figcaption></figure>
                     <p>Two places. A shared sense of belonging.</p>
                 </div>
             </section>
@@ -65,10 +66,12 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                             <p className="cream-eyebrow">Upcoming event</p>
                             <h2>{event?.title || 'Find your next SLFA gathering'}</h2>
                             {event ? <>
+                                {/gala/i.test(event.title) && <p className="event-invitation">An evening of music, friendship & celebration.</p>}
+                                <EventCountdown start={event.start_at} />
                                 <time dateTime={event.start_at}>{dateLabel(event.start_at)}</time>
                                 {event.location && <p className="cream-location"><MapPin size={15} aria-hidden="true" />{event.location}</p>}
                             </> : <p>Connect, celebrate, and build meaningful relationships.</p>}
-                            <Link href={event ? route('events.show', event.public_id) : route('happenings')} className="cream-link">{event ? 'View event & programme' : 'Explore events'} <ArrowRight size={15} /></Link>
+                            <div className="event-actions"><Link href={event ? route('events.show', event.public_id) : route('happenings')} className="cream-link">{event ? 'View event & programme' : 'Explore events'} <ArrowRight size={15} /></Link>{event?.admission_enabled && (!event.admission_closes_at || new Date(event.admission_closes_at) > new Date()) && <Link className="cream-link" href={route('events.show', event.public_id) + '#admission'}>Request admission <ArrowRight size={15} /></Link>}</div>
                         </div>
                     </div>
                 </div>
@@ -96,7 +99,8 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 <div className="cream-container cream-community-content">
                     <div className="cream-community-copy">
                         <p className="cream-eyebrow">Friendship across borders</p>
-                        <h2 id="community-title" className="cream-title"><span className="sr-only">A community built on connection</span><span aria-hidden="true">A <CommunityWord /><br />built on <em>connection.</em></span></h2>
+                        <h2 id="community-title" className="cream-title"><span className="sr-only">A community built on connection</span><span aria-hidden="true">A community<br />built on <em>connection.</em></span></h2>
+                        <CommunityWord controls />
                         <p>SLFA brings together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.</p>
                         <p>From celebrating our heritage to helping one another, there is a place here to belong, contribute, and grow.</p>
                         <Link href={route('about')} className="cream-link">Meet the association <ArrowRight size={17} /></Link>
@@ -110,12 +114,15 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 </div>
             </section>
 
+            <InterestExplorer />
             <section className="cream-section cream-updates" aria-labelledby="updates-title">
                 <div className="cream-container">
                     <div className="cream-section-heading">
                         <div><p className="cream-eyebrow">News & community stories</p><h2 id="updates-title" className="cream-title">Life at <em>SLFA</em></h2><p className="cream-updates-intro">The people, gatherings, and shared moments that bring us together.</p></div>
                         <Link href={route('happenings')} className="cream-link">All news & events <ArrowRight size={17} /></Link>
                     </div>
+                    <PhotoJournal />
+                    <p className="cream-eyebrow journal-stories-label">Stories behind the moments</p>
                     <div className="cream-news-grid cream-news-editorial">
                         {latestNews?.length ? latestNews.slice(0, 3).map(post => <article key={post.id}>
                             <Link href={route('news.show', post.public_id)} className="cream-news-link">
