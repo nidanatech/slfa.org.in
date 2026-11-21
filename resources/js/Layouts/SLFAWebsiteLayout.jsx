@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import BrandMark from '@/Components/BrandMark';
 
-export default function SLFAWebsiteLayout({ children, user, darkNav = false, vibrant = false, cream = false }) {
+export default function SLFAWebsiteLayout({ children, user, darkNav = false, vibrant = false, cream = true }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -37,7 +37,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
     const activeColor = 'text-[#D4AF37]';
 
     return (
-        <div className={`${cream ? 'slfa-cream' : vibrant ? 'slfa-vibrant' : ''} min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white`}>
+        <div className={`${cream ? 'slfa-cream slfa-brand' : vibrant ? 'slfa-vibrant' : ''} min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white`}>
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#D4AF37] focus:px-5 focus:py-3 focus:font-bold focus:text-gray-950">Skip to content</a>
 
             {/* Navigation */}
@@ -161,7 +161,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
                 {/* Subtle rangoli background and gradient for footer */}
                 <div className="absolute inset-0 rangoli-bg opacity-30 pointer-events-none"></div>
                 <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-[#D4AF37]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-                
+
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
 

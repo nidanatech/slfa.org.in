@@ -23,14 +23,14 @@ export default function Index({ auth, admins }) {
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                        <Shield className="w-6 h-6 mr-2 text-slfa-maroon" />
+                    <h1 className="text-2xl font-normal text-gray-900 flex items-center">
+                        <Shield className="w-6 h-6 mr-2 text-[#1B7A4A]" />
                         Admin Users
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">Manage system administrators.</p>
                 </div>
                 <div>
-                    <Link href={route('admin.users.create')} className="bg-slfa-maroon text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-slfa-navy transition flex items-center">
+                    <Link href={route('admin.users.create')} className="bg-[#1B7A4A] text-white px-4 py-2 rounded-md font-normal text-sm hover:bg-[#1B7A4A] transition flex items-center">
                         <Plus className="w-4 h-4 mr-1" /> Add Admin
                     </Link>
                 </div>
@@ -41,10 +41,10 @@ export default function Index({ auth, admins }) {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-gray-50 border-b border-gray-100">
-                                <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Name</th>
-                                <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Email</th>
-                                <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Joined</th>
-                                <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+                                <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Name</th>
+                                <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Email</th>
+                                <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Joined</th>
+                                <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -58,7 +58,7 @@ export default function Index({ auth, admins }) {
                                 admins.data.map(admin => (
                                     <tr key={admin.id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="py-4 px-6">
-                                            <div className="font-bold text-gray-900">{admin.name}</div>
+                                            <div className="font-normal text-gray-900">{admin.name}</div>
                                             {admin.id === auth.user.id && (
                                                 <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-2">You</span>
                                             )}
@@ -69,7 +69,7 @@ export default function Index({ auth, admins }) {
                                         </td>
                                         <td className="py-4 px-6 text-right space-x-3">
                                             {admin.id !== auth.user.id && (
-                                                <button 
+                                                <button
                                                     onClick={() => handleDelete(admin.id)}
                                                     className="text-red-500 hover:text-red-700 transition-colors p-1"
                                                     title="Delete"

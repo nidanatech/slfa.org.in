@@ -27,7 +27,7 @@ export default function AdminLayout({ user, children }) {
     ];
 
     return (
-        <div className="flex min-h-screen bg-[#FAF8F4]">
+        <div className="slfa-brand brand-admin flex min-h-screen bg-[#FAF7F2]">
 
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
@@ -39,15 +39,15 @@ export default function AdminLayout({ user, children }) {
 
             {/* Sidebar */}
             <div className={`
-                fixed inset-y-0 left-0 z-50 w-64 bg-gray-950 text-white transition-transform duration-300 ease-in-out lg:static lg:translate-x-0
+                fixed inset-y-0 left-0 z-50 w-64 border-r border-[#d8ded2] bg-[#f3eddf] text-[#1f2937] transition-transform duration-300 ease-in-out lg:static lg:translate-x-0
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
-                <div className="flex h-16 items-center justify-between border-b border-white/10 bg-gray-950 px-4">
+                <div className="flex h-16 items-center justify-between border-b border-[#d8ded2] bg-[#f3eddf] px-4">
                     <div className="flex items-center gap-3">
                         <BrandMark compact />
 
                     </div>
-                    <button className="lg:hidden text-gray-300 hover:text-white" onClick={() => setSidebarOpen(false)}>
+                    <button aria-label="Close admin navigation" className="lg:hidden text-gray-600 hover:text-[#1B7A4A]" onClick={() => setSidebarOpen(false)}>
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -61,8 +61,8 @@ export default function AdminLayout({ user, children }) {
                                 className={`
                                     flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium
                                     ${item.current
-                                        ? 'bg-[#D4AF37] text-gray-950'
-                                        : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                                        ? 'bg-[#1B7A4A] text-white'
+                                        : 'text-gray-700 hover:bg-white/60 hover:text-[#1B7A4A]'
                                     }
                                 `}
                             >
@@ -72,12 +72,12 @@ export default function AdminLayout({ user, children }) {
                         ))}
                     </nav>
 
-                    <div className="p-4 border-t border-white/10">
+                    <div className="p-4 border-t border-[#d8ded2]">
                         <Link
                             href={route('logout')}
                             method="post"
                             as="button"
-                            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium"
+                            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-white/60 hover:text-[#1B7A4A] transition-colors text-sm font-medium"
                         >
                             <LogOut className="w-5 h-5 shrink-0" />
                             Log Out
@@ -92,23 +92,23 @@ export default function AdminLayout({ user, children }) {
                 {/* Top header */}
                 <header className="bg-white shadow-sm h-16 shrink-0 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30">
                     <button
-                        className="lg:hidden text-gray-500 hover:text-gray-700"
+                        aria-label="Open admin navigation" className="lg:hidden text-gray-500 hover:text-gray-700"
                         onClick={() => setSidebarOpen(true)}
                     >
                         <Menu className="w-6 h-6" />
                     </button>
 
                     <div className="flex items-center justify-end flex-1 gap-4">
-                        <Link href={route('home')} className="text-sm font-medium text-slfa-coral hover:underline hidden sm:block">
+                        <Link href={route('home')} className="text-sm font-medium text-[#1B7A4A] hover:underline hidden sm:block">
                             View Website
                         </Link>
                         <div className="h-8 w-px bg-gray-200 hidden sm:block"></div>
                         <div className="flex items-center gap-3">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-semibold text-gray-900 leading-none">{user.name}</p>
+                                <p className="text-sm font-normal text-gray-900 leading-none">{user.name}</p>
                                 <p className="text-xs text-gray-500 mt-1 capitalize">{user.role}</p>
                             </div>
-                            <div className="w-9 h-9 rounded-full bg-slfa-peach text-slfa-coral flex items-center justify-center font-bold">
+                            <div className="w-9 h-9 rounded-full bg-[#f3eddf] text-[#1B7A4A] flex items-center justify-center font-normal">
                                 {user.name.charAt(0)}
                             </div>
                         </div>
@@ -116,7 +116,7 @@ export default function AdminLayout({ user, children }) {
                 </header>
 
                 {/* Main content area */}
-                <main className="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6 lg:p-8 custom-scrollbar">
+                <main className="flex-1 overflow-y-auto bg-[#FAF7F2] p-4 sm:p-6 lg:p-8 custom-scrollbar">
                     {children}
                 </main>
             </div>

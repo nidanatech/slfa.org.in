@@ -8,17 +8,17 @@ export default function MemberProfile({ auth, member }) {
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title={`${member.full_name} - Directory`} />
 
-            <SLFAPageHero eyebrow="Member directory" title={member.full_name} description={member.membership_type === 'business' ? 'Business member profile' : 'Individual member profile'} backHref={route('directory')} backLabel="Back to directory" />
+            <SLFAPageHero compact eyebrow="Member directory" title={member.full_name} description={member.membership_type === 'business' ? 'Business member profile' : 'Individual member profile'} backHref={route('directory')} backLabel="Back to directory" />
 
-            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#FAF7F2] py-16 sm:py-20">
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                    
-                    <div className="border-t border-[#b7a676]">
+
+                    <div className="border-t border-[#d8ded2]">
                         <div className="py-8 md:py-12">
                             <div className="flex flex-col md:flex-row gap-8 items-start">
-                                
+
                                 {/* Avatar */}
-                                <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden bg-[#D4AF37]/15 text-5xl font-bold text-[#9A7714] md:h-36 md:w-36">
+                                <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden bg-[#1B7A4A]/15 text-5xl font-normal text-[#a45116] md:h-36 md:w-36">
                                     {member.photo_path ? (
                                         <img src={`/storage/${member.photo_path}`} alt="" className="w-full h-full object-cover" />
                                     ) : (
@@ -30,29 +30,29 @@ export default function MemberProfile({ auth, member }) {
                                 <div className="flex-1 pt-2 md:pt-0">
                                     <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-4">
                                         <div>
-                                            <h2 className="font-abhaya text-3xl font-bold text-gray-950">{member.full_name}</h2>
+                                            <h2 className="font-lato text-3xl font-normal text-gray-950">{member.full_name}</h2>
                                             <div className="flex flex-wrap gap-2 mt-2">
-                                                <span className="text-xs font-semibold uppercase tracking-wide text-[#8b6915]">
+                                                <span className="text-xs font-normal uppercase tracking-wide text-[#a45116]">
                                                     {member.membership_type === 'business' ? 'Business Member' : 'Individual Member'}
                                                 </span>
                                                 {member.member_id_string && (
-                                                    <span className="text-xs font-semibold text-[#9A7714]">
+                                                    <span className="text-xs font-normal text-[#a45116]">
                                                         ID: {member.member_id_string}
                                                     </span>
                                                 )}
                                             </div>
                                         </div>
-                                        
+
                                     </div>
 
                                     {/* Info Grid */}
-                                    <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 border-t border-[#d5c8a6] pt-8 md:grid-cols-2">
-                                        
+                                    <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 border-t border-[#d8ded2] pt-8 md:grid-cols-2">
+
                                         {member.occupation && (
                                             <div className="flex items-start">
-                                                <Briefcase className="w-5 h-5 mr-3 text-[#9A7714] shrink-0 mt-0.5" />
+                                                <Briefcase className="w-5 h-5 mr-3 text-[#a45116] shrink-0 mt-0.5" />
                                                 <div>
-                                                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Profession</p>
+                                                    <p className="text-xs text-gray-500 font-normal uppercase tracking-wider">Profession</p>
                                                     <p className="font-medium text-gray-950">{member.designation ? `${member.designation}, ` : ''}{member.company_name || member.occupation}</p>
                                                 </div>
                                             </div>
@@ -60,9 +60,9 @@ export default function MemberProfile({ auth, member }) {
 
                                         {member.city && (
                                             <div className="flex items-start">
-                                                <MapPin className="w-5 h-5 mr-3 text-[#9A7714] shrink-0 mt-0.5" />
+                                                <MapPin className="w-5 h-5 mr-3 text-[#a45116] shrink-0 mt-0.5" />
                                                 <div>
-                                                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Location</p>
+                                                    <p className="text-xs text-gray-500 font-normal uppercase tracking-wider">Location</p>
                                                     <p className="font-medium text-gray-950">{member.city}</p>
                                                 </div>
                                             </div>
@@ -70,18 +70,18 @@ export default function MemberProfile({ auth, member }) {
 
                                         {member.sri_lanka_connection && (
                                             <div className="flex items-start md:col-span-2">
-                                                <svg className="w-5 h-5 mr-3 text-[#9A7714] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                <svg className="w-5 h-5 mr-3 text-[#a45116] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                 <div>
-                                                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Connection to Sri Lanka</p>
+                                                    <p className="text-xs text-gray-500 font-normal uppercase tracking-wider">Connection to Sri Lanka</p>
                                                     <p className="font-medium text-gray-950">{member.sri_lanka_connection}</p>
                                                 </div>
                                             </div>
                                         )}
-                                        
+
                                         <div className="flex items-start">
-                                            <Calendar className="w-5 h-5 mr-3 text-[#9A7714] shrink-0 mt-0.5" />
+                                            <Calendar className="w-5 h-5 mr-3 text-[#a45116] shrink-0 mt-0.5" />
                                             <div>
-                                                <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Member Since</p>
+                                                <p className="text-xs text-gray-500 font-normal uppercase tracking-wider">Member Since</p>
                                                 <p className="font-medium text-gray-950">{member.joined_at ? new Date(member.joined_at).getFullYear() : 'Unknown'}</p>
                                             </div>
                                         </div>
@@ -90,19 +90,19 @@ export default function MemberProfile({ auth, member }) {
                                             <>
                                                 {member.email && (
                                                     <div className="flex items-start">
-                                                        <Mail className="w-5 h-5 mr-3 text-[#9A7714] shrink-0 mt-0.5" />
+                                                        <Mail className="w-5 h-5 mr-3 text-[#a45116] shrink-0 mt-0.5" />
                                                         <div>
-                                                            <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Email</p>
-                                                            <a href={`mailto:${member.email}`} className="font-medium text-[#9A7714] hover:underline">{member.email}</a>
+                                                            <p className="text-xs text-gray-500 font-normal uppercase tracking-wider">Email</p>
+                                                            <a href={`mailto:${member.email}`} className="font-medium text-[#a45116] hover:underline">{member.email}</a>
                                                         </div>
                                                     </div>
                                                 )}
                                                 {member.phone && (
                                                     <div className="flex items-start">
-                                                        <Phone className="w-5 h-5 mr-3 text-[#9A7714] shrink-0 mt-0.5" />
+                                                        <Phone className="w-5 h-5 mr-3 text-[#a45116] shrink-0 mt-0.5" />
                                                         <div>
-                                                            <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Phone</p>
-                                                            <a href={`tel:${member.phone}`} className="font-medium text-[#9A7714] hover:underline">{member.phone}</a>
+                                                            <p className="text-xs text-gray-500 font-normal uppercase tracking-wider">Phone</p>
+                                                            <a href={`tel:${member.phone}`} className="font-medium text-[#a45116] hover:underline">{member.phone}</a>
                                                         </div>
                                                     </div>
                                                 )}

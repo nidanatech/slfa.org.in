@@ -28,11 +28,11 @@ export default function Create({ auth, events = [] }) {
 
             <div className="mb-6 flex items-center justify-between">
                 <div>
-                    <Link href={route('admin.albums.index')} className="text-sm text-gray-500 hover:text-slfa-maroon flex items-center mb-2 transition">
+                    <Link href={route('admin.albums.index')} className="text-sm text-gray-500 hover:text-[#1B7A4A] flex items-center mb-2 transition">
                         <ArrowLeft className="w-4 h-4 mr-1" /> Back to Gallery
                     </Link>
-                    <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                        <ImageIcon className="w-6 h-6 mr-2 text-slfa-maroon" />
+                    <h1 className="text-2xl font-normal text-gray-900 flex items-center">
+                        <ImageIcon className="w-6 h-6 mr-2 text-[#1B7A4A]" />
                         Create Album
                     </h1>
                 </div>
@@ -40,7 +40,7 @@ export default function Create({ auth, events = [] }) {
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 md:p-8 max-w-2xl">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    
+
                     <div>
                         <label htmlFor="album-event" className="block text-sm font-medium text-gray-700 mb-2">Event</label>
                         <select id="album-event" value={data.event_id} onChange={e => setData('event_id', e.target.value)} className="w-full border-gray-300 rounded-md" required><option value="">Choose an event</option>{events.map(event => <option key={event.id} value={event.id}>{event.title}</option>)}</select>
@@ -85,7 +85,7 @@ export default function Create({ auth, events = [] }) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-slfa-maroon text-white px-6 py-2 rounded-md font-semibold hover:bg-slfa-navy transition-colors flex items-center"
+                            className="bg-[#1B7A4A] text-white px-6 py-2 rounded-md font-normal hover:bg-[#1B7A4A] transition-colors flex items-center"
                         >
                             <Save className="w-4 h-4 mr-2" />
                             {processing ? 'Saving...' : 'Create Album'}

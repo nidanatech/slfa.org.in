@@ -5,7 +5,7 @@ export default function Index({ auth, payments }) {
     return (
         <AdminLayout user={auth.user}>
             <Head title="Payment records" />
-            <h1 className="mb-6 text-2xl font-bold">Payment records</h1>
+            <h1 className="mb-6 text-2xl font-normal">Payment records</h1>
             <div className="overflow-x-auto rounded-lg bg-white shadow">
                 <table className="w-full text-left text-sm">
                     <thead className="border-b bg-gray-50 text-gray-600"><tr>

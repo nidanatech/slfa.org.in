@@ -22,14 +22,14 @@ export default function Index({ auth, albums }) {
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                        <ImageIcon className="w-6 h-6 mr-2 text-slfa-maroon" />
+                    <h1 className="text-2xl font-normal text-gray-900 flex items-center">
+                        <ImageIcon className="w-6 h-6 mr-2 text-[#1B7A4A]" />
                         Event Photo Albums
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">Manage photos within each event.</p>
                 </div>
                 <div>
-                    <Link href={route('admin.albums.create')} className="bg-slfa-maroon text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-slfa-navy transition flex items-center">
+                    <Link href={route('admin.albums.create')} className="bg-[#1B7A4A] text-white px-4 py-2 rounded-md font-normal text-sm hover:bg-[#1B7A4A] transition flex items-center">
                         <Plus className="w-4 h-4 mr-1" /> Create Album
                     </Link>
                 </div>
@@ -52,17 +52,17 @@ export default function Index({ auth, albums }) {
                                     </div>
                                 )}
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                    <Link href={route('admin.albums.show', album.id)} className="bg-white text-slfa-navy px-4 py-2 rounded font-bold text-sm hover:bg-gray-100">
+                                    <Link href={route('admin.albums.show', album.id)} className="bg-white text-[#1f2937] px-4 py-2 rounded font-normal text-sm hover:bg-gray-100">
                                         Manage
                                     </Link>
                                 </div>
                             </div>
                             <div className="p-4 flex justify-between items-center">
                                 <div>
-                                    <h3 className="font-bold text-gray-900">{album.title}</h3>
+                                    <h3 className="font-normal text-gray-900">{album.title}</h3>
                                     <p className="text-xs text-gray-500">{album.media_count} items</p>
                                 </div>
-                                <button 
+                                <button
                                     onClick={() => handleDelete(album.id)}
                                     className="text-red-500 hover:text-red-700 p-2"
                                 >

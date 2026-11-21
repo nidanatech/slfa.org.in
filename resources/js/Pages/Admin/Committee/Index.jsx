@@ -17,17 +17,17 @@ export default function Index({ auth, leadershipSetup, executiveCommittee }) {
     const renderTable = (members, title) => (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
             <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-                <h2 className="font-bold text-gray-900">{title}</h2>
+                <h2 className="font-normal text-gray-900">{title}</h2>
             </div>
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-white border-b border-gray-100">
-                            <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Image</th>
-                            <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Name & Role</th>
-                            <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Company</th>
-                            <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Visible</th>
-                            <th className="py-3 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+                            <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Image</th>
+                            <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Name & Role</th>
+                            <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Company</th>
+                            <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider">Visible</th>
+                            <th className="py-3 px-6 text-xs font-normal text-gray-500 uppercase tracking-wider text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -50,7 +50,7 @@ export default function Index({ auth, leadershipSetup, executiveCommittee }) {
                                         </div>
                                     </td>
                                     <td className="py-4 px-6">
-                                        <div className="font-bold text-gray-900">{member.name}</div>
+                                        <div className="font-normal text-gray-900">{member.name}</div>
                                         <div className="text-sm text-gray-500">{member.role}</div>
                                     </td>
                                     <td className="py-4 px-6">
@@ -59,20 +59,20 @@ export default function Index({ auth, leadershipSetup, executiveCommittee }) {
                                     </td>
                                     <td className="py-4 px-6">
                                         {member.show_in_website ? (
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Yes</span>
+                                            <span className="px-2 inline-flex text-xs leading-5 font-normal rounded-full bg-green-100 text-green-800">Yes</span>
                                         ) : (
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">No</span>
+                                            <span className="px-2 inline-flex text-xs leading-5 font-normal rounded-full bg-gray-100 text-gray-800">No</span>
                                         )}
                                     </td>
                                     <td className="py-4 px-6 text-right space-x-3">
-                                        <Link 
+                                        <Link
                                             href={route('admin.committee.edit', member.id)}
                                             className="text-blue-500 hover:text-blue-700 transition-colors inline-block p-1"
                                             title="Edit"
                                         >
                                             <Edit className="w-4 h-4" />
                                         </Link>
-                                        <button 
+                                        <button
                                             onClick={() => handleDelete(member.id)}
                                             className="text-red-500 hover:text-red-700 transition-colors inline-block p-1"
                                             title="Delete"
@@ -96,14 +96,14 @@ export default function Index({ auth, leadershipSetup, executiveCommittee }) {
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                        <Settings className="w-6 h-6 mr-2 text-slfa-maroon" />
+                    <h1 className="text-2xl font-normal text-gray-900 flex items-center">
+                        <Settings className="w-6 h-6 mr-2 text-[#1B7A4A]" />
                         Committee Members
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">Manage the leadership and executive committees.</p>
                 </div>
                 <div>
-                    <Link href={route('admin.committee.create')} className="bg-slfa-maroon text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-slfa-navy transition flex items-center">
+                    <Link href={route('admin.committee.create')} className="bg-[#1B7A4A] text-white px-4 py-2 rounded-md font-normal text-sm hover:bg-[#1B7A4A] transition flex items-center">
                         <Plus className="w-4 h-4 mr-1" /> Add Member
                     </Link>
                 </div>

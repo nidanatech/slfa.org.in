@@ -45,11 +45,11 @@ export default function Create({ auth }) {
 
             <div className="mb-6 flex items-center justify-between">
                 <div>
-                    <Link href={route('admin.committee.index')} className="text-sm text-gray-500 hover:text-slfa-maroon flex items-center mb-2 transition">
+                    <Link href={route('admin.committee.index')} className="text-sm text-gray-500 hover:text-[#1B7A4A] flex items-center mb-2 transition">
                         <ArrowLeft className="w-4 h-4 mr-1" /> Back to Committee
                     </Link>
-                    <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                        <UserCheck className="w-6 h-6 mr-2 text-slfa-maroon" />
+                    <h1 className="text-2xl font-normal text-gray-900 flex items-center">
+                        <UserCheck className="w-6 h-6 mr-2 text-[#1B7A4A]" />
                         Add Committee Member
                     </h1>
                 </div>
@@ -57,7 +57,7 @@ export default function Create({ auth }) {
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 md:p-8 max-w-3xl">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
@@ -135,12 +135,12 @@ export default function Create({ auth }) {
                                     type="checkbox"
                                     checked={data.show_in_website}
                                     onChange={(e) => setData('show_in_website', e.target.checked)}
-                                    className="rounded border-gray-300 text-slfa-maroon focus:ring-slfa-maroon w-5 h-5"
+                                    className="rounded border-gray-300 text-[#1B7A4A] focus:ring-slfa-maroon w-5 h-5"
                                 />
                                 <span className="text-sm font-medium text-gray-700">Show in Public Website</span>
                             </label>
                         </div>
-                        
+
                         <div className="md:col-span-2">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
                             <div className="flex items-center space-x-4">
@@ -153,7 +153,7 @@ export default function Create({ auth }) {
                                     type="file"
                                     accept="image/*"
                                     onChange={handlePhotoChange}
-                                    className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-slfa-maroon/10 file:text-slfa-maroon hover:file:bg-slfa-maroon/20"
+                                    className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-normal file:bg-[#1B7A4A]/10 file:text-[#1B7A4A] hover:file:bg-[#1B7A4A]/20"
                                 />
                             </div>
                             {errors.photo && <p className="text-red-500 text-xs mt-1">{errors.photo}</p>}
@@ -165,7 +165,7 @@ export default function Create({ auth }) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-slfa-maroon text-white px-6 py-2 rounded-md font-semibold hover:bg-slfa-navy transition-colors flex items-center"
+                            className="bg-[#1B7A4A] text-white px-6 py-2 rounded-md font-normal hover:bg-[#1B7A4A] transition-colors flex items-center"
                         >
                             <Save className="w-4 h-4 mr-2" />
                             {processing ? 'Saving...' : 'Save Member'}

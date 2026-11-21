@@ -5,7 +5,7 @@ import { Search, MapPin, Briefcase, ChevronRight, Users } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Directory({ auth, members, filters, cities }) {
-    
+
     const [searchParams, setSearchParams] = useState({
         search: filters.search || '',
         city: filters.city || '',
@@ -30,28 +30,28 @@ export default function Directory({ auth, members, filters, cities }) {
         <SLFAWebsiteLayout user={auth.user} darkNav={true}>
             <Head title="Member Directory" />
 
-            <SLFAPageHero eyebrow="Members only" title={<>Your community <span className="italic font-light text-[#D4AF37]">directory</span></>} description="Find and connect with SLFA members who have chosen to appear in the directory." />
+            <SLFAPageHero compact eyebrow="Members only" title={<>Your community <span className="italic font-light text-[#1B7A4A]">directory</span></>} description="Find and connect with SLFA members who have chosen to appear in the directory." />
 
-            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#FAF7F2] py-16 sm:py-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    
+
                     {/* Filters & Search */}
-                    <div className="mb-10 border-y border-[#b7a676] py-6">
+                    <div className="mb-10 border-y border-[#d8ded2] py-6">
                         <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4">
-                            
+
                             <div className="flex-1 relative">
                                 <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     placeholder="Search by name, company, or profession..."
-                                    className="w-full rounded-none border-[#cbbb93] bg-white/70 pl-10 focus:border-[#800000] focus:ring-[#800000]"
+                                    className="w-full rounded-none border-[#d8ded2] bg-white/70 pl-10 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                                     value={searchParams.search}
                                     onChange={(e) => setSearchParams({...searchParams, search: e.target.value})}
                                 />
                             </div>
 
-                            <select 
-                                className="rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
+                            <select
+                                className="rounded-none border-[#d8ded2] bg-white/70 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                                 value={searchParams.city}
                                 onChange={(e) => handleParamChange('city', e.target.value)}
                             >
@@ -61,8 +61,8 @@ export default function Directory({ auth, members, filters, cities }) {
                                 ))}
                             </select>
 
-                            <select 
-                                className="rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
+                            <select
+                                className="rounded-none border-[#d8ded2] bg-white/70 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                                 value={searchParams.type}
                                 onChange={(e) => handleParamChange('type', e.target.value)}
                             >
@@ -71,8 +71,8 @@ export default function Directory({ auth, members, filters, cities }) {
                                 <option value="business">Business</option>
                             </select>
 
-                            <select 
-                                className="rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
+                            <select
+                                className="rounded-none border-[#d8ded2] bg-white/70 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                                 value={searchParams.sort}
                                 onChange={(e) => handleParamChange('sort', e.target.value)}
                             >
@@ -80,7 +80,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                 <option value="alphabetical">Alphabetical A-Z</option>
                             </select>
 
-                            <button type="submit" className="shrink-0 rounded-full bg-gray-950 px-6 py-2 font-semibold text-white transition hover:bg-[#800000]">
+                            <button type="submit" className="shrink-0 rounded-full bg-[#1B7A4A] px-6 py-2 font-normal text-white transition hover:bg-[#1B7A4A]">
                                 Search
                             </button>
                         </form>
@@ -89,14 +89,14 @@ export default function Directory({ auth, members, filters, cities }) {
                     {/* Directory Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {members.data.map((member, index) => (
-                            <Link 
-                                key={member.id} 
+                            <Link
+                                key={member.id}
                                 href={route('directory.show', member.id)}
-                                className={`flex h-full flex-col border-t p-5 transition-colors hover:bg-white/60 ${member.featured ? 'border-[#9a7714]' : 'border-[#b7a676]'}`}
+                                className={`flex h-full flex-col border-t p-5 transition-colors hover:bg-white/60 ${member.featured ? 'border-[#a45116]' : 'border-[#d8ded2]'}`}
                                 style={{ animationDelay: `${(index % 8) * 0.05}s` }}
                             >
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#D4AF37]/15 text-xl font-bold text-[#9A7714]">
+                                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#1B7A4A]/15 text-xl font-normal text-[#a45116]">
                                         {member.photo_path ? (
                                             <img src={`/storage/${member.photo_path}`} alt="" className="w-full h-full object-cover" />
                                         ) : (
@@ -104,13 +104,13 @@ export default function Directory({ auth, members, filters, cities }) {
                                         )}
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-slfa-navy text-lg leading-tight">{member.full_name}</h3>
-                                        <span className="mt-1 inline-block text-xs font-semibold uppercase tracking-wide text-[#8b6915]">
+                                        <h3 className="font-normal text-[#1f2937] text-lg leading-tight">{member.full_name}</h3>
+                                        <span className="mt-1 inline-block text-xs font-normal uppercase tracking-wide text-[#a45116]">
                                             {member.membership_type}
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <div className="space-y-2 text-sm text-gray-600 mb-4 flex-grow">
                                     {member.occupation && (
                                         <div className="flex items-start">
@@ -126,7 +126,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                     )}
                                 </div>
 
-                                <div className="mt-auto flex items-center justify-between border-t border-[#d5c8a6] pt-3 text-sm font-semibold text-[#800000]">
+                                <div className="mt-auto flex items-center justify-between border-t border-[#d8ded2] pt-3 text-sm font-normal text-[#1B7A4A]">
                                     View Profile <ChevronRight className="w-4 h-4" />
                                 </div>
                             </Link>
@@ -134,11 +134,11 @@ export default function Directory({ auth, members, filters, cities }) {
                     </div>
 
                     {members.data.length === 0 && (
-                        <div className="border-t border-[#b7a676] py-12 text-center">
+                        <div className="border-t border-[#d8ded2] py-12 text-center">
                             <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-slfa-navy mb-2">No members found</h3>
+                            <h3 className="text-xl font-normal text-[#1f2937] mb-2">No members found</h3>
                             <p className="text-gray-500">Try adjusting your search or filters.</p>
-                            <button onClick={() => { setSearchParams({search:'', city:'', type:'', sort:'newest'}); router.get(route('directory')); }} className="mt-4 text-slfa-coral font-medium hover:underline">
+                            <button onClick={() => { setSearchParams({search:'', city:'', type:'', sort:'newest'}); router.get(route('directory')); }} className="mt-4 text-[#1B7A4A] font-medium hover:underline">
                                 Clear all filters
                             </button>
                         </div>
@@ -169,7 +169,7 @@ export default function Directory({ auth, members, filters, cities }) {
                                         href={link.url}
                                         className={`rounded-full px-4 py-2 ${
                                             link.active
-                                                ? 'bg-gray-950 text-white font-bold'
+                                                ? 'bg-[#1B7A4A] text-white font-normal'
                                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                                         }`}
                                     >

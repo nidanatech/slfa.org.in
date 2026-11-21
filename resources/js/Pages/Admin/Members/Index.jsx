@@ -31,24 +31,24 @@ export default function Index({ auth, members, filters }) {
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Members</h1>
+                    <h1 className="text-2xl font-normal text-gray-900">Members</h1>
                     <p className="text-gray-500 text-sm mt-1">Manage membership applications and active users.</p>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <input 
-                            type="text" 
-                            placeholder="Search members..." 
-                            className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-slfa-primary focus:border-slfa-primary w-full sm:w-64"
+                        <input
+                            type="text"
+                            placeholder="Search members..."
+                            className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-[#1B7A4A] focus:border-[#1B7A4A] w-full sm:w-64"
                         />
                     </div>
                     <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
                         <Filter className="w-4 h-4" />
                         Filters
                     </button>
-                    <Link href={route('admin.members.create')} className="flex items-center gap-2 px-4 py-2 bg-slfa-maroon text-white rounded-lg text-sm font-semibold hover:bg-slfa-navy transition-colors">
+                    <Link href={route('admin.members.create')} className="flex items-center gap-2 px-4 py-2 bg-[#1B7A4A] text-white rounded-lg text-sm font-normal hover:bg-[#1B7A4A] transition-colors">
                         Add Member
                     </Link>
                 </div>
@@ -59,11 +59,11 @@ export default function Index({ auth, members, filters }) {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Member</th>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Type</th>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Applied On</th>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Member</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Type</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Applied On</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -71,11 +71,11 @@ export default function Index({ auth, members, filters }) {
                                 <tr key={member.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <div className="w-10 h-10 rounded-full bg-slfa-peach text-slfa-coral flex items-center justify-center font-bold">
+                                            <div className="w-10 h-10 rounded-full bg-[#f3eddf] text-[#1B7A4A] flex items-center justify-center font-normal">
                                                 {member.name.charAt(0)}
                                             </div>
                                             <div className="ml-4">
-                                                <div className="text-sm font-bold text-gray-900">{member.name}</div>
+                                                <div className="text-sm font-normal text-gray-900">{member.name}</div>
                                                 <div className="text-sm text-gray-500">{member.email}</div>
                                             </div>
                                         </div>
@@ -97,24 +97,24 @@ export default function Index({ auth, members, filters }) {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="flex justify-end gap-2">
-                                            <Link 
+                                            <Link
                                                 href={route('admin.members.show', member.id)}
-                                                className="text-gray-400 hover:text-slfa-primary p-2 rounded-full hover:bg-gray-100 transition-colors"
+                                                className="text-gray-400 hover:text-[#1B7A4A] p-2 rounded-full hover:bg-gray-100 transition-colors"
                                                 title="View Details"
                                             >
                                                 <Eye className="w-5 h-5" />
                                             </Link>
-                                            
+
                                             {member.account_status === 'pending' && (
                                                 <>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleApprove(member.id)}
                                                         className="text-green-500 hover:bg-green-50 p-2 rounded-full transition-colors"
                                                         title="Approve"
                                                     >
                                                         <Check className="w-5 h-5" />
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleReject(member.id)}
                                                         className="text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors"
                                                         title="Reject"
@@ -137,7 +137,7 @@ export default function Index({ auth, members, filters }) {
                     </table>
                 </div>
             </div>
-            
+
         </AdminLayout>
     );
 }

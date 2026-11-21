@@ -23,13 +23,13 @@ export default function Index({ auth, posts }) {
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">News & Updates</h1>
+                    <h1 className="text-2xl font-normal text-gray-900">News & Updates</h1>
                     <p className="text-gray-500 text-sm mt-1">Manage announcements and articles for the community.</p>
                 </div>
-                
-                <Link 
+
+                <Link
                     href={route('admin.news.create')}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-slfa-primary text-white rounded-lg text-sm font-bold hover:bg-orange-600 transition-colors"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-[#1B7A4A] text-white rounded-lg text-sm font-normal hover:bg-orange-600 transition-colors"
                 >
                     <Plus className="w-4 h-4" />
                     New Post
@@ -41,18 +41,18 @@ export default function Index({ auth, posts }) {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Title</th>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Category</th>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Published Date</th>
-                                <th className="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Title</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Category</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Published Date</th>
+                                <th className="px-6 py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {posts.data.length > 0 ? posts.data.map(post => (
                                 <tr key={post.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4">
-                                        <div className="text-sm font-bold text-gray-900">{post.title}</div>
+                                        <div className="text-sm font-normal text-gray-900">{post.title}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-900">{post.category || 'General'}</div>
@@ -73,14 +73,14 @@ export default function Index({ auth, posts }) {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="flex justify-end gap-2">
-                                            <Link 
+                                            <Link
                                                 href={route('admin.news.edit', post.id)}
-                                                className="text-gray-400 hover:text-slfa-primary p-2 rounded-full hover:bg-gray-100 transition-colors"
+                                                className="text-gray-400 hover:text-[#1B7A4A] p-2 rounded-full hover:bg-gray-100 transition-colors"
                                                 title="Edit"
                                             >
                                                 <Edit2 className="w-5 h-5" />
                                             </Link>
-                                            <button 
+                                            <button
                                                 onClick={() => handleDelete(post.id)}
                                                 className="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-gray-100 transition-colors"
                                                 title="Delete"
@@ -101,7 +101,7 @@ export default function Index({ auth, posts }) {
                     </table>
                 </div>
             </div>
-            
+
         </AdminLayout>
     );
 }

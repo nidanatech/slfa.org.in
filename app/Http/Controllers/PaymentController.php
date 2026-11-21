@@ -9,7 +9,7 @@ class PaymentController extends Controller
 {
     public function show(Request $request, $purpose, Member $member)
     {
-        abort(503, 'Online payment is not available yet.');
+        return response()->view('errors.payment-unavailable', [], 503);
     }
 
     public function createOrder(Request $request)

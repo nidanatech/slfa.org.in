@@ -80,6 +80,24 @@ class MembershipAccessTest extends TestCase
             ->missing('member.date_of_birth'));
     }
 
+    public function test_unavailable_payment_page_keeps_its_status_and_explains_next_steps(): void
+    {
+        $user = User::factory()->create(['role' => 'member']);
+        $member = Member::create([
+            'user_id' => $user->id,
+            'full_name' => $user->name,
+            'email' => $user->email,
+            'membership_type' => 'individual',
+            'status' => 'pending',
+        ]);
+
+        $this->actingAs($user)->get(route('payment.show', ['purpose' => 'admission', 'member' => $member]))
+            ->assertStatus(503)
+            ->assertViewIs('errors.payment-unavailable')
+            ->assertSee('Please contact SLFA for payment instructions.');
+        $this->assertDatabaseCount('payments', 0);
+    }
+
     public function test_payment_verification_cannot_mark_a_member_paid(): void
     {
         $member = User::factory()->create(['role' => 'member']);

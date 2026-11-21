@@ -13,17 +13,17 @@ export default function GalleryAlbumDetail({ auth, album }) {
             <Head title={`${album.title} - Gallery`} />
 
             <SLFAPageHero eyebrow="Community memories" title={album.title} description={album.description} backHref={`${route('happenings')}#news`} backLabel="Back to news & events" image={album.cover_image_path ? `/storage/${album.cover_image_path}` : null}>
-                {album.event && <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#D4AF37]" />{album.event.title}</span>}
+                {album.event && <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#1B7A4A]" />{album.event.title}</span>}
             </SLFAPageHero>
 
-            <section className="min-h-[40vh] bg-[#f5f1e9] py-16 sm:py-20">
+            <section className="min-h-[40vh] bg-[#FAF7F2] py-16 sm:py-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 sm:gap-6">
                         {album.media.map((item, index) => (
                             <button
                                 type="button"
-                                key={item.id} 
-                                className="aspect-square overflow-hidden bg-gray-950 text-left transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
+                                key={item.id}
+                                className="brand-photo-frame aspect-square overflow-hidden bg-[#1B7A4A] text-left transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1B7A4A]"
                                 style={{ animationDelay: `${(index % 10) * 0.05}s` }}
                                 onClick={() => setSlideIndex(index)}
                                 aria-label={`View ${item.caption || `${item.type} ${index + 1}`}`}
@@ -44,7 +44,7 @@ export default function GalleryAlbumDetail({ auth, album }) {
                         ))}
 
                         {album.media.length === 0 && (
-                            <div className="col-span-full border-t border-[#b7a676] py-20 text-center">
+                            <div className="col-span-full border-t border-[#d8ded2] py-20 text-center">
                                 <p className="text-gray-500">No media available in this album.</p>
                             </div>
                         )}

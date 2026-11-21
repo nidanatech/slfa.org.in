@@ -47,7 +47,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="font-abhaya text-2xl font-bold text-gray-950">
+                <h2 className="font-lato text-2xl font-normal text-gray-950">
                     Update Password
                 </h2>
 
@@ -72,7 +72,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                             setData('current_password', e.target.value)
                         }
                         type="password"
-                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
+                        className="mt-1 block w-full rounded-none border-[#d8ded2] bg-white/70 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                         autoComplete="current-password"
                     />
 
@@ -91,7 +91,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
+                        className="mt-1 block w-full rounded-none border-[#d8ded2] bg-white/70 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                         autoComplete="new-password"
                     />
 
@@ -111,7 +111,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                             setData('password_confirmation', e.target.value)
                         }
                         type="password"
-                        className="mt-1 block w-full rounded-none border-[#cbbb93] bg-white/70 focus:border-[#800000] focus:ring-[#800000]"
+                        className="mt-1 block w-full rounded-none border-[#d8ded2] bg-white/70 focus:border-[#1B7A4A] focus:ring-[#1B7A4A]"
                         autoComplete="new-password"
                     />
 
