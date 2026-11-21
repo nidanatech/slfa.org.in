@@ -12,7 +12,7 @@ const moments = [
 const interests = [
     { name: 'Culture & celebrations', image: '/images/carousel/kandyan-light.webp', title: 'A little rhythm. A lot of belonging.', text: 'Discover the traditions, music, and celebrations that connect Sri Lanka and South India.', link: 'Explore gatherings', destination: 'happenings' },
     { name: 'Meet people', image: '/images/cta/gallery15.jpg', title: 'Your next friendship starts with hello.', text: 'Meet people with shared roots, exchange stories, and find your place in the SLFA community.', link: 'Get to know SLFA', destination: 'about' },
-    { name: 'Give back', image: '/images/themes/shared-roots.webp', title: 'Small acts. Shared possibilities.', text: 'Learn about our community support and medical camps, and contact us to explore ways to contribute.', link: 'Talk to the association', destination: 'contact' },
+    { name: 'Give back', image: '/images/themes/shared-roots.jpg', title: 'Small acts. Shared possibilities.', text: 'Learn about our community support and medical camps, and contact us to explore ways to contribute.', link: 'Talk to the association', destination: 'contact' },
 ];
 
 export function InterestExplorer() {

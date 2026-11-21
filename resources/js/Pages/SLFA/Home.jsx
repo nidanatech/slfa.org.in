@@ -17,9 +17,9 @@ const cultureImages = [
 ];
 const dateLabel = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 const connections = [
-    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/themes/shared-roots.webp' },
-    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/themes/shared-celebrations.webp' },
-    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/themes/shared-possibilities.webp' },
+    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/themes/shared-roots.jpg' },
+    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/themes/shared-celebrations.jpg' },
+    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/themes/shared-possibilities.jpg' },
 ];
 
 export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
@@ -52,7 +52,20 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 </div>
                 <div className="cream-map">
                     <CoastlineMap />
-                    <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true"><ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" /><path className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" /><circle cx="95" cy="155" r="5" fill="#1b7a4a" /><circle cx="360" cy="465" r="5" fill="#e67e22" /></svg>
+                    <svg className="cream-map-thread" viewBox="0 0 500 600" fill="none" aria-hidden="true">
+                        <ellipse cx="250" cy="300" rx="225" ry="250" stroke="#1b7a4a" strokeOpacity=".15" strokeDasharray="3 8" />
+                        <path id="hero-flight-route" className="cream-connection-line" d="M95 155 C440 50 65 440 360 465" pathLength="1" stroke="#ce8c36" strokeWidth="1.5" />
+                        <circle cx="95" cy="155" r="5" fill="#1b7a4a" />
+                        <circle cx="360" cy="465" r="5" fill="#e67e22" />
+                        <g transform={reducedMotion ? 'translate(228, 305) rotate(68)' : undefined}>
+                            <path d="M11 0 L-5 -7 L-2 -1.5 L-9 -1.5 L-11 -4 L-12.5 -4 L-11.5 0 L-12.5 4 L-11 4 L-9 1.5 L-2 1.5 L-5 7 Z" fill="#1b7a4a" stroke="#fffdf9" strokeWidth="1" strokeLinejoin="round" />
+                            {!reducedMotion && (
+                                <animateMotion dur="9s" repeatCount="indefinite" rotate="auto">
+                                    <mpath href="#hero-flight-route" />
+                                </animateMotion>
+                            )}
+                        </g>
+                    </svg>
                     <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption><Link href={route('membership')}>Find your community <ArrowRight size={14} /></Link></figcaption></figure>
                     <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption><Link href={route('happenings')}>Celebrate together <ArrowRight size={14} /></Link></figcaption></figure>
                     <p>Two places. A shared sense of belonging.</p>
