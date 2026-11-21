@@ -137,7 +137,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                     <div className="cream-news-grid cream-news-editorial">
                         {latestNews?.length ? latestNews.slice(0, 3).map(post => <article key={post.id}>
                             <Link href={route('news.show', post.public_id)} className="cream-news-link">
-                                {post.cover_image_path ? <div className="cream-photo"><img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" /></div> : <div className="cream-photo cream-photo-placeholder" aria-hidden="true">SLFA</div>}
+                                {post.cover_image_path ? <div className="brand-photo-frame"><div className="cream-photo"><img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" /></div></div> : <div className="cream-photo cream-photo-placeholder" aria-hidden="true">SLFA</div>}
                                 <div className="cream-news-copy"><time dateTime={post.published_at}>{dateLabel(post.published_at)}</time>
                                 <h3>{post.title}</h3>
                                 <span className="cream-link">Read story <ArrowRight size={15} /></span></div>
@@ -153,7 +153,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <p className="cream-eyebrow">A place for you</p>
                         <h2 id="membership-title" className="cream-title">Make yourself <em>at home.</em></h2>
                         <p>Connect with fellow members, celebrate our heritage, and take part in community life across South India.</p>
-                        <div className="cream-membership-photo"><img src="/images/cta/gallery27.jpg" alt="SLFA members gathered for a community celebration" loading="lazy" width="1024" height="768" /><span>There is a place here for you.</span></div>
+                        <div className="brand-photo-frame membership-photo-frame"><div className="cream-membership-photo"><img src="/images/cta/gallery27.jpg" alt="SLFA members gathered for a community celebration" loading="lazy" width="1024" height="768" /><span>There is a place here for you.</span></div></div>
                         <div className="cream-actions"><Link href={auth.user ? route('dashboard') : route('register')} className="cream-button">{auth.user ? 'Your membership' : 'Apply for membership'} <ArrowRight size={17} /></Link><Link href={route('membership')} className="cream-link">Membership details <ArrowRight size={15} /></Link></div>
                     </div>
                     <ol>

@@ -22,7 +22,7 @@ export function InterestExplorer() {
         <p className="cream-eyebrow">Follow your curiosity</p><h2 id="interests-title" className="cream-title">What brings <em>you here?</em></h2>
         <div className="interest-choices" role="group" aria-label="Choose your interest">{interests.map((interest, index) => <button type="button" key={interest.name} aria-pressed={selected === index} aria-controls="interest-content" onClick={() => setSelected(index)}><span>0{index + 1}</span>{interest.name}<ArrowRight size={18} /></button>)}</div>
         <div id="interest-content" className="interest-content" aria-live="polite">
-            <img key={item.image} src={item.image} alt={selected === 2 ? '' : selected === 0 ? 'Traditional Sri Lankan dancers' : 'Members at an SLFA gathering'} loading="lazy" width="1024" height="768" />
+            <div className="brand-photo-frame interest-photo-frame"><div className="brand-photo-window"><img key={item.image} src={item.image} alt={selected === 2 ? '' : selected === 0 ? 'Traditional Sri Lankan dancers' : 'Members at an SLFA gathering'} loading="lazy" width="1024" height="768" /></div></div>
             <div><p className="cream-eyebrow">{item.name}</p><h3>{item.title}</h3><p>{item.text}</p><Link className="cream-link" href={route(item.destination)}>{item.link}<ArrowRight size={17} /></Link></div>
         </div>
     </section>;
@@ -30,7 +30,7 @@ export function InterestExplorer() {
 
 export function PhotoJournal() {
     const [slide, setSlide] = useState(null);
-    return <><div className="community-journal">{moments.map((item, index) => <button type="button" key={item.id} onClick={() => setSlide(index)} aria-label={`Open ${item.caption} in slideshow`}><div className="journal-photo"><img src={item.path} alt={item.caption} loading="lazy" width="1024" height="768" /><span><Expand size={18} /> View moment</span></div><span className="journal-caption">{item.caption}</span></button>)}</div>{slide !== null && <MediaSlideshow items={moments} initialIndex={slide} onClose={() => setSlide(null)} title="Life at SLFA" srcForItem={item => item.path} />}</>;
+    return <><div className="community-journal">{moments.map((item, index) => <button type="button" key={item.id} onClick={() => setSlide(index)} aria-label={`Open ${item.caption} in slideshow`}><div className="brand-photo-frame"><div className="journal-photo"><img src={item.path} alt={item.caption} loading="lazy" width="1024" height="768" /><span><Expand size={18} /> View moment</span></div></div><span className="journal-caption">{item.caption}</span></button>)}</div>{slide !== null && <MediaSlideshow items={moments} initialIndex={slide} onClose={() => setSlide(null)} title="Life at SLFA" srcForItem={item => item.path} />}</>;
 }
 
 export function EventCountdown({ start }) {

@@ -593,7 +593,7 @@ section.bg-\[\#faf9f7\] {
 .interest-choices svg { transition: transform .25s; }
 .interest-choices button:hover svg { transform: translateX(4px); }
 .interest-content { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,5vw,80px); align-items: center; }
-.interest-content > img { width: 100%; height: 340px; object-fit: cover; }
+.interest-photo-frame img { width: 100%; height: 340px; object-fit: cover; }
 .interest-content h3 { font-size: clamp(28px,3vw,40px); font-weight: 300; line-height: 1.25; margin: 12px 0 20px; }
 .interest-content p:not(.cream-eyebrow) { max-width: 460px; line-height: 1.8; margin-bottom: 24px; }
 .community-journal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; padding: 20px 0 60px; align-items: start; }
@@ -617,7 +617,7 @@ section.bg-\[\#faf9f7\] {
  .interest-choices button { width: 100%; padding: 14px 0; }
  .interest-choices svg { margin-left: auto; }
  .interest-content { grid-template-columns: 1fr; }
- .interest-content > img { height: 250px; }
+ .interest-photo-frame img { height: 250px; }
  .community-journal { grid-template-columns: 1fr; gap: 28px; padding-bottom: 32px; }
  .journal-caption { font-size: 17px; gap: 6px; }
  .journal-photo > span { font-size: 11px; padding: 6px; right: 6px; bottom: 6px; }
@@ -631,3 +631,29 @@ section.bg-\[\#faf9f7\] {
 .cream-hero-event-band .cream-event > div:last-child > .event-actions { grid-column: 2; grid-row: 1 / 8; align-self: center; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .event-actions .cream-link { margin: 0; }
 @media(max-width:767px) { .cream-hero-event-band .cream-event > div:last-child > .event-actions { margin-top: 18px; } }
+
+/* A quiet photographic mount in the association's cream, sage and saffron. */
+.cream-home .brand-photo-frame {
+ position: relative; min-width: 0; padding: 9px;
+ background: #fffaf2; border: 1px solid #1b7a4a38;
+ box-shadow: 0 5px 14px #40331d08;
+ transition: border-color .25s ease;
+}
+.brand-photo-frame::before, .brand-photo-frame::after {
+ content: ''; position: absolute; width: 27px; height: 27px;
+ border-color: #c8873c; border-style: solid; pointer-events: none; z-index: 1;
+}
+.brand-photo-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.brand-photo-frame::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.brand-photo-window { overflow: hidden; }
+.brand-photo-window img { display: block; width: 100%; }
+.cream-home .membership-photo-frame { margin-top: 24px; }
+.membership-photo-frame .cream-membership-photo { margin-top: 0; border-radius: 0; }
+.cream-home .brand-photo-frame:hover,
+.cream-home a:focus-visible .brand-photo-frame,
+.cream-home button:focus-visible .brand-photo-frame { border-color: #1b7a4a80; }
+@media(max-width:767px) {
+ .cream-home .brand-photo-frame { padding: 6px; }
+ .brand-photo-frame::before, .brand-photo-frame::after { width: 20px; height: 20px; }
+}
+@media(prefers-reduced-motion:reduce) { .cream-home .brand-photo-frame { transition: none; } }
