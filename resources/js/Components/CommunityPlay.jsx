@@ -5,14 +5,14 @@ import { useReducedMotion } from 'motion/react';
 import MediaSlideshow from './MediaSlideshow';
 
 const moments = [
-    { id: 'together', path: '/images/cta/gallery27.jpg', caption: 'A night to remember', type: 'image' },
-    { id: 'friends', path: '/images/cta/gallery15.jpg', caption: 'Familiar faces, new friendships', type: 'image' },
-    { id: 'gather', path: '/images/cta/gallery4.jpg', caption: 'Time together, memories to keep', type: 'image' },
+    { id: 'together', path: '/images/night-to-remember.jpg', caption: 'A night to remember', type: 'image' },
+    { id: 'friends', path: '/images/familiar faces new friendships.jpg', caption: 'Familiar faces, new friendships', type: 'image' },
+    { id: 'gather', path: '/images/memoies to keep.jpg', caption: 'Time together, memories to keep', type: 'image' },
 ];
 const interests = [
-    { name: 'Culture & celebrations', image: '/images/carousel/kandyan-light.webp', title: 'A little rhythm. A lot of belonging.', text: 'Discover the traditions, music, and celebrations that connect Sri Lanka and South India.', link: 'Explore gatherings', destination: 'happenings' },
-    { name: 'Meet people', image: '/images/cta/gallery15.jpg', title: 'Your next friendship starts with hello.', text: 'Meet people with shared roots, exchange stories, and find your place in the SLFA community.', link: 'Get to know SLFA', destination: 'about' },
-    { name: 'Give back', image: '/images/themes/shared-roots.jpg', title: 'Small acts. Shared possibilities.', text: 'Learn about our community support and medical camps, and contact us to explore ways to contribute.', link: 'Talk to the association', destination: 'contact' },
+    { name: 'Culture & celebrations', image: '/images/culture-celebrations.jpg', title: 'A little rhythm. A lot of belonging.', text: 'Discover the traditions, music, and celebrations that connect Sri Lanka and South India.', link: 'Explore gatherings', destination: 'happenings' },
+    { name: 'Meet people', image: '/images/meet-people.jpg', title: 'Your next friendship starts with hello.', text: 'Meet people with shared roots, exchange stories, and find your place in the SLFA community.', link: 'Get to know SLFA', destination: 'about' },
+    { name: 'Give back', image: '/images/giving-back.webp', title: 'Small acts. Shared possibilities.', text: 'Learn about our community support and medical camps, and contact us to explore ways to contribute.', link: 'Talk to the association', destination: 'contact' },
 ];
 
 export function InterestExplorer() {

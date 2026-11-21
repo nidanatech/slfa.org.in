@@ -66,8 +66,8 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                             )}
                         </g>
                     </svg>
-                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/cta/gallery15.jpg" alt="Members sharing time together at an SLFA gathering" width="1024" height="768" /><figcaption><Link href={route('membership')}>Find your community <ArrowRight size={14} /></Link></figcaption></figure>
-                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/carousel/kandyan-light.webp" alt="Sri Lankan dancers in traditional dress" width="1554" height="1012" /><figcaption><Link href={route('happenings')}>Celebrate together <ArrowRight size={14} /></Link></figcaption></figure>
+                    <figure className="cream-map-portrait cream-map-portrait-one"><img src="/images/hero/community.webp" alt="Illustration of friends connecting over tea" width="640" height="640" /><figcaption><Link href={route('membership')}>Find your community <ArrowRight size={14} /></Link></figcaption></figure>
+                    <figure className="cream-map-portrait cream-map-portrait-two"><img src="/images/hero/celebration.webp" alt="Illustration celebrating Sri Lankan and South Indian dance traditions" width="640" height="640" /><figcaption><Link href={route('happenings')}>Celebrate together <ArrowRight size={14} /></Link></figcaption></figure>
                     <p>Two places. A shared sense of belonging.</p>
                 </div>
             </section>
