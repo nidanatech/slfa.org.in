@@ -82,7 +82,6 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                     {connections.map(({ title, description, image }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
                         <img className="cream-pillar-background" src={image} alt="" aria-hidden="true" loading="lazy" width="1200" height="800" />
                         <div className="cream-pillar-content">
-                            <span className="cream-story-number">0{index + 1}</span>
                             <h3>{title}</h3>
                             <p>{description}</p>
                         </div>
@@ -99,8 +98,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 <div className="cream-container cream-community-content">
                     <div className="cream-community-copy">
                         <p className="cream-eyebrow">Friendship across borders</p>
-                        <h2 id="community-title" className="cream-title"><span className="sr-only">A community built on connection</span><span aria-hidden="true">A community<br />built on <em>connection.</em></span></h2>
-                        <CommunityWord controls />
+                        <h2 id="community-title" className="cream-title"><span className="sr-only">A community built on connection</span><span aria-hidden="true">A <CommunityWord /><br />built on <em>connection.</em></span></h2>
                         <p>SLFA brings together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support.</p>
                         <p>From celebrating our heritage to helping one another, there is a place here to belong, contribute, and grow.</p>
                         <Link href={route('about')} className="cream-link">Meet the association <ArrowRight size={17} /></Link>

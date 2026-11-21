@@ -596,13 +596,10 @@ section.bg-\[\#faf9f7\] {
 .interest-content > img { width: 100%; height: 340px; object-fit: cover; }
 .interest-content h3 { font-size: clamp(28px,3vw,40px); font-weight: 300; line-height: 1.25; margin: 12px 0 20px; }
 .interest-content p:not(.cream-eyebrow) { max-width: 460px; line-height: 1.8; margin-bottom: 24px; }
-.community-journal { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 26px; padding: 20px 0 60px; align-items: start; }
+.community-journal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; padding: 20px 0 60px; align-items: start; }
 .community-journal button { text-align: left; min-width: 0; }
-.community-journal button:nth-child(2) { margin-top: 65px; }
-.community-journal button:nth-child(3) { margin-top: 25px; }
 .journal-photo { position: relative; overflow: hidden; }
-.journal-photo img { width: 100%; aspect-ratio: 4/5; object-fit: cover; transition: transform .6s; }
-.community-journal button:first-child img { aspect-ratio: 1/1; }
+.journal-photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; transition: transform .6s; }
 .journal-photo > span { position: absolute; bottom: 12px; right: 12px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #faf7f2; color: #1b7a4a; font-size: 12px; }
 .journal-caption { display: flex; gap: 12px; align-items: baseline; padding-top: 16px; font-size: 20px; font-weight: 300; }
 .journal-caption small { color: #a95116; font-size: 11px; }
@@ -621,9 +618,7 @@ section.bg-\[\#faf9f7\] {
  .interest-choices svg { margin-left: auto; }
  .interest-content { grid-template-columns: 1fr; }
  .interest-content > img { height: 250px; }
- .community-journal { grid-template-columns: 1fr 1fr; gap: 20px; padding-bottom: 32px; }
- .community-journal button:first-child { grid-column: 1 / -1; }
- .community-journal button:nth-child(n) { margin-top: 0; }
+ .community-journal { grid-template-columns: 1fr; gap: 28px; padding-bottom: 32px; }
  .journal-caption { font-size: 17px; gap: 6px; }
  .journal-photo > span { font-size: 11px; padding: 6px; right: 6px; bottom: 6px; }
  .event-countdown { flex-wrap: wrap; gap: 12px; }
