@@ -91,6 +91,7 @@ class AdminEventController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:320',
             'cover_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
+            'programme_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
             'og_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
             'programme' => 'nullable|array|max:50',
             'programme.*.id' => [$event ? 'nullable' : 'prohibited', 'integer', Rule::exists('event_programme_items', 'id')->where('event_id', $event?->id)],
@@ -105,7 +106,7 @@ class AdminEventController extends Controller
 
         $programme = $validated['programme'] ?? [];
         $sponsors = $validated['sponsors'] ?? [];
-        unset($validated['programme'], $validated['sponsors'], $validated['cover_image'], $validated['og_image']);
+        unset($validated['programme'], $validated['sponsors'], $validated['cover_image'], $validated['programme_image'], $validated['og_image']);
 
         $zone = $validated['timezone'];
         $validated['start_at'] = Carbon::parse($validated['start_at'], $zone)->utc();
@@ -116,6 +117,12 @@ class AdminEventController extends Controller
             $validated['cover_image_path'] = $request->file('cover_image')->store('event-covers', 'public');
             if ($event?->cover_image_path && ! str_starts_with($event->cover_image_path, '/')) {
                 Storage::disk('public')->delete($event->cover_image_path);
+            }
+        }
+        if ($request->hasFile('programme_image')) {
+            $validated['programme_image_path'] = $request->file('programme_image')->store('event-programmes', 'public');
+            if ($event?->programme_image_path && ! str_starts_with($event->programme_image_path, '/')) {
+                Storage::disk('public')->delete($event->programme_image_path);
             }
         }
         if ($request->hasFile('og_image')) {

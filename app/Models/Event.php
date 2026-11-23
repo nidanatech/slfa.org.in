@@ -9,7 +9,7 @@ class Event extends Model
     protected $fillable = [
         'title', 'description', 'event_type',
         'location', 'start_at', 'end_at',
-        'cover_image_path', 'rsvp_enabled',
+        'cover_image_path', 'programme_image_path', 'rsvp_enabled',
         'venue_name', 'venue_address', 'timezone', 'dress_code',
         'adult_price', 'child_price', 'child_age_range', 'contact_details',
         'public_id', 'admission_enabled', 'admission_closes_at',

@@ -74,6 +74,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
             <div className="cream-hero-event-band">
                 <div className="cream-container">
                     <div className="cream-event">
+                        {event?.cover_image_path && <Link href={route('events.show', event.public_id)} className="cream-event-poster" aria-label={`View ${event.title}`}><img src={coverImageUrl(event.cover_image_path)} alt={`${event.title} flyer`} width="648" height="900" /></Link>}
                         {event ? <div className="cream-date-stamp" aria-hidden="true"><span>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</span><small>{new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</small></div> : <CalendarDays className="cream-event-icon" size={26} aria-hidden="true" />}
                         <div>
                             <p className="cream-eyebrow">Upcoming event</p>

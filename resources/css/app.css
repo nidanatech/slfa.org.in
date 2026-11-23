@@ -632,6 +632,14 @@ section.bg-\[\#faf9f7\] {
 .event-actions .cream-link { margin: 0; }
 @media(max-width:767px) { .cream-hero-event-band .cream-event > div:last-child > .event-actions { margin-top: 18px; } }
 
+.cream-event-poster { position: relative; width: 82px; flex: 0 0 82px; overflow: hidden; border: 1px solid #cdbb97; background: #fff9f3; padding: 3px; box-shadow: 0 10px 24px -18px rgba(31,41,55,.7); }
+.cream-event-poster img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; transition: transform .45s ease; }
+@media (hover:hover) and (prefers-reduced-motion:no-preference) { .cream-event-poster:hover img { transform: scale(1.035); } }
+@media(max-width:600px) {
+ .cream-event-poster { width: 68px; flex-basis: 68px; }
+ .cream-hero-event-band .cream-date-stamp { display: none; }
+}
+
 /* A quiet photographic mount in the association's cream, sage and saffron. */
 .cream-home .brand-photo-frame {
  position: relative; min-width: 0; padding: 9px;

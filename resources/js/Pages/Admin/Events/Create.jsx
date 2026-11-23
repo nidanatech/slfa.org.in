@@ -32,6 +32,7 @@ export default function Create({ auth, event }) {
         meta_description: event?.meta_description || '',
         og_image: null,
         cover_image: null,
+        programme_image: null,
         programme: (event?.programme_items || []).map(item => ({ id: item.id, time: item.time, title: item.title, details: item.details || '' })),
         sponsors: (event?.sponsors || []).map(item => ({ name: item.name, website_url: item.website_url || '', tier: item.tier || '' })),
     });
@@ -64,6 +65,8 @@ export default function Create({ auth, event }) {
                 </div>
                 {event?.cover_image_path && <img src={coverImageUrl(event.cover_image_path)} alt="Current event cover" className="h-40 w-auto object-contain" />}
                 <label className="block text-sm font-medium">Event cover or poster<input name="cover_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className={fieldClass} onChange={e => setData('cover_image', e.target.files[0] || null)} />{errors.cover_image && <span className="text-red-700">{errors.cover_image}</span>}</label>
+                {event?.programme_image_path && <img src={coverImageUrl(event.programme_image_path)} alt="Current programme flyer" className="h-40 w-auto object-contain" />}
+                <label className="block text-sm font-medium">Programme flyer (optional)<input name="programme_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className={fieldClass} onChange={e => setData('programme_image', e.target.files[0] || null)} />{errors.programme_image && <span className="text-red-700">{errors.programme_image}</span>}</label>
             </section>
 
             <section className="space-y-5"><h2 className="border-b pb-3 text-lg font-normal">Venue, tickets, and contact</h2>

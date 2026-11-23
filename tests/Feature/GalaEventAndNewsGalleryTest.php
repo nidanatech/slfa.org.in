@@ -24,9 +24,13 @@ class GalaEventAndNewsGalleryTest extends TestCase
         $this->assertSame(11, $gala->programmeItems()->count());
         $this->assertSame(5, $gala->sponsors()->count());
         $this->assertFalse($gala->rsvp_enabled);
+        $this->assertSame('/images/events/gala-dinner-2026-poster.jpeg', $gala->cover_image_path);
+        $this->assertSame('/images/events/gala-dinner-2026-programme.jpeg', $gala->programme_image_path);
 
         $this->get(route('events.show', $gala->public_id))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('SLFA/EventDetail')
+            ->where('event.cover_image_path', '/images/events/gala-dinner-2026-poster.jpeg')
+            ->where('event.programme_image_path', '/images/events/gala-dinner-2026-programme.jpeg')
             ->has('event.programme_items', 11)
             ->has('event.sponsors', 5));
 
@@ -35,6 +39,7 @@ class GalaEventAndNewsGalleryTest extends TestCase
 
     public function test_admin_can_edit_event_programme_sponsor_url_and_local_time(): void
     {
+        Storage::fake('public');
         $admin = User::factory()->create(['role' => 'admin']);
         $gala = Event::where('title', '7th Annual Gala Cocktail Dinner 2026')->firstOrFail();
 
@@ -46,6 +51,7 @@ class GalaEventAndNewsGalleryTest extends TestCase
             'start_at' => '2026-11-28T19:00',
             'venue_name' => $gala->venue_name,
             'rsvp_enabled' => false,
+            'programme_image' => UploadedFile::fake()->image('programme.jpg', 646, 900),
             'programme' => [['time' => '18:30', 'title' => 'Registration', 'details' => 'Royal Ballroom']],
             'sponsors' => [['name' => 'Example Partner', 'website_url' => 'https://example.org', 'tier' => 'Partner']],
         ])->assertRedirect();
@@ -54,6 +60,8 @@ class GalaEventAndNewsGalleryTest extends TestCase
         $this->assertSame('2026-11-28 13:30:00', $gala->start_at->format('Y-m-d H:i:s'));
         $this->assertSame('Registration', $gala->programmeItems()->first()->title);
         $this->assertSame('https://example.org', $gala->sponsors()->first()->website_url);
+        $this->assertStringStartsWith('event-programmes/', $gala->programme_image_path);
+        Storage::disk('public')->assertExists($gala->programme_image_path);
     }
 
     public function test_admin_can_add_and_remove_photos_from_a_news_story(): void
