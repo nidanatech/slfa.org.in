@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import BrandMark from '@/Components/BrandMark';
 
-export default function SLFAWebsiteLayout({ children, user, darkNav = false, vibrant = false, cream = true }) {
+export default function SLFAWebsiteLayout({ children, user, darkNav = false, vibrant = false, cream = true, transparentNav = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -26,7 +26,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
     // If darkNav, start transparent over dark bg; link colour starts white
     const navBg = scrolled
         ? 'bg-gray-950/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.3)] py-4'
-        : darkNav
+            : darkNav || transparentNav
             ? 'bg-transparent py-8'
             : 'bg-white/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] py-4';
 
@@ -37,11 +37,11 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
     const activeColor = 'text-[#D4AF37]';
 
     return (
-        <div className={`${cream ? 'slfa-cream slfa-brand' : vibrant ? 'slfa-vibrant' : ''} min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white`}>
+        <div className={`${cream ? 'slfa-cream slfa-brand' : vibrant ? 'slfa-vibrant' : ''} ${transparentNav ? 'slfa-transparent-nav' : ''} min-h-screen bg-white text-slfa-navy font-sans selection:bg-slfa-maroon selection:text-white`}>
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#D4AF37] focus:px-5 focus:py-3 focus:font-bold focus:text-gray-950">Skip to content</a>
 
             {/* Navigation */}
-            <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${navBg}`}>
+            <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'nav-scrolled' : ''} ${navBg}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center">
                         {/* Logo */}

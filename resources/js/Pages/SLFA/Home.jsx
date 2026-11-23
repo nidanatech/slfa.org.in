@@ -33,7 +33,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
         return () => window.clearInterval(timer);
     }, [reducedMotion, paused]);
 
-    return <SLFAWebsiteLayout user={auth.user} cream>
+    return <SLFAWebsiteLayout user={auth.user} cream transparentNav>
         <Head title="Sri Lankan Friendship Association of South India">
             <link rel="preload" as="image" href="/images/hero/srilanka-poster.webp" />
         </Head>
@@ -50,6 +50,8 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         <Link href={route('about')} className="cream-link">Explore the association <ArrowRight size={17} /></Link>
                     </div>
                 </div>
+                <div className="hero-place-marker" aria-hidden="true"><span>Sri Lanka</span><i /><span>South India</span></div>
+                <a href="#ways-to-connect" className="hero-scroll-cue"><span>Discover</span><i aria-hidden="true" /></a>
             </section>
             <div className="cream-hero-event-band">
                 <div className="cream-container">
@@ -71,7 +73,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 </div>
             </div>
             </div>
-            <section className="cream-section cream-container" aria-label="Ways to connect with the community">
+            <section id="ways-to-connect" className="cream-section cream-container" aria-label="Ways to connect with the community">
                 <div className="cream-connections cream-connections-pillars">
                     {connections.map(({ title, description, image }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
                         <img className="cream-pillar-background" src={image} alt="" aria-hidden="true" loading="lazy" width="1200" height="800" />
