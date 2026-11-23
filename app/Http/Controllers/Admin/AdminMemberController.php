@@ -48,6 +48,14 @@ class AdminMemberController extends Controller
         return Storage::disk('public')->download($path);
     }
 
+    public function applicationPhotograph(User $member)
+    {
+        $path = $member->profile?->photograph_path;
+        abort_unless($path && Storage::disk('local')->exists($path), 404);
+
+        return Storage::disk('local')->response($path);
+    }
+
     public function approve(User $member)
     {
         \Illuminate\Support\Facades\DB::transaction(function () use ($member) {

@@ -22,6 +22,18 @@ class MembershipAccessTest extends TestCase
         $this->actingAs($member)->get('/admin/members')->assertForbidden();
     }
 
+    public function test_application_photograph_is_private_and_available_to_an_admin(): void
+    {
+        Storage::fake('local');
+        $admin = User::factory()->create(['role' => 'admin']);
+        $applicant = User::factory()->create(['role' => 'member']);
+        $applicant->profile()->create(['photograph_path' => 'application_photographs/applicant.jpg']);
+        Storage::disk('local')->put('application_photographs/applicant.jpg', 'private-photo');
+
+        $this->actingAs($applicant)->get(route('admin.members.photograph', $applicant))->assertForbidden();
+        $this->actingAs($admin)->get(route('admin.members.photograph', $applicant))->assertOk();
+    }
+
     public function test_admin_pages_load_for_administrators(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);

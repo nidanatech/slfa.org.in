@@ -36,12 +36,20 @@ class RegisteredUserController extends Controller
 
         $path = $request->file('id_proof')->store('id_proofs', 'local');
         abort_unless($path, 500, 'Could not save identity proof.');
+        $photographPath = $request->file('photograph')?->store('application_photographs', 'local');
+        if ($request->hasFile('photograph') && ! $photographPath) {
+            Storage::disk('local')->delete($path);
+            abort(500, 'Could not save applicant photograph.');
+        }
 
         try {
-            $user = DB::transaction(function () use ($validated, $path) {
+            $user = DB::transaction(function () use ($validated, $path, $photographPath) {
+                $accountName = $validated['membership_type'] === 'business'
+                    ? $validated['profile']['business_name']
+                    : $validated['name'];
                 // 1. Create User
                 $user = User::create([
-                    'name' => $validated['name'],
+                    'name' => $accountName,
                     'email' => $validated['email'],
                     'password' => Hash::make($validated['password']),
                     'role' => 'member',
@@ -54,6 +62,7 @@ class RegisteredUserController extends Controller
                 $profileData['application_declaration_at'] = now();
 
                 $profileData['id_proof_path'] = $path;
+                $profileData['photograph_path'] = $photographPath;
 
                 $user->profile()->create($profileData);
 
@@ -63,7 +72,7 @@ class RegisteredUserController extends Controller
                     'email' => $user->email,
                     'phone' => $profileData['mobile'],
                     'membership_type' => $validated['membership_type'],
-                    'sri_lanka_connection' => implode(', ', $profileData['connection_with_srilanka']),
+                    'sri_lanka_connection' => implode(', ', $profileData['connection_with_srilanka'] ?? []),
                     'occupation' => $profileData['occupation'] ?? null,
                     'company_name' => $profileData['business_name'] ?? null,
                     'directory_visible' => (bool) $validated['directory_consent'],
@@ -71,15 +80,8 @@ class RegisteredUserController extends Controller
                     'status' => 'pending',
                 ]);
 
-                // 3. Create Family Members or Business Reps
-                if ($validated['membership_type'] === 'individual' && !empty($validated['family_members'])) {
-                    foreach ($validated['family_members'] as $member) {
-                        // Only save if name is provided
-                        if (!empty($member['name'])) {
-                            $user->familyMembers()->create($member);
-                        }
-                    }
-                } elseif ($validated['membership_type'] === 'business' && !empty($validated['business_reps'])) {
+                // 3. Create the two business representatives required by the source form.
+                if ($validated['membership_type'] === 'business' && !empty($validated['business_reps'])) {
                     foreach ($validated['business_reps'] as $rep) {
                         if (!empty($rep['name'])) {
                             $user->businessRepresentatives()->create($rep);
@@ -91,6 +93,9 @@ class RegisteredUserController extends Controller
             });
         } catch (\Throwable $exception) {
             Storage::disk('local')->delete($path);
+            if ($photographPath) {
+                Storage::disk('local')->delete($photographPath);
+            }
             throw $exception;
         }
 

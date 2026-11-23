@@ -18,7 +18,7 @@ function CommitteePortrait({ member, columns }) {
     return <article className={`w-full max-w-[17rem] text-center sm:max-w-none sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.75rem)] ${columns === 4 ? 'xl:w-[calc(25%-2rem)]' : ''}`}>
         <div className="mx-auto aspect-[4/5] w-44 overflow-hidden rounded-t-[1.6rem] rounded-b-md border border-[#d8ded2] bg-[#f3eddf] p-2 sm:w-48 lg:w-52">
             {member.photo_path && !photoFailed
-                ? <img src={`/storage/${member.photo_path}`} alt="" loading="lazy" width="208" height="260" onError={() => setPhotoFailed(true)} className="h-full w-full object-cover object-top" />
+                ? <img src={member.photo_path.startsWith('/') ? member.photo_path : `/storage/${member.photo_path}`} alt="" loading="lazy" width="208" height="260" onError={() => setPhotoFailed(true)} className="h-full w-full object-cover object-top" />
                 : <div className="flex h-full w-full items-center justify-center font-lato text-6xl text-[#d6bb70]" aria-hidden="true">{initials}</div>}
         </div>
         <h4 className="mt-5 font-lato text-[1.65rem] font-normal leading-[1.05] text-[#101723]">{member.name}</h4>

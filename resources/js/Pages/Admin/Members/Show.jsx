@@ -93,6 +93,7 @@ export default function Show({ auth, member }) {
                             <h2 className="font-normal text-gray-900">Application Details</h2>
                         </div>
                         <div className="p-6">
+                            {profile.photograph_path && <div className="mb-8 flex items-center gap-5 border-b border-gray-100 pb-6"><img src={route('admin.members.photograph', member.id)} alt={`${member.name} application photograph`} className="h-32 w-28 object-cover" /><div><p className="text-xs uppercase tracking-wide text-gray-500">Applicant photograph</p><p className="mt-2 text-sm text-gray-600">Stored privately for committee review.</p></div></div>}
                             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
                                 <div>
                                     <dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Membership Type</dt>
@@ -114,6 +115,7 @@ export default function Show({ auth, member }) {
                                     <dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Address</dt>
                                     <dd className="mt-1 text-sm text-gray-900">{profile.address || '-'}</dd>
                                 </div>
+                                {(profile.city || profile.postcode) && <div><dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">City & Postcode</dt><dd className="mt-1 text-sm text-gray-900">{[profile.city, profile.postcode].filter(Boolean).join(' · ')}</dd></div>}
 
                                 {profile.membership_type === 'individual' && (
                                     <>
@@ -129,6 +131,8 @@ export default function Show({ auth, member }) {
                                             <dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Occupation</dt>
                                             <dd className="mt-1 text-sm text-gray-900">{profile.occupation || '-'}</dd>
                                         </div>
+                                        <div><dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Referred By</dt><dd className="mt-1 text-sm text-gray-900">{profile.referred_by || '-'}</dd></div>
+                                        <div><dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Referrer Contact</dt><dd className="mt-1 text-sm text-gray-900">{profile.referrer_contact || '-'}</dd></div>
                                     </>
                                 )}
 
@@ -141,10 +145,6 @@ export default function Show({ auth, member }) {
                                         <div>
                                             <dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Nature of Business</dt>
                                             <dd className="mt-1 text-sm text-gray-900">{profile.nature_of_business || '-'}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-xs font-normal text-gray-500 uppercase tracking-wide">Date of Incorporation</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{profile.date_of_incorporation ? dayjs(profile.date_of_incorporation).format('MMM D, YYYY') : '-'}</dd>
                                         </div>
                                     </>
                                 )}

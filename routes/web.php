@@ -160,6 +160,7 @@ Route::middleware(['auth', 'can:access-admin'])->prefix('admin')->name('admin.')
     Route::post('/members', [AdminMemberController::class, 'store'])->name('members.store');
     Route::get('/members/{member}', [AdminMemberController::class, 'show'])->name('members.show');
     Route::get('/members/{member}/id-proof', [AdminMemberController::class, 'downloadIdProof'])->name('members.id-proof');
+    Route::get('/members/{member}/photograph', [AdminMemberController::class, 'applicationPhotograph'])->name('members.photograph');
     Route::put('/members/{member}', [AdminMemberController::class, 'update'])->name('members.update');
     Route::patch('/members/{member}/approve', [AdminMemberController::class, 'approve'])->name('members.approve');
     Route::patch('/members/{member}/reject', [AdminMemberController::class, 'reject'])->name('members.reject');

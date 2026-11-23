@@ -31,10 +31,15 @@ class RegistrationTest extends TestCase
             'accept_declaration' => true,
             'profile' => [
                 'address' => 'Chennai, Tamil Nadu, India',
+                'city' => 'Chennai',
+                'postcode' => '600115',
                 'mobile' => '9000000000',
                 'date_of_birth' => now()->subYears(25)->toDateString(),
+                'gender' => 'Others',
+                'occupation' => 'Designer',
                 'connection_with_srilanka' => ['Ancestral'],
             ],
+            'photograph' => UploadedFile::fake()->image('portrait.jpg', 400, 500),
             'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
         ]);
 
@@ -43,6 +48,8 @@ class RegistrationTest extends TestCase
         $this->assertDatabaseHas('members', ['email' => 'test@example.com', 'directory_visible' => false]);
         $path = \App\Models\User::where('email', 'test@example.com')->firstOrFail()->profile->id_proof_path;
         Storage::disk('local')->assertExists($path);
+        $photographPath = \App\Models\User::where('email', 'test@example.com')->firstOrFail()->profile->photograph_path;
+        Storage::disk('local')->assertExists($photographPath);
         $this->assertNotNull(\App\Models\User::where('email', 'test@example.com')->firstOrFail()->profile->application_declaration_at);
     }
 
@@ -62,12 +69,10 @@ class RegistrationTest extends TestCase
                 'mobile' => '+91 9000000000',
                 'business_name' => 'Example Trading Ltd',
                 'nature_of_business' => 'Company',
-                'date_of_incorporation' => '2019-01-01',
-                'connection_with_srilanka' => ['Trade / Employment'],
             ],
             'business_reps' => [
-                ['name' => 'First Representative', 'designation' => 'Director', 'email' => 'first@example.com', 'contact_number' => '+91 9000000001'],
-                ['name' => 'Second Representative', 'designation' => 'Director', 'email' => 'second@example.com', 'contact_number' => '+91 9000000002'],
+                ['name' => 'First Representative', 'date_of_birth' => '1980-01-01', 'gender' => 'Male', 'designation' => 'Director', 'email' => 'first@example.com', 'contact_number' => '+91 9000000001'],
+                ['name' => 'Second Representative', 'date_of_birth' => '1982-01-01', 'gender' => 'Female', 'designation' => 'Director', 'email' => 'second@example.com', 'contact_number' => '+91 9000000002'],
             ],
             'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
         ];
@@ -92,17 +97,22 @@ class RegistrationTest extends TestCase
             'directory_consent' => false,
             'profile' => [
                 'address' => '123 Beach Road, Chennai',
+                'city' => 'Chennai',
+                'postcode' => '600115',
                 'mobile' => '9000000000',
                 'date_of_birth' => now()->subYears(16)->toDateString(),
+                'gender' => 'Male',
+                'occupation' => 'Student',
                 'connection_with_srilanka' => ['Origin'],
             ],
+            'photograph' => UploadedFile::fake()->image('portrait.jpg', 400, 500),
             'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
         ])->assertSessionHasErrors(['profile.date_of_birth', 'accept_declaration']);
 
         $this->assertDatabaseMissing('users', ['email' => 'young@example.com']);
     }
 
-    public function test_added_family_member_must_have_name_and_relationship(): void
+    public function test_individual_form_does_not_accept_fields_outside_the_source_form(): void
     {
         $this->post('/register', [
             'name' => 'Adult Applicant',
@@ -114,13 +124,18 @@ class RegistrationTest extends TestCase
             'accept_declaration' => true,
             'profile' => [
                 'address' => '123 Beach Road, Chennai',
+                'city' => 'Chennai',
+                'postcode' => '600115',
                 'mobile' => '9000000000',
                 'date_of_birth' => now()->subYears(25)->toDateString(),
+                'gender' => 'Female',
+                'occupation' => 'Consultant',
                 'connection_with_srilanka' => ['Origin'],
             ],
             'family_members' => [['name' => 'Child', 'relationship' => '']],
             'id_proof' => UploadedFile::fake()->create('proof.pdf', 100, 'application/pdf'),
-        ])->assertSessionHasErrors('family_members.0.relationship');
+            'photograph' => UploadedFile::fake()->image('portrait.jpg', 400, 500),
+        ])->assertSessionHasErrors('family_members');
 
         $this->assertDatabaseMissing('users', ['email' => 'adult@example.com']);
     }

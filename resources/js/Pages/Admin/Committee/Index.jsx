@@ -43,7 +43,7 @@ export default function Index({ auth, leadershipSetup, executiveCommittee }) {
                                     <td className="py-3 px-6 w-16">
                                         <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
                                             {member.photo_path ? (
-                                                <img src={`/storage/${member.photo_path}`} alt={member.name} className="w-full h-full object-cover" />
+                                                <img src={member.photo_path.startsWith('/') ? member.photo_path : `/storage/${member.photo_path}`} alt={member.name} className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-gray-400">?</div>
                                             )}

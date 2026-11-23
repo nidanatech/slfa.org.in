@@ -13,15 +13,15 @@ class AboutCommitteeTest extends TestCase
 
     public function test_about_page_lists_restored_management_and_executive_members(): void
     {
-        $this->assertSame(4, CommitteeMember::where('type', 'Leadership')->where('show_in_website', true)->count());
-        $this->assertSame(6, CommitteeMember::where('type', 'Executive')->where('show_in_website', true)->count());
+        $this->assertSame(2, CommitteeMember::where('type', 'Management')->where('show_in_website', true)->count());
+        $this->assertSame(9, CommitteeMember::where('type', 'Executive')->where('show_in_website', true)->count());
 
         $this->get(route('about'))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('SLFA/About')
-            ->has('leadershipSetup', 4)
-            ->has('executiveCommittee', 6)
+            ->has('leadershipSetup', 2)
+            ->has('executiveCommittee', 9)
             ->where('leadershipSetup.0.name', 'Bose Dharmalingam')
-            ->where('executiveCommittee.0.name', 'J T Roche'));
+            ->where('executiveCommittee.0.name', 'Sooriya Kumari'));
     }
 
     public function test_legacy_management_type_is_also_shown(): void
@@ -32,7 +32,7 @@ class AboutCommitteeTest extends TestCase
         ]);
 
         $this->get(route('about'))->assertOk()->assertInertia(fn (Assert $page) => $page
-            ->has('leadershipSetup', 5)
-            ->where('leadershipSetup.4.name', 'Additional Manager'));
+            ->has('leadershipSetup', 3)
+            ->where('leadershipSetup.2.name', 'Additional Manager'));
     }
 }
