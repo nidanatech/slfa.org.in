@@ -632,6 +632,14 @@ section.bg-\[\#faf9f7\] {
 .event-actions .cream-link { margin: 0; }
 @media(max-width:767px) { .cream-hero-event-band .cream-event > div:last-child > .event-actions { margin-top: 18px; } }
 
+/* Quiet moving landscape behind the hero; the warm veil protects text contrast. */
+.cream-hero-surface { position: relative; isolation: isolate; overflow: hidden; }
+.cream-hero-surface > .cream-hero,
+.cream-hero-surface > .cream-hero-event-band { position: relative; z-index: 1; }
+.cream-hero-video { position: absolute; inset: 0 0 auto; z-index: 0; height: min(760px, 100%); overflow: hidden; pointer-events: none; }
+.cream-hero-video video { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(.68) contrast(.88); }
+.cream-hero-video span { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(248,241,229,.98) 0%, rgba(248,241,229,.94) 40%, rgba(248,241,229,.78) 72%, rgba(248,241,229,.88) 100%), linear-gradient(0deg, #f8f1e5 0%, transparent 35%, rgba(248,241,229,.25) 100%); }
+
 .cream-event-poster { position: relative; width: 82px; flex: 0 0 82px; overflow: hidden; border: 1px solid #cdbb97; background: #fff9f3; padding: 3px; box-shadow: 0 10px 24px -18px rgba(31,41,55,.7); }
 .cream-event-poster img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; transition: transform .45s ease; }
 @media (hover:hover) and (prefers-reduced-motion:no-preference) { .cream-event-poster:hover img { transform: scale(1.035); } }
@@ -639,6 +647,7 @@ section.bg-\[\#faf9f7\] {
  .cream-event-poster { width: 68px; flex-basis: 68px; }
  .cream-hero-event-band .cream-date-stamp { display: none; }
 }
+@media(prefers-reduced-motion:reduce) { .cream-hero-video { display: none; } }
 
 /* A quiet photographic mount in the association's cream, sage and saffron. */
 .cream-home .brand-photo-frame {

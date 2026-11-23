@@ -27,6 +27,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
     const reducedMotion = useReducedMotion();
     const [imageIndex, setImageIndex] = useState(0);
     const [paused, setPaused] = useState(false);
+    const [heroVideoFailed, setHeroVideoFailed] = useState(false);
     useEffect(() => {
         if (reducedMotion || paused) return undefined;
         const timer = window.setInterval(() => setImageIndex(index => (index + 1) % cultureImages.length), 6500);
@@ -39,6 +40,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
         </Head>
         <div className="cream-home">
             <div className="cream-hero-surface">
+            {!reducedMotion && !heroVideoFailed && <div className="cream-hero-video" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata" poster="/images/hero/srilanka-poster.webp" onError={() => setHeroVideoFailed(true)}><source src="/images/hero/srilanka.mp4" type="video/mp4" /></video><span /></div>}
             <section className="cream-hero cream-container" aria-labelledby="home-title">
                 <div className="cream-hero-copy">
                     <p className="cream-eyebrow">Sri Lankan Friendship Association of South India</p>
