@@ -15,11 +15,17 @@ function CommitteePortrait({ member, columns }) {
     const [photoFailed, setPhotoFailed] = useState(false);
     const initials = member.name?.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
 
-    return <article className={`w-full max-w-[17rem] text-center sm:max-w-none sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.75rem)] ${columns === 4 ? 'xl:w-[calc(25%-2rem)]' : ''}`}>
-        <div className="mx-auto aspect-[4/5] w-44 overflow-hidden rounded-t-[1.6rem] rounded-b-md border border-[#d8ded2] bg-[#f3eddf] p-2 sm:w-48 lg:w-52">
-            {member.photo_path && !photoFailed
-                ? <img src={member.photo_path.startsWith('/') ? member.photo_path : `/storage/${member.photo_path}`} alt="" loading="lazy" width="208" height="260" onError={() => setPhotoFailed(true)} className="h-full w-full object-cover object-top" />
-                : <div className="flex h-full w-full items-center justify-center font-lato text-6xl text-[#d6bb70]" aria-hidden="true">{initials}</div>}
+    return <article className={`group w-full max-w-[17rem] text-center sm:max-w-none sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.75rem)] ${columns === 4 ? 'xl:w-[calc(25%-2rem)]' : ''}`}>
+        <div className="relative mx-auto aspect-[4/5] w-44 sm:w-48 lg:w-52">
+            <span className="absolute -left-2 -top-2 h-12 w-px bg-[#1B7A4A] transition-all duration-500 group-hover:h-20" aria-hidden="true" />
+            <span className="absolute -left-2 -top-2 h-px w-12 bg-[#1B7A4A] transition-all duration-500 group-hover:w-20" aria-hidden="true" />
+            <span className="absolute -bottom-2 -right-2 h-16 w-px bg-[#d47a1f] transition-all duration-500 group-hover:h-24" aria-hidden="true" />
+            <span className="absolute -bottom-2 -right-2 h-px w-16 bg-[#d47a1f] transition-all duration-500 group-hover:w-24" aria-hidden="true" />
+            <div className="relative h-full overflow-hidden bg-[#eee9df] shadow-[0_16px_38px_-28px_rgba(31,41,55,0.55)]">
+                {member.photo_path && !photoFailed
+                    ? <img src={member.photo_path.startsWith('/') ? member.photo_path : `/storage/${member.photo_path}`} alt="" loading="lazy" width="208" height="260" onError={() => setPhotoFailed(true)} className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]" />
+                    : <div className="flex h-full w-full items-center justify-center font-lato text-6xl text-[#d6bb70]" aria-hidden="true">{initials}</div>}
+            </div>
         </div>
         <h4 className="mt-5 font-lato text-[1.65rem] font-normal leading-[1.05] text-[#101723]">{member.name}</h4>
         <p className="mt-3 font-lato text-xs font-normal uppercase tracking-[0.14em] text-[#9d531b]">{member.role}</p>
