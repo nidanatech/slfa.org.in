@@ -101,7 +101,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`xl:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
+                <div className={`slfa-mobile-menu xl:hidden absolute top-full left-0 w-full bg-gray-950/98 backdrop-blur-xl transition-all duration-500 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] border-t border-white/10' : 'max-h-0'}`}>
                     <div className="px-6 py-8 space-y-5">
                         {navLinks.map((link) => (
                             <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-bold text-gray-400 uppercase tracking-widest hover:text-[#D4AF37] transition-colors font-lato focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">
