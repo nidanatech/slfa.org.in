@@ -467,15 +467,31 @@ section.bg-\[\#faf9f7\] {
 @media(max-width: 767px) { .cream-section-bridge { height: 36px; } }
 
 
-/* Illustrated community themes, using the page's light typography. */
-.cream-connections.cream-connections-pillars { margin-top: 0; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: stretch; gap: 26px; }
-.cream-connections.cream-connections-pillars article { position: relative; isolation: isolate; overflow: hidden; min-height: 420px; padding: 28px; background: #fff9f3; border-radius: 4px; border: 1px solid #e3d8c7; box-shadow: none; }
-.cream-connections.cream-connections-pillars article:nth-child(2) { padding-top: 28px; }
-.cream-pillar-background { position: absolute; bottom: 0; left: 0; width: 100%; height: auto; z-index: -2; }
-.cream-connections-pillars article::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg,#fff9f3 25%,#fff9f3e6 42%,#fff9f330 62%,transparent 78%); }
-.cream-pillar-content .cream-story-number { display: block; margin: 0 0 16px; font-size: 11px; font-weight: 400; letter-spacing: .12em; }
-.cream-connections-pillars h3 { font-family: inherit; font-size: 28px; font-weight: 300; line-height: 1.25; margin: 0 0 14px; letter-spacing: -.025em; }
-.cream-connections-pillars p { margin: 0; font-size: 15px; font-weight: 300; line-height: 1.8; color: #46534a; }
+/* Editorial community stories: varied scale and rhythm instead of equal cards. */
+.cream-stories { padding-top: 92px; padding-bottom: 112px; }
+.cream-stories-heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 48px; }
+.cream-stories-heading > p { max-width: 390px; margin: 0 0 8px; color: #566158; font-size: 16px; font-weight: 300; line-height: 1.75; }
+.cream-stories-grid { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); align-items: start; gap: 24px; }
+.cream-story { min-width: 0; }
+.cream-story-1 { grid-column: 1 / span 5; }
+.cream-story-2 { grid-column: 6 / span 3; margin-top: 118px; }
+.cream-story-3 { grid-column: 9 / span 4; margin-top: 42px; }
+.cream-story-link { display: block; color: #172130; text-decoration: none; outline: none; }
+.cream-story-media { position: relative; overflow: hidden; background: #e8dfcf; box-shadow: 0 18px 48px -34px rgba(31,41,55,.55); }
+.cream-story-1 .cream-story-media { aspect-ratio: 4/3; }
+.cream-story-2 .cream-story-media, .cream-story-3 .cream-story-media { aspect-ratio: 3/4; }
+.cream-story-media::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.28); pointer-events: none; transition: inset .45s ease, border-color .45s ease; }
+.cream-story-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .75s cubic-bezier(.2,.75,.25,1), filter .5s ease; }
+.cream-story-copy { position: relative; padding: 24px 2px 0; }
+.cream-story-1 .cream-story-copy { margin: -1px 20px 0; padding: 26px 28px 0; background: #faf7f2; }
+.cream-story-kicker { margin: 0 0 10px; color: #9c5018; font-size: 10px; font-weight: 400; letter-spacing: .18em; line-height: 1.5; text-transform: uppercase; }
+.cream-story-copy h3 { margin: 0 0 10px; font-size: clamp(24px,2vw,34px); font-weight: 300; letter-spacing: -.025em; line-height: 1.15; }
+.cream-story-copy > p:not(.cream-story-kicker) { margin: 0; color: #566158; font-size: 14px; font-weight: 300; line-height: 1.7; }
+.cream-story-copy span { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; border-bottom: 1px solid #9fbea8; padding-bottom: 5px; color: #167747; font-size: 13px; font-weight: 400; transition: gap .3s ease, border-color .3s ease; }
+.cream-story-link:hover .cream-story-media img, .cream-story-link:focus-visible .cream-story-media img { transform: scale(1.045); filter: saturate(1.06); }
+.cream-story-link:hover .cream-story-media::after, .cream-story-link:focus-visible .cream-story-media::after { inset: 10px; border-color: rgba(255,255,255,.72); }
+.cream-story-link:hover .cream-story-copy span, .cream-story-link:focus-visible .cream-story-copy span { gap: 14px; border-color: #167747; }
+.cream-story-link:focus-visible { box-shadow: 0 0 0 3px #faf7f2,0 0 0 5px #1b7a4a; }
 /* Give the event a continuous base beneath both hero columns. */
 .cream-hero { padding-bottom: 28px; }
 .cream-map > img { max-height: 520px; }
@@ -488,22 +504,28 @@ section.bg-\[\#faf9f7\] {
 .cream-hero-event-band .cream-date-stamp { width: 64px; }
 .cream-hero-event-band .cream-date-stamp span { font-size: 42px; }
 @media(max-width:900px) {
- .cream-connections.cream-connections-pillars { grid-template-columns: 1fr; gap: 24px; }
- .cream-connections.cream-connections-pillars article { min-height: 380px; }
- .cream-pillar-background { width: 70%; left: auto; right: 0; }
- .cream-pillar-content { max-width: 65%; }
- .cream-connections-pillars article::after { background: linear-gradient(110deg,#fff9f3 15%,#fff9f3dd 42%,transparent 80%); }
+ .cream-stories-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 36px 24px; }
+ .cream-story-1 { grid-column: 1 / -1; }
+ .cream-story-2, .cream-story-3 { grid-column: auto; margin-top: 0; }
+ .cream-story-1 .cream-story-media { aspect-ratio: 16/9; }
 }
 @media(max-width:600px) {
  .cream-map > img { max-height: 350px; }
- .cream-pillar-background { width: 100%; }
- .cream-pillar-content { max-width: none; }
- .cream-connections-pillars article::after { background: linear-gradient(180deg,#fff9f3 25%,#fff9f3e6 42%,#fff9f330 62%,transparent 78%); }
+ .cream-stories { padding-top: 68px; padding-bottom: 76px; }
+ .cream-stories-heading { display: block; margin-bottom: 34px; }
+ .cream-stories-heading > p { margin-top: 18px; }
+ .cream-stories-grid { display: block; }
+ .cream-story + .cream-story { margin-top: 42px; }
+ .cream-story-1 .cream-story-media, .cream-story-2 .cream-story-media, .cream-story-3 .cream-story-media { aspect-ratio: 4/5; }
+ .cream-story-1 .cream-story-copy { margin-inline: 12px; padding-inline: 14px; }
  .cream-hero-event-band .cream-event { gap: 16px; align-items: flex-start; }
  .cream-hero-event-band .cream-event > div:last-child { display: block; }
  .cream-hero-event-band .cream-event > div:last-child > .cream-link { margin-top: 16px; }
  .cream-hero-event-band .cream-event h2 { font-size: 22px; }
  .cream-hero-event-band .cream-date-stamp { width: 48px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .cream-story-media img, .cream-story-media::after, .cream-story-copy span { transition: none; }
 }
 
 /* Branded stories and footer, sharing the same cream, green and saffron palette. */

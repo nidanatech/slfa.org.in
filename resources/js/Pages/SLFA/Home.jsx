@@ -16,9 +16,9 @@ const cultureImages = [
 ];
 const dateLabel = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 const connections = [
-    { title: 'Shared roots', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/themes/shared-roots.jpg' },
-    { title: 'Shared celebrations', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/themes/shared-celebrations.jpg' },
-    { title: 'Shared possibilities', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/themes/shared-possibilities.jpg' },
+    { title: 'Shared roots', kicker: 'Stories that brought us here', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/themes/shared-roots-editorial.webp', routeName: 'about', cta: 'Our story' },
+    { title: 'Shared celebrations', kicker: 'Culture, lived together', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/themes/shared-celebrations-editorial.webp', routeName: 'happenings', cta: 'See gatherings' },
+    { title: 'Shared possibilities', kicker: 'Ideas become friendships', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/themes/shared-possibilities-editorial.webp', routeName: 'membership', cta: 'Find your place' },
 ];
 
 export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
@@ -70,14 +70,22 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                     </div>
                 </div>
             </div>
-            <section id="ways-to-connect" className="cream-section cream-container" aria-label="Ways to connect with the community">
-                <div className="cream-connections cream-connections-pillars">
-                    {connections.map(({ title, description, image }, index) => <motion.article key={title} initial={reducedMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.65, delay: index * 0.1 }}>
-                        <img className="cream-pillar-background" src={image} alt="" aria-hidden="true" loading="lazy" width="1200" height="800" />
-                        <div className="cream-pillar-content">
-                            <h3>{title}</h3>
-                            <p>{description}</p>
-                        </div>
+            <section id="ways-to-connect" className="cream-section cream-container cream-stories" aria-labelledby="shared-stories-title">
+                <div className="cream-stories-heading">
+                    <div><p className="cream-eyebrow">Ways we connect</p><h2 id="shared-stories-title" className="cream-title">Our shared <em>stories.</em></h2></div>
+                    <p>Roots remembered, celebrations shared, and new possibilities made together.</p>
+                </div>
+                <div className="cream-stories-grid">
+                    {connections.map(({ title, kicker, description, image, routeName, cta }, index) => <motion.article className={`cream-story cream-story-${index + 1}`} key={title} initial={reducedMotion ? false : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.7, delay: index * 0.1 }}>
+                        <Link href={route(routeName)} className="cream-story-link">
+                            <div className="cream-story-media"><img src={image} alt="" loading="lazy" width={index ? 900 : 1400} height={index ? 1200 : 1050} /></div>
+                            <div className="cream-story-copy">
+                                <p className="cream-story-kicker">{kicker}</p>
+                                <h3>{title}</h3>
+                                <p>{description}</p>
+                                <span>{cta} <ArrowRight size={16} aria-hidden="true" /></span>
+                            </div>
+                        </Link>
                     </motion.article>)}
                 </div>
             </section>
