@@ -812,3 +812,36 @@ section.bg-\[\#faf9f7\] {
  .slfa-cream.slfa-transparent-nav > nav:not(.nav-scrolled) { padding-block: 18px; }
 }
 @media(prefers-reduced-motion:reduce) { .hero-scroll-cue i { animation: none; } }
+
+/* A brighter canvas with warm accents retained throughout the public site. */
+.slfa-cream { --cream: #fff; background: #fff; }
+.cream-home, .cream-updates, .cream-community-background { background: #fff; }
+.cream-story-1 .cream-story-copy { background: #fff; }
+.cream-hero-event-band, .slfa-cream .cream-site-footer { background: #faf9f6; }
+.slfa-cream > nav, .slfa-cream.slfa-transparent-nav > nav.nav-scrolled { background: rgba(255,255,255,.96); }
+.slfa-cream :is(section,div).bg-\[\#FAF7F2\] { background-color: #fff; }
+.slfa-cream :is(section,div).bg-\[\#f3eddf\] { background-color: #faf9f6; }
+.cream-community-veil { background: linear-gradient(90deg,#fff 12%,#fffffff2 35%,#ffffffb3 50%,#ffffff10 78%),linear-gradient(0deg,#fff,transparent 18%,transparent 85%,#ffffff70); }
+
+/* Accordion panels open on hover, focus or touch; slideshow remains a separate action. */
+.cream-updates .community-journal { display: flex; align-items: stretch; gap: 4px; height: 520px; padding: 20px 0 60px; }
+.journal-panel { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; background: #1f2937; transition: flex .65s cubic-bezier(.22,1,.36,1); }
+.journal-panel.is-active { flex: 3 1 0; }
+.journal-panel > img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+.journal-panel.is-active > img { transform: scale(1.035); }
+.journal-panel::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg,rgba(5,17,12,.82),rgba(5,17,12,.12) 70%); }
+.journal-select { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; cursor: pointer; }
+.journal-panel-content { position: absolute; z-index: 2; inset: auto 24px 26px; color: #fff; pointer-events: none; }
+.journal-panel-content p { margin: 0; font-size: clamp(20px,2.2vw,32px); line-height: 1.15; font-weight: 300; text-shadow: 0 2px 12px #0009; }
+.journal-panel-content .journal-open { display: inline-flex; align-items: center; gap: 8px; margin-top: 15px; padding: 5px 0; border-bottom: 1px solid #fff; color: #fff; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .25s; }
+.journal-panel.is-active .journal-open { opacity: 1; pointer-events: auto; }
+.journal-select:focus-visible, .journal-open:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+@media(max-width:767px) {
+ .cream-updates .community-journal { display: flex; height: 380px; gap: 3px; padding-bottom: 32px; }
+ .journal-panel.is-active { flex: 4 1 0; }
+ .journal-panel-content { inset: auto 12px 18px; }
+ .journal-panel-content p { font-size: 18px; overflow-wrap: anywhere; }
+ .journal-panel:not(.is-active) .journal-panel-content p { writing-mode: vertical-rl; transform: rotate(180deg); max-height: 230px; }
+ .cream-community-veil { background: linear-gradient(90deg,#fffffff5,#ffffffd9 65%,#ffffffb3),linear-gradient(0deg,#fff,transparent 25%,transparent 85%,#fff); }
+}
+@media(prefers-reduced-motion:reduce) { .journal-panel, .journal-panel > img, .journal-panel-content .journal-open { transition: none; } .journal-panel.is-active > img { transform: none; } }

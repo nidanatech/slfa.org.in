@@ -30,7 +30,12 @@ export function InterestExplorer() {
 
 export function PhotoJournal() {
     const [slide, setSlide] = useState(null);
-    return <><div className="community-journal">{moments.map((item, index) => <button type="button" key={item.id} onClick={() => setSlide(index)} aria-label={`Open ${item.caption} in slideshow`}><div className="journal-photo"><img src={item.path} alt="" loading="lazy" width="1024" height="768" /><span className="journal-caption">{item.caption}<small><Expand size={17} /> View gallery</small></span></div></button>)}</div>{slide !== null && <MediaSlideshow items={moments} initialIndex={slide} onClose={() => setSlide(null)} title="Life at SLFA" srcForItem={item => item.path} />}</>;
+    const [active, setActive] = useState(0);
+    return <><div className="community-journal" aria-label="Life at SLFA photographs">{moments.map((item, index) => <div className={`journal-panel${active === index ? ' is-active' : ''}`} key={item.id} onMouseEnter={() => setActive(index)} onFocus={() => setActive(index)}>
+        <img src={item.path} alt="" loading="lazy" width="1024" height="768" />
+        <button type="button" className="journal-select" onClick={() => setActive(index)} aria-label={`Show ${item.caption}`} aria-pressed={active === index} />
+        <div className="journal-panel-content"><p>{item.caption}</p><button type="button" className="journal-open" onClick={() => setSlide(index)}><Expand size={16} aria-hidden="true" /> View gallery</button></div>
+    </div>)}</div>{slide !== null && <MediaSlideshow items={moments} initialIndex={slide} onClose={() => setSlide(null)} title="Life at SLFA" srcForItem={item => item.path} />}</>;
 }
 
 export function EventCountdown({ start }) {
