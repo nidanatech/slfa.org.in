@@ -4,6 +4,8 @@ import { ArrowRight, CalendarDays, MapPin, ChevronLeft, ChevronRight, Pause, Pla
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import CommunityWord from '@/Components/CommunityWord';
+import StoriesCarousel from '@/Components/StoriesCarousel';
+import MistCanvas from '@/Components/MistCanvas';
 import { InterestExplorer, PhotoJournal, EventCountdown } from '@/Components/CommunityPlay';
 import { coverImageUrl } from '@/lib/coverImageUrl';
 
@@ -16,7 +18,7 @@ const cultureImages = [
 ];
 const dateLabel = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value));
 const connections = [
-    { title: 'Shared roots', kicker: 'Stories that brought us here', description: 'Meet people who share your connection to Sri Lanka and South India.', image: '/images/south-india-sri-lanka-light.webp', routeName: 'about', cta: 'Our story' },
+    { title: 'Shared roots', kicker: 'Stories that brought us here', description: 'From Sri Lanka to the vibrant neighbourhoods of South India, our community carries forward shared memories, enduring friendships, and cultural traditions that connect generations across borders.', image: '/images/themes/shared-roots.png', routeName: 'about', cta: 'Our story' },
     { title: 'Shared celebrations', kicker: 'Culture, lived together', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/night-to-remember.jpg', routeName: 'happenings', cta: 'See gatherings' },
     { title: 'Shared possibilities', kicker: 'Ideas become friendships', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/meet-people.jpg', routeName: 'membership', cta: 'Find your place' },
 ];
@@ -78,7 +80,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                 <div className="cream-stories-grid">
                     {connections.map(({ title, kicker, description, image, routeName, cta }, index) => <motion.article className={`cream-story cream-story-${index + 1}`} key={title} initial={reducedMotion ? false : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.7, delay: index * 0.1 }}>
                         <Link href={route(routeName)} className="cream-story-link">
-                            <div className="cream-story-media"><img src={image} alt="" loading="lazy" width={index ? 900 : 1400} height={index ? 1200 : 1050} />{index === 0 && <span className="story-mist" aria-hidden="true" />}</div>
+                            <div className="cream-story-media"><img src={image} alt="" loading="lazy" width={index ? 900 : 1200} height={index ? 1200 : 1080} />{index === 0 && <MistCanvas />}</div>
                             <div className="cream-story-copy">
                                 <p className="cream-story-kicker">{kicker}</p>
                                 <h3>{title}</h3>
@@ -122,16 +124,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                     </div>
                     <PhotoJournal />
                     <p className="cream-eyebrow journal-stories-label">Stories behind the moments</p>
-                    <div className="cream-news-grid cream-news-editorial">
-                        {latestNews?.length ? latestNews.slice(0, 3).map(post => <article key={post.id}>
-                            <Link href={route('news.show', post.public_id)} className="cream-news-link">
-                                {post.cover_image_path ? <div className="brand-photo-frame"><div className="cream-photo"><img src={coverImageUrl(post.cover_image_path)} alt="" loading="lazy" /></div></div> : <div className="cream-photo cream-photo-placeholder" aria-hidden="true">SLFA</div>}
-                                <div className="cream-news-copy"><time dateTime={post.published_at}>{dateLabel(post.published_at)}</time>
-                                <h3>{post.title}</h3>
-                                <span className="cream-link">Read story <ArrowRight size={15} /></span></div>
-                            </Link>
-                        </article>) : <p>Stories from the community will appear here as they are published.</p>}
-                    </div>
+                    <StoriesCarousel items={latestNews} />
                 </div>
             </section>
 
