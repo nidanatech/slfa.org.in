@@ -20,7 +20,7 @@ const questions = [
 
 export default function Membership({ auth }) {
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title="Membership" />
             <SLFAPageHero eyebrow="Belong to SLFA" title={<>Connect, contribute, <span className="italic font-light text-[#1B7A4A]">belong.</span></>} description="Join a community for Sri Lankan heritage, shared experiences, and lasting connections across South India." images={membershipImages}>
                 <Link href={route('register')} className="cream-button">Apply for membership <ArrowRight className="h-4 w-4" /></Link>
@@ -34,8 +34,8 @@ export default function Membership({ auth }) {
                         <h2 className="mt-3 font-lato text-4xl font-normal text-gray-950 sm:text-5xl">Membership made clear</h2>
                         <p className="mt-4 text-lg leading-relaxed text-gray-600">The application is online, and approval is handled by the committee.</p>
                     </div>
-                    <div className="mt-10 grid gap-5 md:grid-cols-3">
-                        {steps.map(step => <div key={step.number} className="border-t border-[#d8ded2] pt-6">
+                    <div className="mt-10 grid gap-6 md:grid-cols-3">
+                        {steps.map((step, idx) => <div key={step.number} className={`editorial-card ${idx === 1 ? 'editorial-card-green' : ''}`}>
                             <span className="font-lato text-4xl font-normal text-[#a45116]">{step.number}</span>
                             <h3 className="mt-5 font-lato text-2xl font-normal text-gray-950">{step.title}</h3>
                             <p className="mt-3 leading-relaxed text-gray-600">{step.description}</p>
@@ -44,7 +44,7 @@ export default function Membership({ auth }) {
                 </div>
             </section>
 
-            <section className="bg-[#FAF7F2] py-16"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><p className="brand-eyebrow">Choose your membership</p><h2 className="text-4xl font-light">A place for individuals and businesses</h2><div className="mt-8 grid gap-10 md:grid-cols-2"><div className="border-t border-[#d8ded2] pt-6"><h3 className="text-2xl">Individual membership</h3><p className="mt-3 text-gray-600">For adults living in South India with a connection to Sri Lanka.</p><p className="mt-4 text-[#1B7A4A]">₹5,000 one-time registration · ₹4,000 yearly</p><a href="/downloads/slfa-individual-membership-form.pdf" download className="mt-6 inline-flex items-center gap-2 border-b border-[#1B7A4A] pb-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:border-[#a45116] hover:text-[#a45116]"><Download className="h-4 w-4" aria-hidden="true" /> Download individual form <span className="text-xs text-gray-500">PDF · 1.6 MB</span></a></div><div className="border-t border-[#d8ded2] pt-6"><h3 className="text-2xl">Business membership</h3><p className="mt-3 text-gray-600">For organisations with two authorised representatives.</p><p className="mt-4 text-[#1B7A4A]">₹5,000 one-time registration · ₹4,000 per person yearly</p><a href="/downloads/slfa-business-membership-form.pdf" download className="mt-6 inline-flex items-center gap-2 border-b border-[#1B7A4A] pb-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:border-[#a45116] hover:text-[#a45116]"><Download className="h-4 w-4" aria-hidden="true" /> Download business form <span className="text-xs text-gray-500">PDF · 1.5 MB</span></a></div></div><p className="mt-6 text-sm text-gray-600">Annual membership is due on or before 30 June. Applications are reviewed by the Executive Committee; pay only as directed by SLFA.</p></div></section>
+            <section className="bg-[#FAF7F2] py-16"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><p className="brand-eyebrow">Choose your membership</p><h2 className="text-4xl font-light">A place for individuals and businesses</h2><div className="mt-8 grid gap-8 md:grid-cols-2"><div className="editorial-card editorial-card-green"><h3 className="text-2xl">Individual membership</h3><p className="mt-3 text-gray-600">For adults living in South India with a connection to Sri Lanka.</p><p className="mt-4 font-medium text-[#1B7A4A]">₹5,000 one-time registration · ₹4,000 yearly</p><a href="/downloads/slfa-individual-membership-form.pdf" download className="mt-6 inline-flex items-center gap-2 border-b border-[#1B7A4A] pb-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:border-[#a45116] hover:text-[#a45116]"><Download className="h-4 w-4" aria-hidden="true" /> Download individual form <span className="text-xs text-gray-500">PDF · 1.6 MB</span></a></div><div className="editorial-card"><h3 className="text-2xl">Business membership</h3><p className="mt-3 text-gray-600">For organisations with two authorised representatives.</p><p className="mt-4 font-medium text-[#1B7A4A]">₹5,000 one-time registration · ₹4,000 per person yearly</p><a href="/downloads/slfa-business-membership-form.pdf" download className="mt-6 inline-flex items-center gap-2 border-b border-[#1B7A4A] pb-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:border-[#a45116] hover:text-[#a45116]"><Download className="h-4 w-4" aria-hidden="true" /> Download business form <span className="text-xs text-gray-500">PDF · 1.5 MB</span></a></div></div><p className="mt-6 text-sm text-gray-600">Annual membership is due on or before 30 June. Applications are reviewed by the Executive Committee; pay only as directed by SLFA.</p></div></section>
             <section className="bg-white py-20 sm:py-24">
                 <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-8">
                     <div>

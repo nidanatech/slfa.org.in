@@ -41,7 +41,7 @@ export default function Contact({ auth, flash }) {
     const inputClass = "w-full bg-[#FAF7F2] border border-gray-200 rounded-xl px-4 py-3 text-gray-800 font-lato text-sm focus:outline-none focus:ring-2 focus:ring-[#1B7A4A]/40 focus:border-[#1B7A4A] transition-all duration-300 placeholder-gray-400";
 
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title="Contact Us" />
 
             {/* ── Dark Hero Banner ── */}
@@ -81,7 +81,7 @@ export default function Contact({ auth, flash }) {
 
                         {/* ─ Contact Form ─ */}
                         <motion.div initial={reduceMotion ? false : { opacity: 0, x: 15 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-                            <div className="border-t border-[#d8ded2] pt-8">
+                            <div className="editorial-card editorial-card-green">
                                 <h3 className="text-2xl font-lato font-normal text-gray-900 mb-2">Send Us a Message</h3>
                                 <p className="text-gray-500 font-lato text-sm mb-8">Send your question to the SLFA committee.</p>
 
@@ -120,7 +120,7 @@ export default function Contact({ auth, flash }) {
                                     <button
                                         type="submit"
                                         disabled={processing}
-                                        className="w-full flex items-center justify-center gap-3 bg-[#1B7A4A] hover:bg-gray-900 text-gray-900 hover:text-[#1B7A4A] font-lato font-normal py-4 px-6 rounded-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] disabled:opacity-60 uppercase tracking-widest text-sm"
+                                        className="w-full flex items-center justify-center gap-3 bg-[#1B7A4A] hover:bg-[#111c17] text-white font-lato font-normal py-4 px-6 rounded-full transition-all duration-300 hover:shadow-[0_12px_30px_-10px_rgba(27,122,74,0.5)] disabled:opacity-60 uppercase tracking-widest text-sm"
                                     >
                                         {processing ? 'Sending...' : (<>Send Message <Send className="w-4 h-4" /></>)}
                                     </button>

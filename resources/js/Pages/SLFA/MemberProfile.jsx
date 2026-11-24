@@ -5,7 +5,7 @@ import { MapPin, Briefcase, Mail, Phone, Calendar } from 'lucide-react';
 
 export default function MemberProfile({ auth, member }) {
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title={`${member.full_name} - Directory`} />
 
             <SLFAPageHero compact eyebrow="Member directory" title={member.full_name} description={member.membership_type === 'business' ? 'Business member profile' : 'Individual member profile'} backHref={route('directory')} backLabel="Back to directory" />
@@ -13,8 +13,8 @@ export default function MemberProfile({ auth, member }) {
             <section className="min-h-[40vh] bg-[#FAF7F2] py-16 sm:py-20">
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
 
-                    <div className="border-t border-[#d8ded2]">
-                        <div className="py-8 md:py-12">
+                    <div className="editorial-card editorial-card-green">
+                        <div className="py-4 md:py-6">
                             <div className="flex flex-col md:flex-row gap-8 items-start">
 
                                 {/* Avatar */}

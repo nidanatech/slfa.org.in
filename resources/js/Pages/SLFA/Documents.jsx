@@ -20,7 +20,7 @@ export default function Documents({ auth, documents }) {
     };
 
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title="Document Library" />
 
             <SLFAPageHero compact eyebrow="Members only" title={<>Document <span className="italic font-light text-[#1B7A4A]">library</span></>} description="Access the association's documents and forms in one place.">
@@ -33,7 +33,7 @@ export default function Documents({ auth, documents }) {
                     {Object.keys(documents).length > 0 ? (
                         <div className="space-y-10">
                             {Object.entries(documents).map(([category, docs], index) => (
-                                <div key={category} className="animate-fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                                <div key={category} className="editorial-card animate-fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
                                     <h2 className="mb-5 flex items-center font-lato text-2xl font-normal text-gray-950">
                                         <span className="mr-3 text-[#a45116]">
                                             {categoryIcons[category] || <File className="w-5 h-5" />}

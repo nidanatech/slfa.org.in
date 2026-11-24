@@ -851,7 +851,77 @@ section.bg-\[\#faf9f7\] {
 .slfa-brand :is(a,button)[class*="bg-[#1B7A4A]"]:hover { background-color: #145d39; color: #fffaf2; }
 .slfa-brand main > section { scroll-margin-top: 100px; }
 .slfa-brand .brand-photo-frame { position: relative; min-width: 0; padding: 9px; background: #fffaf2; border: 1px solid #1b7a4a38; box-shadow: 0 5px 14px #40331d08; }
-.brand-page-hero { padding: 155px 24px 64px; background: #f5efe3; border-bottom: 1px solid #deded0; }
+.brand-page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 155px 24px 64px;
+  background: linear-gradient(180deg, #f8f2e7 0%, #faf7f2 100%);
+  border-bottom: 1px solid #d9c69e;
+}
+.brand-page-hero-inner { position: relative; z-index: 1; max-width: 1232px; margin: 0 auto; }
+.brand-hero-ambient {
+  position: absolute;
+  inset: -25% -15%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 38% 45% at 78% 28%, rgba(206, 140, 54, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 34% 42% at 22% 72%, rgba(27, 122, 74, 0.09) 0%, transparent 70%);
+  animation: brand-hero-float 16s ease-in-out infinite alternate;
+}
+@keyframes brand-hero-float {
+  from { transform: translate3d(-2%, -2%, 0) scale(1); }
+  to { transform: translate3d(2%, 2%, 0) scale(1.04); }
+}
+.brand-hero-photo { overflow: hidden; }
+.brand-hero-photo img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+}
+.brand-hero-photo:hover img,
+.brand-page-hero:hover .brand-hero-photo img {
+  transform: scale(1.045);
+}
+@media(prefers-reduced-motion: reduce) {
+  .brand-hero-ambient { animation: none; }
+  .brand-hero-photo img { transition: none; }
+  .brand-hero-photo:hover img,
+  .brand-page-hero:hover .brand-hero-photo img { transform: none; }
+}
+
+/* Reusable Kempinski-inspired editorial vertical line + circle motif and warm cards */
+.editorial-line-block {
+  position: relative;
+  padding-left: 28px;
+}
+.editorial-line-block::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 10px;
+  width: 1px;
+  background: #c7b596;
+}
+.editorial-line-block::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  bottom: 2px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid #c7b596;
+  background: #FAF7F2;
+}
+.editorial-card {
+  background: #fffdf9;
+  border: 1px solid rgba(182, 147, 89, 0.24);
+  border-top: 3px solid #ce8c36;
+  border-radius: 16px;
+  padding: 28px 26px;
+}
+.editorial-card-green {
+  border-top-color: #1b7a4a;
+}
 .brand-page-hero-inner { max-width: 1232px; margin: 0 auto; }
 .brand-page-hero-with-image { display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 64px; }
 .brand-page-hero h1 { font-size: clamp(36px,4.4vw,64px); line-height: 1.12; max-width: 900px; overflow-wrap: anywhere; }
