@@ -528,6 +528,28 @@ section.bg-\[\#faf9f7\] {
  .cream-story-media img, .cream-story-media::after, .cream-story-copy span { transition: none; }
 }
 
+/* Photographic story panels and gallery interactions. */
+.cream-story-2 .cream-story-link, .cream-story-3 .cream-story-link { position: relative; }
+.cream-story-2 .cream-story-media::before, .cream-story-3 .cream-story-media::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg,rgba(8,20,15,.88),rgba(8,20,15,.08) 75%); }
+.cream-story-2 .cream-story-copy, .cream-story-3 .cream-story-copy { position: absolute; z-index: 2; bottom: 0; left: 0; right: 0; padding: 28px; color: white; }
+.cream-stories-grid .cream-story-2 .cream-story-copy p, .cream-stories-grid .cream-story-3 .cream-story-copy p, .cream-story-2 .cream-story-copy span, .cream-story-3 .cream-story-copy span { color: #fff; }
+.story-mist { position: absolute; inset: 0; pointer-events: none; background: url('/images/above-clouds-bg.png') center / cover; opacity: .18; animation: story-mist-drift 28s ease-in-out infinite alternate; }
+@keyframes story-mist-drift { from { transform: translateX(-4%) scale(1.08); } to { transform: translateX(4%) scale(1.08); } }
+.cream-updates .community-journal { display: flex; gap: 2px; height: 520px; padding: 20px 0 60px; }
+.community-journal button { position: relative; flex: 1; overflow: hidden; transition: flex .6s ease; }
+.community-journal button:first-child { flex: 2; }
+.community-journal:has(button:hover) button:first-child, .community-journal:has(button:focus-visible) button:first-child { flex: 1; }
+.community-journal button:hover, .community-journal button:focus-visible, .community-journal:has(button:hover) button:first-child:hover, .community-journal:has(button:focus-visible) button:first-child:focus-visible { flex: 2; }
+.community-journal button:focus-visible { outline: 3px solid #1b7a4a; outline-offset: 3px; z-index: 2; }
+.community-journal .journal-photo, .community-journal .journal-photo img { width: 100%; height: 100%; }
+.community-journal .journal-photo img { aspect-ratio: auto; object-fit: cover; }
+.community-journal .journal-photo::after { content: ''; position: absolute; inset: 0; background: rgba(10,20,15,.38); transition: background .4s; }
+.community-journal button:hover .journal-photo::after, .community-journal button:focus-visible .journal-photo::after { background: rgba(10,20,15,.2); }
+.community-journal .journal-photo > .journal-caption { position: absolute; z-index: 1; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; padding: 24px; background: none; color: white; text-align: center; font-size: clamp(22px,2.3vw,36px); font-weight: 300; }
+.community-journal .journal-caption small { display: flex; align-items: center; gap: 7px; color: white; font-size: 12px; }
+@media(max-width:767px) { .cream-updates .community-journal { height: auto; display: grid; grid-template-columns: 1fr; gap: 10px; } .community-journal button { height: 260px; } .cream-story-2 .cream-story-copy, .cream-story-3 .cream-story-copy { padding: 22px; } }
+@media(prefers-reduced-motion:reduce) { .story-mist { animation: none; } .community-journal button, .community-journal .journal-photo::after { transition: none; } }
+
 /* Branded stories and footer, sharing the same cream, green and saffron palette. */
 .cream-updates { background: linear-gradient(180deg,#faf7f2,#f6f0e4 55%,#faf7f2); }
 .cream-updates .cream-section-heading { align-items: center; padding-bottom: 26px; border-bottom: 1px solid #ddccb0; }

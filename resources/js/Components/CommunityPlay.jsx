@@ -30,7 +30,7 @@ export function InterestExplorer() {
 
 export function PhotoJournal() {
     const [slide, setSlide] = useState(null);
-    return <><div className="community-journal">{moments.map((item, index) => <button type="button" key={item.id} onClick={() => setSlide(index)} aria-label={`Open ${item.caption} in slideshow`}><div className="brand-photo-frame"><div className="journal-photo"><img src={item.path} alt={item.caption} loading="lazy" width="1024" height="768" /><span><Expand size={18} /> View moment</span></div></div><span className="journal-caption">{item.caption}</span></button>)}</div>{slide !== null && <MediaSlideshow items={moments} initialIndex={slide} onClose={() => setSlide(null)} title="Life at SLFA" srcForItem={item => item.path} />}</>;
+    return <><div className="community-journal">{moments.map((item, index) => <button type="button" key={item.id} onClick={() => setSlide(index)} aria-label={`Open ${item.caption} in slideshow`}><div className="journal-photo"><img src={item.path} alt="" loading="lazy" width="1024" height="768" /><span className="journal-caption">{item.caption}<small><Expand size={17} /> View gallery</small></span></div></button>)}</div>{slide !== null && <MediaSlideshow items={moments} initialIndex={slide} onClose={() => setSlide(null)} title="Life at SLFA" srcForItem={item => item.path} />}</>;
 }
 
 export function EventCountdown({ start }) {
