@@ -10,7 +10,7 @@ import MediaSlideshow from '@/Components/MediaSlideshow';
 export default function NewsDetail({ auth, post }) {
     const [slideIndex, setSlideIndex] = useState(null);
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title={post.title} />
             <SLFAPageHero eyebrow={post.category || 'News & activities'} title={post.title} backHref={`${route('happenings')}#news`} backLabel="Back to news" image={coverImageUrl(post.cover_image_path)}>
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[#1B7A4A]" />Published {dayjs(post.published_at || post.created_at).format('MMMM D, YYYY')}</span>
@@ -18,7 +18,7 @@ export default function NewsDetail({ auth, post }) {
 
             <section className="min-h-[40vh] bg-[#FAF7F2] py-16 sm:py-20">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6">
-                    <article className="border-t border-[#d8ded2] pt-8">
+                    <article className="editorial-card editorial-card-green">
                         <div className="brand-article prose prose-lg max-w-none whitespace-pre-wrap text-gray-700">{post.body}</div>
                     </article>
                     {post.photos?.length > 0 && <section className="mt-12 border-t border-[#d8ded2] pt-8" aria-labelledby="story-photos-heading">

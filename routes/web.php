@@ -103,6 +103,8 @@ Route::post('/events/{event:public_id}/admission', [EventController::class, 'adm
 // Membership Application (public)
 Route::redirect('/join', '/register')->name('join');
 Route::get('/membership', fn () => Inertia::render('SLFA/Membership'))->name('membership');
+Route::get('/privacy-policy', fn () => Inertia::render('SLFA/PrivacyPolicy'))->name('privacy');
+Route::get('/terms', fn () => Inertia::render('SLFA/Terms'))->name('terms');
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // AUTHENTICATED MEMBER ROUTES

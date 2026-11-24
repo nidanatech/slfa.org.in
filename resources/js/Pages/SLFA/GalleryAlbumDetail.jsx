@@ -9,7 +9,7 @@ export default function GalleryAlbumDetail({ auth, album }) {
     const [slideIndex, setSlideIndex] = useState(null);
 
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title={`${album.title} - Gallery`} />
 
             <SLFAPageHero eyebrow="Community memories" title={album.title} description={album.description} backHref={`${route('happenings')}#news`} backLabel="Back to news & events" image={album.cover_image_path ? `/storage/${album.cover_image_path}` : null}>

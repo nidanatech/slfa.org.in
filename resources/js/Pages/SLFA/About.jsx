@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
+import { useReducedMotion } from 'motion/react';
 import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import SLFAPageHero from '@/Components/SLFAPageHero';
 import { useState } from 'react';
@@ -47,25 +48,47 @@ function CommitteeList({ title, members, columns }) {
 }
 
 export default function About({ auth, leadershipSetup = [], executiveCommittee = [] }) {
-    return <SLFAWebsiteLayout user={auth.user} darkNav>
+    const reducedMotion = useReducedMotion();
+    const [videoFailed, setVideoFailed] = useState(false);
+
+    return <SLFAWebsiteLayout user={auth.user} cream>
         <Head title="About SLFA" />
 
-        <SLFAPageHero eyebrow="Meet SLFA" title={<>A community built on <em>connection.</em></>} description="We bring together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support." image="/images/meet-people.jpg"><a href="#our-purpose" className="cream-link">Discover our purpose <ArrowRight size={16} /></a><a href="#committee" className="cream-link">Meet our committee <ArrowRight size={16} /></a></SLFAPageHero>
+        <SLFAPageHero eyebrow="Meet SLFA" title={<>A community built on <em>connection.</em></>} description="We bring together people of Sri Lankan origin living in South India through friendship, cultural gatherings, and mutual support." image="/images/about-hero.jpg"><a href="#our-purpose" className="cream-link">Discover our purpose <ArrowRight size={16} /></a><a href="#committee" className="cream-link">Meet our committee <ArrowRight size={16} /></a></SLFAPageHero>
 
         <section id="our-purpose" className="scroll-mt-20 bg-[#FAF7F2] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
             <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
                 <div><p className="font-lato text-xs font-normal uppercase tracking-[0.27em] text-[#a45116]">Why we exist</p><h2 className="mt-5 font-lato text-4xl font-normal leading-tight text-gray-950 sm:text-6xl">Friendship with <em className="font-light text-[#1B7A4A]">purpose</em></h2></div>
                 <div className="space-y-12 lg:pt-2">
-                    <div className="border-t border-[#d8ded2] pt-6"><span className="font-lato text-xs font-normal uppercase tracking-[0.22em] text-[#a45116]">Our mission</span><h3 className="mt-4 font-lato text-3xl font-normal text-gray-950">Bring people together</h3><p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-700">Create opportunities for Sri Lankans in South India to meet, preserve cultural ties, and support one another.</p></div>
-                    <div className="border-t border-[#d8ded2] pt-6"><span className="font-lato text-xs font-normal uppercase tracking-[0.22em] text-[#a45116]">Our vision</span><h3 className="mt-4 font-lato text-3xl font-normal text-gray-950">Keep connections growing</h3><p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-700">Build lasting social, cultural, and professional relationships that strengthen the community across generations.</p></div>
+                    <div className="editorial-line-block border-t border-[#d8ded2] pt-6"><span className="font-lato text-xs font-normal uppercase tracking-[0.22em] text-[#a45116]">Our mission</span><h3 className="mt-4 font-lato text-3xl font-normal text-gray-950">Bring people together</h3><p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-700">Create opportunities for Sri Lankans in South India to meet, preserve cultural ties, and support one another.</p></div>
+                    <div className="editorial-line-block border-t border-[#d8ded2] pt-6"><span className="font-lato text-xs font-normal uppercase tracking-[0.22em] text-[#a45116]">Our vision</span><h3 className="mt-4 font-lato text-3xl font-normal text-gray-950">Keep connections growing</h3><p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-700">Build lasting social, cultural, and professional relationships that strengthen the community across generations.</p></div>
                 </div>
             </div>
         </section>
 
         <section className="relative overflow-hidden bg-[#f3eddf] px-4 py-20 text-[#1f2937] sm:px-6 lg:px-8 lg:py-28">
+            {!reducedMotion && !videoFailed && (
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    poster="/images/hero/srilanka-poster.webp"
+                    onError={() => setVideoFailed(true)}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-55"
+                >
+                    <source src="/images/hero/srilanka.mp4" type="video/mp4" />
+                </video>
+            )}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                style={{ background: 'linear-gradient(105deg, rgba(243, 237, 223, 0.95) 0%, rgba(243, 237, 223, 0.86) 55%, rgba(243, 237, 223, 0.65) 100%)' }}
+            />
 
-
-            <div className="relative mx-auto max-w-7xl">
+            <div className="relative z-10 mx-auto max-w-7xl">
                 <p className="font-lato text-xs font-normal uppercase tracking-[0.27em] text-[#1B7A4A]">The ways we connect</p>
                 <h2 className="mt-5 max-w-2xl font-lato text-4xl font-normal leading-tight sm:text-6xl">A place for everyone to <em className="font-light text-[#1B7A4A]">belong</em></h2>
                 <div className="mt-14 max-w-4xl border-t border-[#d8ded2]">

@@ -27,7 +27,7 @@ export default function Directory({ auth, members, filters, cities }) {
     };
 
     return (
-        <SLFAWebsiteLayout user={auth.user} darkNav={true}>
+        <SLFAWebsiteLayout user={auth.user} cream>
             <Head title="Member Directory" />
 
             <SLFAPageHero compact eyebrow="Members only" title={<>Your community <span className="italic font-light text-[#1B7A4A]">directory</span></>} description="Find and connect with SLFA members who have chosen to appear in the directory." />
