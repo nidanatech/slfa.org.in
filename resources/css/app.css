@@ -739,32 +739,32 @@ section.bg-\[\#faf9f7\] {
 .slfa-brand form button[type="submit"][class*="bg-[#1B7A4A]"]:hover { background: #d9741c; color: #1f2937; }
 .slfa-brand .brand-hero-actions .cream-button { background: #e67e22; color: #1f2937; }
 
-/* Let the landscape lead the homepage hero; veil only the copy side. */
-.cream-hero-surface .cream-hero { grid-template-columns: minmax(0, 610px); min-height: 680px; align-content: center; padding-bottom: 70px; }
-.cream-hero-copy { position: relative; z-index: 1; }
-.cream-hero-video { height: calc(100% - 150px); }
-.cream-hero-video video { filter: saturate(.96) contrast(.98) brightness(.97); }
-.cream-hero-video span { background: linear-gradient(90deg, rgba(248,241,229,.94) 0%, rgba(248,241,229,.86) 28%, rgba(248,241,229,.48) 52%, rgba(248,241,229,.08) 76%), linear-gradient(0deg, rgba(248,241,229,.56) 0%, transparent 38%); }
-
+/* Full-contrast cinematic hero with centered, deliberately brief copy. */
 .slfa-cream.slfa-transparent-nav > nav:not(.nav-scrolled) { background: transparent; box-shadow: none; padding-block: 25px; }
 .slfa-cream.slfa-transparent-nav > nav.nav-scrolled { background: rgba(248,241,229,.9); box-shadow: 0 1px 0 rgba(72,79,45,.12); backdrop-filter: blur(16px); }
+.slfa-cream.slfa-transparent-nav > nav:not(.nav-scrolled) a span,
+.slfa-cream.slfa-transparent-nav > nav:not(.nav-scrolled) button { color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.48); }
+.slfa-cream.slfa-transparent-nav > nav:not(.nav-scrolled) a[aria-label="SLFA home"] span span:first-child { color: #f79236; }
+.cream-hero-surface { background: #15241d url('/images/hero/srilanka-poster.webp') center / cover no-repeat; }
+.cream-hero-surface .cream-hero { display: grid; grid-template-columns: minmax(0, 980px); place-content: center; justify-content: center; min-height: 100svh; padding-top: 150px; padding-bottom: 90px; text-align: center; }
+.cream-hero-copy { position: relative; z-index: 1; }
+.cream-hero h1 { color: #fff; font-size: clamp(52px, 7vw, 104px); line-height: .96; letter-spacing: -.045em; text-shadow: 0 3px 24px rgba(0,0,0,.55); }
+.cream-hero h1 > span { color: #fff; text-decoration: none; }
+.cream-hero .cream-intro { max-width: 650px; margin: 28px auto 0; color: rgba(255,255,255,.94); font-size: clamp(17px,1.6vw,22px); text-shadow: 0 2px 16px rgba(0,0,0,.65); }
+.cream-hero .cream-actions { justify-content: center; }
+.cream-hero-link { display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,.85); padding: 8px 2px; color: #fff; font-size: 15px; text-shadow: 0 1px 10px rgba(0,0,0,.65); }
 .cream-hero-video { height: 100%; }
-.cream-hero-event-band { background: rgba(248,241,229,.68); border-color: rgba(217,198,158,.72); backdrop-filter: blur(10px); }
-.hero-place-marker { position: absolute; top: 145px; right: 32px; display: flex; align-items: center; gap: 10px; color: rgba(31,41,55,.78); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
-.hero-place-marker i { position: relative; display: block; width: 54px; height: 1px; background: rgba(27,122,74,.55); }
-.hero-place-marker i::after { content: ''; position: absolute; right: 0; top: -2px; width: 5px; height: 5px; border-radius: 50%; background: #e67e22; }
-.hero-scroll-cue { position: absolute; right: 32px; bottom: 42px; display: flex; align-items: center; gap: 12px; color: #1f2937; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; writing-mode: vertical-rl; }
-.hero-scroll-cue i { display: block; width: 1px; height: 54px; overflow: hidden; background: rgba(31,41,55,.25); }
-.hero-scroll-cue i::after { content: ''; display: block; width: 1px; height: 22px; background: #1b7a4a; animation: hero-scroll-line 2.2s ease-in-out infinite; }
-@keyframes hero-scroll-line { 0% { transform: translateY(-24px); } 55%,100% { transform: translateY(58px); } }
+.cream-hero-video video { filter: saturate(1.12) contrast(1.08) brightness(.93); }
+.cream-hero-event-band { background: #f2ead9; border-color: #d9c69e; backdrop-filter: none; }
+.hero-scroll-cue { position: absolute; left: 50%; right: auto; bottom: 34px; width: 42px; height: 42px; transform: translateX(-50%); }
+.hero-scroll-cue i { position: absolute; left: 13px; top: 9px; display: block; width: 16px; height: 16px; border-right: 1.5px solid #fff; border-bottom: 1.5px solid #fff; transform: rotate(45deg); filter: drop-shadow(0 2px 5px rgba(0,0,0,.55)); animation: hero-scroll-arrow 1.8s ease-in-out infinite; }
+@keyframes hero-scroll-arrow { 0%,100% { transform: translateY(-3px) rotate(45deg); opacity: .55; } 50% { transform: translateY(7px) rotate(45deg); opacity: 1; } }
 @media(max-width:767px) {
- .cream-hero-surface .cream-hero { min-height: 650px; padding-top: 130px; padding-bottom: 64px; justify-content: center; }
+ .cream-hero-surface .cream-hero { min-height: 100svh; padding-top: 130px; padding-bottom: 80px; }
+ .cream-hero h1 { font-size: clamp(48px,14vw,70px); }
+ .cream-hero .cream-intro { max-width: 30rem; font-size: 17px; }
  .cream-hero-video { height: 100%; }
  .cream-hero-video video { object-position: 58% center; }
- .cream-hero-video span { background: linear-gradient(90deg, rgba(248,241,229,.91), rgba(248,241,229,.63)), linear-gradient(0deg, rgba(248,241,229,.72), transparent 48%); }
  .slfa-cream.slfa-transparent-nav > nav:not(.nav-scrolled) { padding-block: 18px; }
- .hero-place-marker { top: 110px; right: 22px; }
- .hero-place-marker i { width: 28px; }
- .hero-scroll-cue { display: none; }
 }
-@media(prefers-reduced-motion:reduce) { .hero-scroll-cue i::after { animation: none; } }
+@media(prefers-reduced-motion:reduce) { .hero-scroll-cue i { animation: none; } }

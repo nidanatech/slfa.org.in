@@ -39,21 +39,19 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
         </Head>
         <div className="cream-home">
             <div className="cream-hero-surface">
-            {!reducedMotion && !heroVideoFailed && <div className="cream-hero-video" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata" poster="/images/hero/srilanka-poster.webp" onError={() => setHeroVideoFailed(true)}><source src="/images/hero/srilanka.mp4" type="video/mp4" /></video><span /></div>}
+            {!reducedMotion && !heroVideoFailed && <div className="cream-hero-video" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata" poster="/images/hero/srilanka-poster.webp" onError={() => setHeroVideoFailed(true)}><source src="/images/hero/srilanka.mp4" type="video/mp4" /></video></div>}
             <section className="cream-hero cream-container" aria-labelledby="home-title">
                 <div className="cream-hero-copy">
-                    <p className="cream-eyebrow">Sri Lankan Friendship Association of South India</p>
-                    <h1 id="home-title">Shared roots.<span>New friendships.</span></h1>
-                    <p className="cream-intro">Connecting Sri Lankans in South India. A community to call your own.</p>
+                    <h1 id="home-title">Connecting Sri Lankans<span>in South India.</span></h1>
+                    <p className="cream-intro">Shared roots. New friendships. A community to call your own.</p>
                     <div className="cream-actions">
-                        <Link href={auth.user ? route('dashboard') : route('register')} className="cream-button">{auth.user ? 'Your membership' : 'Apply for membership'} <ArrowRight size={17} /></Link>
-                        <Link href={route('about')} className="cream-link">Explore the association <ArrowRight size={17} /></Link>
+                        <Link href={route('about')} className="cream-hero-link">Discover SLFA <ArrowRight size={17} /></Link>
                     </div>
                 </div>
-                <div className="hero-place-marker" aria-hidden="true"><span>Sri Lanka</span><i /><span>South India</span></div>
-                <a href="#ways-to-connect" className="hero-scroll-cue"><span>Discover</span><i aria-hidden="true" /></a>
+                <a href="#upcoming-event" className="hero-scroll-cue" aria-label="View the upcoming event"><i aria-hidden="true" /></a>
             </section>
-            <div className="cream-hero-event-band">
+            </div>
+            <div id="upcoming-event" className="cream-hero-event-band scroll-mt-24">
                 <div className="cream-container">
                     <div className="cream-event">
                         {event?.cover_image_path && <Link href={route('events.show', event.public_id)} className="cream-event-poster" aria-label={`View ${event.title}`}><img src={coverImageUrl(event.cover_image_path)} alt={`${event.title} flyer`} width="648" height="900" /></Link>}
@@ -71,7 +69,6 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
             <section id="ways-to-connect" className="cream-section cream-container" aria-label="Ways to connect with the community">
                 <div className="cream-connections cream-connections-pillars">
