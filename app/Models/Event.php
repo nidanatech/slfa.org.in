@@ -6,6 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    protected $appends = ['public_slug'];
+
+    public function getPublicSlugAttribute(): string
+    {
+        return (\Illuminate\Support\Str::slug($this->title) ?: 'event').'--'.$this->public_id;
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        if ($field === 'public_id' && preg_match('/--([0-9A-HJKMNP-TV-Z]{26})$/i', $value, $matches)) {
+            $value = $matches[1];
+        }
+
+        return parent::resolveRouteBinding($value, $field);
+    }
     protected $fillable = [
         'title', 'description', 'event_type',
         'location', 'start_at', 'end_at',

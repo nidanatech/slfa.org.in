@@ -63,7 +63,7 @@ export default function StoriesCarousel({ items = [] }) {
                             onClick={!isActive ? () => setActiveIndex(index) : undefined}
                         >
                             {isActive ? (
-                                <Link href={route('news.show', post.public_id)} className="stories-carousel-link">
+                                <Link href={route('news.show', post.public_slug)} className="stories-carousel-link">
                                     <div className="brand-photo-frame">
                                         {post.cover_image_path ? (
                                             <div className="cream-photo">

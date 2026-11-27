@@ -56,7 +56,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
             <div id="upcoming-event" className="cream-hero-event-band scroll-mt-24">
                 <div className="cream-container">
                     <div className="cream-event">
-                        {event?.cover_image_path && <Link href={route('events.show', event.public_id)} className="cream-event-poster" aria-label={`View ${event.title}`}><img src={coverImageUrl(event.cover_image_path)} alt={`${event.title} flyer`} width="648" height="900" /></Link>}
+                        {event?.cover_image_path && <Link href={route('events.show', event.public_slug)} className="cream-event-poster" aria-label={`View ${event.title}`}><img src={coverImageUrl(event.cover_image_path)} alt={`${event.title} flyer`} width="648" height="900" /></Link>}
                         {event ? <div className="cream-date-stamp" aria-hidden="true"><span>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</span><small>{new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(event.start_at))}</small></div> : <CalendarDays className="cream-event-icon" size={26} aria-hidden="true" />}
                         <div>
                             <p className="cream-eyebrow">Upcoming event</p>
@@ -67,7 +67,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                                 <time dateTime={event.start_at}>{dateLabel(event.start_at)}</time>
                                 {event.location && <p className="cream-location"><MapPin size={15} aria-hidden="true" />{event.location}</p>}
                             </> : <p>Connect, celebrate, and build meaningful relationships.</p>}
-                            <div className="event-actions"><Link href={event ? route('events.show', event.public_id) : route('happenings')} className="cream-link">{event ? 'View event & programme' : 'Explore events'} <ArrowRight size={15} /></Link>{event?.admission_enabled && (!event.admission_closes_at || new Date(event.admission_closes_at) > new Date()) && <Link className="cream-link" href={route('events.show', event.public_id) + '#admission'}>Request admission <ArrowRight size={15} /></Link>}</div>
+                            <div className="event-actions"><Link href={event ? route('events.show', event.public_slug) : route('happenings')} className="cream-link">{event ? 'View event & programme' : 'Explore events'} <ArrowRight size={15} /></Link>{event?.admission_enabled && (!event.admission_closes_at || new Date(event.admission_closes_at) > new Date()) && <Link className="cream-link" href={route('events.show', event.public_slug) + '#admission'}>Request admission <ArrowRight size={15} /></Link>}</div>
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ class GalaEventAndNewsGalleryTest extends TestCase
         $this->assertSame('/images/events/gala-dinner-2026-poster.jpeg', $gala->cover_image_path);
         $this->assertSame('/images/events/gala-dinner-2026-programme.jpeg', $gala->programme_image_path);
 
-        $this->get(route('events.show', $gala->public_id))->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->get(route('events.show', $gala->public_slug))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('SLFA/EventDetail')
             ->where('event.cover_image_path', '/images/events/gala-dinner-2026-poster.jpeg')
             ->where('event.programme_image_path', '/images/events/gala-dinner-2026-programme.jpeg')
@@ -80,7 +80,8 @@ class GalaEventAndNewsGalleryTest extends TestCase
         ])->assertRedirect();
 
         $this->assertSame(2, $news->photos()->count());
-        $this->get(route('news.show', $news->public_id))->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->get(route('news.show', $news->public_id))->assertRedirect(route('news.show', $news->public_slug));
+        $this->get(route('news.show', $news->public_slug))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('SLFA/NewsDetail')
             ->has('post.photos', 2));
 

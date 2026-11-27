@@ -30,7 +30,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                     <h3 className="text-xl font-lato font-normal text-gray-900 mb-2">{item.title}</h3>
                     <p className="text-gray-600 font-light mb-4">{item.excerpt}</p>
                     <div className="flex items-center justify-between border-t border-[#d8ded2] pt-4">
-                        <Link href={route('news.show', item.public_id)} className="flex items-center gap-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:text-gray-950">
+                        <Link href={route('news.show', item.public_slug)} className="flex items-center gap-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:text-gray-950">
                             Read Full Post <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
@@ -72,7 +72,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                     </div>
 
                     <div className="flex items-center justify-between border-t border-[#d8ded2] pt-4">
-                        <Link href={route('events.show', item.public_id)} className="flex items-center gap-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:text-gray-950">
+                        <Link href={route('events.show', item.public_slug)} className="flex items-center gap-1 text-sm font-normal text-[#1B7A4A] transition-colors hover:text-gray-950">
                             View Event Details <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
@@ -182,7 +182,7 @@ export default function Dashboard({ feed = [], upcomingEvents = [] }) {
                                                 <span className="text-lg font-light text-[#1f2937] leading-none">{dayjs(event.start_at).format('D')}</span>
                                             </div>
                                             <div>
-                                                <Link href={route('events.show', event.public_id)} className="font-normal text-sm text-gray-800 group-hover:text-[#1B7A4A] transition-colors line-clamp-2">
+                                                <Link href={route('events.show', event.public_slug)} className="font-normal text-sm text-gray-800 group-hover:text-[#1B7A4A] transition-colors line-clamp-2">
                                                     {event.title}
                                                 </Link>
                                                 <span className="text-xs text-gray-500 block mt-1">{dayjs(event.start_at).format('h:mm A')}</span>

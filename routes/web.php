@@ -62,21 +62,24 @@ Route::get('/news', fn () => redirect()->to(route('happenings').'#news', 301))->
 
 Route::get('/news/{legacyNews}', function (int $legacyNews) {
     $post = \App\Models\NewsPost::findOrFail($legacyNews);
-    return redirect()->route('news.show', $post->public_id, 301);
+    return redirect()->route('news.show', $post->public_slug, 301);
 })->whereNumber('legacyNews');
 
 Route::get('/news/{news:public_id}', function (\App\Models\NewsPost $news) {
     abort_unless($news->published_at && $news->published_at->lte(now()), 404);
+    if (request()->segment(2) !== $news->public_slug) {
+        return redirect()->route('news.show', $news->public_slug, 301);
+    }
     return Inertia::render('SLFA/NewsDetail', [
         'post' => $news->load('photos'),
     ]);
-})->whereUlid('news')->name('news.show');
+})->where('news', '[A-Za-z0-9-]+')->name('news.show');
 
 Route::get('/sitemap.xml', function () {
     $urls = collect(['home', 'about', 'happenings', 'contact', 'membership'])
         ->map(fn ($name) => route($name))
-        ->concat(\App\Models\NewsPost::published()->pluck('public_id')->map(fn ($id) => route('news.show', $id)))
-        ->concat(\App\Models\Event::pluck('public_id')->map(fn ($id) => route('events.show', $id)));
+        ->concat(\App\Models\NewsPost::published()->get()->map(fn ($post) => route('news.show', $post->public_slug)))
+        ->concat(\App\Models\Event::all()->map(fn ($event) => route('events.show', $event->public_slug)));
 
     return response()->view('sitemap', ['urls' => $urls])->header('Content-Type', 'application/xml');
 })->name('sitemap');
@@ -95,9 +98,9 @@ Route::get('/gallery/{album}', [GalleryController::class, 'show'])->name('galler
 Route::get('/events', fn () => redirect()->to(route('happenings').'#events', 301))->name('events');
 Route::get('/events/{legacyEvent}', function (int $legacyEvent) {
     $event = \App\Models\Event::findOrFail($legacyEvent);
-    return redirect()->route('events.show', $event->public_id, 301);
+    return redirect()->route('events.show', $event->public_slug, 301);
 })->whereNumber('legacyEvent');
-Route::get('/events/{event:public_id}', [EventController::class, 'show'])->whereUlid('event')->name('events.show');
+Route::get('/events/{event:public_id}', [EventController::class, 'show'])->where('event', '[A-Za-z0-9-]+')->name('events.show');
 Route::post('/events/{event:public_id}/admission', [EventController::class, 'admission'])->whereUlid('event')->middleware('throttle:5,1')->name('events.admission');
 
 // Membership Application (public)

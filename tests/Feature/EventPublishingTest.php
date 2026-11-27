@@ -25,8 +25,9 @@ class EventPublishingTest extends TestCase
             'og_image_path' => '/images/Sri-Lanka-Culture.webp',
         ]);
         $this->assertMatchesRegularExpression('/^[0-9A-HJKMNP-TV-Z]{26}$/', $event->public_id);
-        $this->get('/events/'.$event->id)->assertRedirect(route('events.show', $event->public_id));
-        $this->get(route('events.show', $event->public_id))->assertOk()
+        $this->get('/events/'.$event->id)->assertRedirect(route('events.show', $event->public_slug));
+        $this->get(route('events.show', $event->public_id))->assertRedirect(route('events.show', $event->public_slug));
+        $this->get(route('events.show', $event->public_slug))->assertOk()
             ->assertSee('<meta name="description" content="Join the Sri Lankan community for dinner.">', false)
             ->assertSee('Community dinner in Chennai | SLFA')
             ->assertSee('OfflineEventAttendanceMode')
@@ -67,7 +68,7 @@ class EventPublishingTest extends TestCase
         ])->assertRedirect();
 
         $this->assertDatabaseHas('gallery_media', ['id' => $media->id, 'programme_item_id' => $item->id]);
-        $this->get(route('events.show', $event->public_id))->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->get(route('events.show', $event->public_slug))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->has('event.programme_items.0.media', 1)
             ->where('event.programme_items.0.title', 'Guest arrival and registration'));
     }

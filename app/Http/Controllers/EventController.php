@@ -19,6 +19,10 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
+        if (request()->segment(2) !== $event->public_slug) {
+            return redirect()->route('events.show', $event->public_slug, 301);
+        }
+
         // Load the gallery albums for this event if any
         $event->load('albums.media', 'programmeItems.media', 'sponsors');
 
