@@ -20,7 +20,7 @@ const dateLabel = value => new Intl.DateTimeFormat('en-IN', { day: 'numeric', mo
 const connections = [
     { title: 'Shared roots', kicker: 'Stories that brought us here', description: 'From Sri Lanka to the vibrant neighbourhoods of South India, our community carries forward shared memories, enduring friendships, and cultural traditions that connect generations across borders.', image: '/images/themes/shared-roots-light.webp', routeName: 'about', cta: 'Our story' },
     { title: 'Shared celebrations', kicker: 'Culture, lived together', description: 'Come together for cultural celebrations, family gatherings, and community events.', image: '/images/night-to-remember.jpg', routeName: 'happenings', cta: 'See gatherings' },
-    { title: 'Shared possibilities', kicker: 'Ideas become friendships', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/meet-people.jpg', routeName: 'membership', cta: 'Find your place' },
+    { title: 'Shared possibilities', kicker: 'Ideas become friendships', description: 'Build friendships, exchange ideas, and grow your professional connections.', image: '/images/themes/shared-possibilities-gallery.webp', routeName: 'membership', cta: 'Find your place' },
 ];
 
 export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {

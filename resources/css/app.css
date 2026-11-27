@@ -1075,3 +1075,50 @@ section.bg-\[\#faf9f7\] {
  .slfa-brand .brand-hero-photo img { height: 250px; }
 }
 @media (prefers-reduced-motion: reduce) { .slfa-brand .brand-hero-photo img { transition: none; transform: none !important; } }
+
+/* Light, legible footer and a consistent editorial rhythm across public pages. */
+.slfa-cream .cream-site-footer { background: #f7f9f6; color: #26342c; border-top: 1px solid #e1eae1; padding: 0 0 28px; }
+.footer-invitation { display: flex; align-items: end; justify-content: space-between; gap: 32px; padding: 64px 0 48px; border-bottom: 1px solid #dce5dc; }
+.footer-eyebrow { margin: 0 0 14px; color: #a45116 !important; font-size: 11px !important; letter-spacing: .16em; text-transform: uppercase; }
+.slfa-cream .footer-invitation h2 { margin: 0; color: #1f2937; font-size: clamp(32px,3.3vw,48px); font-weight: 300; letter-spacing: -.035em; line-height: 1.1; }
+.footer-invitation h2 em { color: #1b7a4a; font-style: normal; }
+.slfa-cream .footer-invitation-link { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 0 0 8px; border-bottom: 1px solid #1b7a4a; color: #176a42; font-size: 14px; transition: gap .25s ease; }
+.footer-invitation-link:hover { gap: 18px; }
+.cream-footer-grid { grid-template-columns: 1.5fr .7fr .9fr 1.1fr; gap: 48px; padding-top: 48px; }
+.slfa-cream .cream-footer-brand a[aria-label="SLFA home"] span span:first-child { color: #c86512; }
+.slfa-cream .cream-footer-brand a[aria-label="SLFA home"] span span:last-child { color: #445248; }
+.slfa-cream .cream-footer-brand p { margin-top: 20px; color: #52615a; }
+.cream-footer-brand small { padding: 0; border: 0; border-radius: 0; color: #65766c; line-height: 1.6; }
+.slfa-cream .cream-site-footer h3 { color: #1b6f46; font-size: 11px; font-weight: 400; letter-spacing: .14em; }
+.slfa-cream footer .cream-footer-nav a, .slfa-cream .cream-footer-contact > a, .slfa-cream .cream-footer-legal a { color: #35473d; }
+.cream-footer-contact address { color: #52615a; }
+.slfa-cream .cream-footer-social { display: inline-flex; align-items: center; gap: 5px; padding: 0 0 4px; border: 0; border-bottom: 1px solid #a9c5af; border-radius: 0; color: #176a42 !important; }
+.cream-footer-bottom { border-color: #dce5dc; }
+.slfa-cream .cream-footer-bottom p, .slfa-cream .cream-footer-bottom span { color: #65766c; }
+.slfa-cream .cream-site-footer a:hover { color: #1b7a4a; }
+.slfa-brand .brand-page-hero { position: relative; overflow: hidden; }
+.slfa-brand .brand-page-hero-inner { gap: clamp(36px,6vw,90px); }
+.slfa-brand .brand-hero-photo { box-shadow: 0 22px 50px -34px rgba(31,41,55,.4); }
+.slfa-brand .brand-hero-photo img { object-position: center; }
+.slfa-brand .brand-eyebrow { color: #a45116; }
+.slfa-brand .editorial-card { background: #fff; border: 1px solid #e3eae3; box-shadow: 0 14px 35px -30px rgba(31,41,55,.32); }
+.slfa-brand .editorial-card:hover { border-color: #a8c4ae; }
+.slfa-brand .brand-faq details { border-color: #dfe7df; }
+.slfa-brand .brand-faq summary { font-weight: 300; transition: color .2s ease; }
+.slfa-brand .brand-faq summary:hover { color: #a45116; }
+@media(max-width:960px) { .cream-footer-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 36px; } .cream-footer-brand { grid-column: 1 / -1; } }
+@media(max-width:600px) { .footer-invitation { align-items: flex-start; flex-direction: column; padding: 48px 0 36px; gap: 22px; } .cream-footer-grid { padding-top: 36px; gap: 32px 22px; } .cream-footer-contact { grid-column: 1 / -1; } }
+@media(max-width:380px) { .cream-footer-grid { grid-template-columns: 1fr; } }
+@media(prefers-reduced-motion:reduce) { .footer-invitation-link, .slfa-brand .brand-faq summary { transition: none; } }
+
+/* Keep the full group in view and keep mobile gallery captions out of narrow panels. */
+.cream-story-3 .cream-story-media { aspect-ratio: 3 / 2; }
+.cream-updates .community-journal .journal-select { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cream-updates .community-journal .journal-open { position: relative; height: auto; overflow: visible; flex: initial; }
+@media(max-width:767px) {
+ .cream-story-3 .cream-story-media { aspect-ratio: 3 / 2; }
+ .cream-updates .community-journal .journal-panel-content { inset: auto 16px 20px; }
+ .cream-updates .community-journal .journal-panel-content p { font-size: 18px; line-height: 1.3; overflow-wrap: normal; }
+ .cream-updates .community-journal .journal-panel:not(.is-active) .journal-panel-content { visibility: hidden; }
+ .cream-updates .community-journal .journal-panel.is-active .journal-panel-content { visibility: visible; }
+}

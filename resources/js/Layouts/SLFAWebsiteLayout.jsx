@@ -134,18 +134,20 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
 
             {cream ? <footer className="cream-site-footer">
                 <div className="cream-container">
+                    <div className="footer-invitation">
+                        <div><p className="footer-eyebrow">A community across borders</p><h2>There’s a place for you <em>here.</em></h2></div>
+                        <Link href={user ? route('dashboard') : route('membership')} className="footer-invitation-link">{user ? 'Your membership' : 'Explore membership'} <ArrowUpRight size={18} aria-hidden="true" /></Link>
+                    </div>
                     <div className="cream-footer-grid">
                         <div className="cream-footer-brand">
                             <Link href={route('home')} aria-label="SLFA home"><BrandMark /></Link>
-                            <h2>Friendship. Culture.<br /><span>Connection.</span></h2>
                             <p>Sri Lankan Friendship Association of South India brings our community together through shared heritage, friendship, and mutual support.</p>
-                            <small>Registration No. 234/2019 · Chennai, South India</small>
+                            <small>Reg. No. 234/2019 · Chennai, South India</small>
                         </div>
                         <nav aria-label="Footer navigation" className="cream-footer-nav">
                             <h3>Explore SLFA</h3>
                             <ul>
                                 {navLinks.map(link => <li key={link.name}><Link href={link.href}>{link.name}</Link></li>)}
-                                <li><Link href={route('membership')}>Membership</Link></li>
                             </ul>
                         </nav>
                         <nav aria-label="Legal and member links" className="cream-footer-nav">
@@ -153,8 +155,6 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
                             <ul>
                                 <li><Link href={user ? route('dashboard') : route('register')}>{user ? 'Member Dashboard' : 'Apply for Membership'}</Link></li>
                                 <li><Link href={route('login')}>Member Login</Link></li>
-                                <li><Link href={route('privacy')}>Privacy Policy</Link></li>
-                                <li><Link href={route('terms')}>Terms &amp; Conditions</Link></li>
                             </ul>
                         </nav>
                         <div className="cream-footer-contact">
