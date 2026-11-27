@@ -4,6 +4,7 @@ import SLFAWebsiteLayout from '@/Layouts/SLFAWebsiteLayout';
 import SLFAPageHero from '@/Components/SLFAPageHero';
 import { Calendar, MapPin, Clock, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 import { coverImageUrl } from '@/lib/coverImageUrl';
+import EventPromoVideo from '@/Components/EventPromoVideo';
 import MediaSlideshow from '@/Components/MediaSlideshow';
 import { AdmissionCelebration } from '@/Components/CommunityPlay';
 
@@ -57,6 +58,7 @@ export default function EventDetail({ auth, event, isGoing, admissionsOpen, flas
                         {/* Main Content */}
                         <div className="lg:col-span-2">
                             <article className="editorial-card editorial-card-green">
+                                {event.promo_video_path && <section className="mb-10" aria-labelledby="event-video-heading"><h2 id="event-video-heading" className="mb-5 font-lato text-3xl font-normal text-gray-950">Event video</h2><EventPromoVideo key={event.public_id} event={event} /></section>}
                                 {flyerMedia.length > 0 && <section aria-labelledby="event-flyers-heading">
                                     <div className="flex items-end justify-between gap-4"><div><p className="font-lato text-xs font-normal uppercase tracking-[0.2em] text-[#a45116]">Event information</p><h2 id="event-flyers-heading" className="mt-2 font-lato text-3xl font-normal text-gray-950">Flyer & programme</h2></div><p className="hidden text-sm text-gray-500 sm:block">Select an image to view it full screen.</p></div>
                                     <div className={`mt-6 grid gap-5 ${flyerMedia.length > 1 ? 'sm:grid-cols-2' : 'max-w-sm'}`}>{flyerMedia.map(item => <button key={item.id} type="button" onClick={() => openMedia(item.id)} className="group relative overflow-hidden border border-[#d8c9ad] bg-[#f3eddf] p-2 text-left shadow-[0_16px_38px_-30px_rgba(31,41,55,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1B7A4A]" aria-label={`Open ${item.caption} in full screen`}><img src={coverImageUrl(item.path)} alt={item.caption} className="mx-auto aspect-[3/4] w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]" /><span className="absolute bottom-5 left-5 bg-[#FAF7F2]/95 px-3 py-2 text-xs font-normal uppercase tracking-[0.12em] text-[#1B7A4A]">{item.id === 'event-poster' ? 'Event flyer' : 'Programme'} · View full screen</span></button>)}</div>

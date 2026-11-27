@@ -33,6 +33,11 @@ export default function Create({ auth, event }) {
         og_image: null,
         cover_image: null,
         programme_image: null,
+        promo_video: null,
+        promo_poster: null,
+        promo_transcript: event?.promo_transcript || '',
+        remove_promo_video: false,
+        remove_promo_poster: false,
         programme: (event?.programme_items || []).map(item => ({ id: item.id, time: item.time, title: item.title, details: item.details || '' })),
         sponsors: (event?.sponsors || []).map(item => ({ name: item.name, website_url: item.website_url || '', tier: item.tier || '' })),
     });
@@ -67,6 +72,16 @@ export default function Create({ auth, event }) {
                 <label className="block text-sm font-medium">Event cover or poster<input name="cover_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className={fieldClass} onChange={e => setData('cover_image', e.target.files[0] || null)} />{errors.cover_image && <span className="text-red-700">{errors.cover_image}</span>}</label>
                 {event?.programme_image_path && <img src={coverImageUrl(event.programme_image_path)} alt="Current programme flyer" className="h-40 w-auto object-contain" />}
                 <label className="block text-sm font-medium">Programme flyer (optional)<input name="programme_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className={fieldClass} onChange={e => setData('programme_image', e.target.files[0] || null)} />{errors.programme_image && <span className="text-red-700">{errors.programme_image}</span>}</label>
+            </section>
+
+            <section className="space-y-5"><h2 className="border-b pb-3 text-lg font-normal">Promotional video</h2>
+                <p className="text-sm text-gray-600">Optional MP4, up to 30 MB. Compress for web before uploading. It appears below the countdown for the featured upcoming event and on its event page.</p>
+                {event?.promo_video_path && <div className="space-y-2"><video controls preload="none" className="max-h-56 max-w-full" src={coverImageUrl(event.promo_video_path)} /><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={data.remove_promo_video} onChange={e => setData('remove_promo_video', e.target.checked)} /> Remove current video when saved</label></div>}
+                <label className="block text-sm font-medium">{event?.promo_video_path ? 'Replace video' : 'Upload video'}<input type="file" accept="video/mp4,.mp4" className={fieldClass} onChange={e => setData('promo_video', e.target.files[0] || null)} />{errors.promo_video && <span className="text-red-700">{errors.promo_video}</span>}</label>
+                {event?.promo_poster_path && <div className="space-y-2"><img src={coverImageUrl(event.promo_poster_path)} alt="Current promotional video cover" className="h-32 w-auto object-contain" /><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={data.remove_promo_poster} onChange={e => setData('remove_promo_poster', e.target.checked)} /> Remove current video cover when saved</label></div>}
+                <label className="block text-sm font-medium">Video cover image (optional)<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" className={fieldClass} onChange={e => setData('promo_poster', e.target.files[0] || null)} />{errors.promo_poster && <span className="text-red-700">{errors.promo_poster}</span>}</label>
+                <label className="block text-sm font-medium">Video transcript (recommended)<textarea rows="4" maxLength={10000} className={fieldClass} value={data.promo_transcript} onChange={e => setData('promo_transcript', e.target.value)} />{errors.promo_transcript && <span className="text-red-700">{errors.promo_transcript}</span>}</label>
+                <p className="text-xs text-gray-600">If both removal and a replacement are selected, the replacement is used. The event cover is used as a fallback when there is no video cover.</p>
             </section>
 
             <section className="space-y-5"><h2 className="border-b pb-3 text-lg font-normal">Venue, tickets, and contact</h2>

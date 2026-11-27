@@ -29,6 +29,7 @@ class Event extends Model
         'adult_price', 'child_price', 'child_age_range', 'contact_details',
         'public_id', 'admission_enabled', 'admission_closes_at',
         'meta_title', 'meta_description', 'og_image_path',
+        'promo_video_path', 'promo_poster_path', 'promo_transcript',
     ];
 
     protected function casts(): array

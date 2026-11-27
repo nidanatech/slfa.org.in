@@ -93,6 +93,11 @@ class AdminEventController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
             'programme_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
             'og_image' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
+            'promo_video' => 'nullable|file|mimetypes:video/mp4|max:30720',
+            'promo_poster' => 'nullable|image|mimes:jpeg,png,webp,avif|max:5120',
+            'promo_transcript' => 'nullable|string|max:10000',
+            'remove_promo_video' => 'boolean',
+            'remove_promo_poster' => 'boolean',
             'programme' => 'nullable|array|max:50',
             'programme.*.id' => [$event ? 'nullable' : 'prohibited', 'integer', Rule::exists('event_programme_items', 'id')->where('event_id', $event?->id)],
             'programme.*.time' => ['required', 'regex:/^([01]\\d|2[0-3]):[0-5]\\d$/'],
@@ -106,7 +111,7 @@ class AdminEventController extends Controller
 
         $programme = $validated['programme'] ?? [];
         $sponsors = $validated['sponsors'] ?? [];
-        unset($validated['programme'], $validated['sponsors'], $validated['cover_image'], $validated['programme_image'], $validated['og_image']);
+        unset($validated['programme'], $validated['sponsors'], $validated['cover_image'], $validated['programme_image'], $validated['og_image'], $validated['promo_video'], $validated['promo_poster'], $validated['remove_promo_video'], $validated['remove_promo_poster']);
 
         $zone = $validated['timezone'];
         $validated['start_at'] = Carbon::parse($validated['start_at'], $zone)->utc();
@@ -129,39 +134,67 @@ class AdminEventController extends Controller
             $validated['og_image_path'] = $request->file('og_image')->store('event-social', 'public');
         }
 
-        return DB::transaction(function () use ($event, $validated, $programme, $sponsors) {
-            if ($event) {
-                $event->update($validated);
-                $keepIds = collect($programme)->pluck('id')->filter()->all();
-                $event->programmeItems()->whereNotIn('id', $keepIds)->delete();
-                $event->sponsors()->delete();
-            } else {
-                $event = Event::create($validated);
-            }
-
-            foreach ($programme as $position => $item) {
-                $details = [
-                    'time' => $item['time'],
-                    'title' => $item['title'],
-                    'details' => $item['details'] ?? null,
-                    'sort_order' => $position,
-                ];
-                if (! empty($item['id'])) {
-                    $event->programmeItems()->whereKey($item['id'])->update($details);
-                } else {
-                    $event->programmeItems()->create($details);
+        $newPromoFiles = [];
+        $oldPromoFiles = [];
+        foreach (['promo_video' => 'event-promos', 'promo_poster' => 'event-promo-posters'] as $field => $directory) {
+            $pathField = $field.'_path';
+            if ($request->hasFile($field)) {
+                $path = $request->file($field)->store($directory, 'public');
+                if (! $path) {
+                    foreach ($newPromoFiles as $newFile) Storage::disk('public')->delete($newFile);
+                    throw \Illuminate\Validation\ValidationException::withMessages([$field => 'The file could not be saved. Please try again.']);
                 }
+                $newPromoFiles[] = $path;
+                $validated[$pathField] = $path;
+            } elseif ($request->boolean('remove_'.$field)) {
+                $validated[$pathField] = null;
             }
-            foreach ($sponsors as $position => $item) {
-                $event->sponsors()->create([
-                    'name' => $item['name'],
-                    'website_url' => $item['website_url'] ?? null,
-                    'tier' => $item['tier'] ?? null,
-                    'sort_order' => $position,
-                ]);
+            if (array_key_exists($pathField, $validated) && $event?->{$pathField} && str_starts_with($event->{$pathField}, $directory.'/')) {
+                $oldPromoFiles[] = $event->{$pathField};
             }
+        }
 
-            return $event;
-        });
+        try {
+            $savedEvent = DB::transaction(function () use ($event, $validated, $programme, $sponsors) {
+                if ($event) {
+                    $event->update($validated);
+                    $keepIds = collect($programme)->pluck('id')->filter()->all();
+                    $event->programmeItems()->whereNotIn('id', $keepIds)->delete();
+                    $event->sponsors()->delete();
+                } else {
+                    $event = Event::create($validated);
+                }
+
+                foreach ($programme as $position => $item) {
+                    $details = [
+                        'time' => $item['time'],
+                        'title' => $item['title'],
+                        'details' => $item['details'] ?? null,
+                        'sort_order' => $position,
+                    ];
+                    if (! empty($item['id'])) {
+                        $event->programmeItems()->whereKey($item['id'])->update($details);
+                    } else {
+                        $event->programmeItems()->create($details);
+                    }
+                }
+                foreach ($sponsors as $position => $item) {
+                    $event->sponsors()->create([
+                        'name' => $item['name'],
+                        'website_url' => $item['website_url'] ?? null,
+                        'tier' => $item['tier'] ?? null,
+                        'sort_order' => $position,
+                    ]);
+                }
+
+                return $event;
+            });
+        } catch (\Throwable $exception) {
+            foreach ($newPromoFiles as $newFile) Storage::disk('public')->delete($newFile);
+            throw $exception;
+        }
+        foreach ($oldPromoFiles as $oldFile) Storage::disk('public')->delete($oldFile);
+
+        return $savedEvent;
     }
 }

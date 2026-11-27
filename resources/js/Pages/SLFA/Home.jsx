@@ -8,6 +8,7 @@ import StoriesCarousel from '@/Components/StoriesCarousel';
 import MistCanvas from '@/Components/MistCanvas';
 import { InterestExplorer, PhotoJournal, EventCountdown } from '@/Components/CommunityPlay';
 import { coverImageUrl } from '@/lib/coverImageUrl';
+import EventPromoVideo from '@/Components/EventPromoVideo';
 
 const cultureImages = [
     '/images/carousel/kandyan-light.webp',
@@ -64,6 +65,7 @@ export default function Home({ auth, latestNews = [], upcomingEvents = [] }) {
                             {event ? <>
                                 {/gala/i.test(event.title) && <p className="event-invitation">An evening of music, friendship & celebration.</p>}
                                 <EventCountdown start={event.start_at} />
+                                <EventPromoVideo key={event.public_id} event={event} />
                                 <time dateTime={event.start_at}>{dateLabel(event.start_at)}</time>
                                 {event.location && <p className="cream-location"><MapPin size={15} aria-hidden="true" />{event.location}</p>}
                             </> : <p>Connect, celebrate, and build meaningful relationships.</p>}

@@ -1111,6 +1111,21 @@ section.bg-\[\#faf9f7\] {
 @media(max-width:380px) { .cream-footer-grid { grid-template-columns: 1fr; } }
 @media(prefers-reduced-motion:reduce) { .footer-invitation-link, .slfa-brand .brand-faq summary { transition: none; } }
 
+/* Event promotion is loaded only after a visitor presses play. */
+.event-promo { width: min(100%, 560px); margin: 18px 0; }
+.cream-hero-event-band .event-promo { max-width: 320px; }
+.event-promo-screen { overflow: hidden; background: #17281e; aspect-ratio: 16 / 9; }
+.event-promo-screen video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.event-promo-play { position: relative; display: grid; place-items: center; width: 100%; height: 100%; overflow: hidden; background: #274737; color: #fff; cursor: pointer; }
+.event-promo-play img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .52; transition: transform .45s ease; }
+.event-promo-play span { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid rgba(255,255,255,.8); background: rgba(10,25,16,.7); color: #fff; font-size: 14px; }
+.event-promo-play:hover img, .event-promo-play:focus-visible img { transform: scale(1.04); }
+.event-promo-play:focus-visible { outline: 3px solid #1b7a4a; outline-offset: 3px; }
+.event-promo-transcript { margin-top: 10px; color: #365848; font-size: 13px; }
+.event-promo-transcript summary { cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.event-promo-transcript p { margin-top: 10px; line-height: 1.7; white-space: pre-wrap; }
+@media(prefers-reduced-motion:reduce) { .event-promo-play img { transition: none; transform: none !important; } }
+
 /* Keep the full group in view and keep mobile gallery captions out of narrow panels. */
 .cream-story-3 .cream-story-media { aspect-ratio: 3 / 2; }
 .cream-updates .community-journal .journal-select { position: absolute; inset: 0; width: 100%; height: 100%; }
