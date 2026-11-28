@@ -4,6 +4,7 @@ import './bootstrap';
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
+import BackgroundMusic from './Components/BackgroundMusic';
 
 router.on('invalid', (event) => {
     if (event.detail.response.status === 419) {
@@ -23,7 +24,7 @@ createInertiaApp({
         ),
     setup({ el, App, props }) {
         const root = createRoot(el);
-        root.render(<App {...props} />);
+        root.render(<><App {...props} /><BackgroundMusic initialPage={props.initialPage.component} /></>);
     },
     progress: {
         color: '#F26E34',

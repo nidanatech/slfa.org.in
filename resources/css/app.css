@@ -1137,3 +1137,24 @@ section.bg-\[\#faf9f7\] {
  .cream-updates .community-journal .journal-panel:not(.is-active) .journal-panel-content { visibility: hidden; }
  .cream-updates .community-journal .journal-panel.is-active .journal-panel-content { visibility: visible; }
 }
+
+/* Keep story text clear of faces on smaller screens. */
+@media(max-width:767px) {
+ .cream-story-2 .cream-story-media::before, .cream-story-3 .cream-story-media::before { display: none; }
+ .cream-story-2 .cream-story-copy, .cream-story-3 .cream-story-copy { position: static; padding: 22px 0 0; color: #1f2937; }
+ .cream-stories-grid .cream-story-2 .cream-story-copy .cream-story-kicker, .cream-stories-grid .cream-story-3 .cream-story-copy .cream-story-kicker { color: #9c5018; }
+ .cream-stories-grid .cream-story-2 .cream-story-copy > p:not(.cream-story-kicker), .cream-stories-grid .cream-story-3 .cream-story-copy > p:not(.cream-story-kicker) { color: #566158; }
+ .cream-story-2 .cream-story-copy span, .cream-story-3 .cream-story-copy span { color: #167747; }
+}
+
+.site-music { position: fixed; right: 16px; bottom: 16px; z-index: 45; font-family: Lato, sans-serif; }
+.site-music-trigger { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; border: 1px solid #ccdcd0; border-radius: 999px; background: #fff; color: #176a42; font-size: 13px; box-shadow: 0 5px 20px #1f293723; }
+.site-music-panel { width: 260px; padding: 10px; border: 1px solid #d7e3d8; background: #fff; color: #1f2937; box-shadow: 0 8px 30px #1f293733; }
+.site-music-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-bottom: 8px; font-size: 13px; }
+.site-music-header > div { display: flex; gap: 4px; }
+.site-music-header button { padding: 6px; color: #176a42; }
+.site-music-header button:disabled { opacity: .4; }
+.site-music-video, .site-music-panel iframe { display: block; width: 240px; height: 200px; border: 0; background: #182820; }
+.site-music-notice { margin: 8px 0 0; font-size: 12px; line-height: 1.5; }
+.site-music-notice a { color: #176a42; text-decoration: underline; }
+.site-music :is(button,a):focus-visible { outline: 2px solid #1b7a4a; outline-offset: 2px; }
