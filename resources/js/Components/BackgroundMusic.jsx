@@ -8,15 +8,30 @@ export default function BackgroundMusic({ initialPage }) {
     const [muted, setMuted] = useState(false);
     const [notice, setNotice] = useState('');
     const audio = useRef(null);
+    const pausedByVisitor = useRef(false);
+    const pausedForVideo = useRef(false);
     const publicPage = page.startsWith('SLFA/');
 
     useEffect(() => router.on('navigate', event => setPage(event.detail.page.component)), []);
     useEffect(() => {
-        if (!publicPage) audio.current?.pause();
+        const player = audio.current;
+        if (!player) return;
+        if (!publicPage) { player.pause(); return; }
+        if (pausedByVisitor.current || pausedForVideo.current) return;
+        let cancelled = false;
+        player.volume = 0.15;
+        if (!player.getAttribute('src')) player.src = '/audio/srilankan-airlines-music.mp3';
+        player.play().catch(error => {
+            if (!cancelled && error.name !== 'AbortError') setNotice('Tap Play music to start.');
+        });
+        return () => { cancelled = true; };
     }, [publicPage]);
     useEffect(() => {
         const pauseForVideo = event => {
-            if (event.target instanceof HTMLVideoElement && !event.target.muted) audio.current?.pause();
+            if (event.target instanceof HTMLVideoElement && !event.target.muted && audio.current && !audio.current.paused) {
+                pausedForVideo.current = true;
+                audio.current.pause();
+            }
         };
         document.addEventListener('play', pauseForVideo, true);
         return () => document.removeEventListener('play', pauseForVideo, true);
@@ -25,7 +40,9 @@ export default function BackgroundMusic({ initialPage }) {
     const togglePlayback = async () => {
         const player = audio.current;
         if (!player) return;
-        if (!player.paused) { player.pause(); return; }
+        if (!player.paused) { pausedByVisitor.current = true; player.pause(); return; }
+        pausedByVisitor.current = false;
+        pausedForVideo.current = false;
         setNotice('');
         player.volume = 0.15;
         if (!player.getAttribute('src')) player.src = '/audio/srilankan-airlines-music.mp3';
