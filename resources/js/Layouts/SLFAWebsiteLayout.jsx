@@ -166,7 +166,7 @@ export default function SLFAWebsiteLayout({ children, user, darkNav = false, vib
                         </div>
                     </div>
                     <div className="cream-footer-bottom">
-                        <p>© {new Date().getFullYear()} Sri Lankan Friendship Association of South India. All rights reserved.</p>
+                        <div><p>© {new Date().getFullYear()} Sri Lankan Friendship Association of South India. All rights reserved.</p><p className="footer-music-credit">Music: SriLankan Airlines · <a href="https://www.youtube.com/watch?v=Vzbs4E9Ok2Q" target="_blank" rel="noopener noreferrer">Listen on YouTube <ArrowUpRight size={12} className="inline-block align-middle" aria-hidden="true" /></a></p></div>
                         <div className="cream-footer-legal">
                             <Link href={route('privacy')}>Privacy Policy</Link>
                             <span aria-hidden="true">·</span>

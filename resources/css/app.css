@@ -1158,3 +1158,9 @@ section.bg-\[\#faf9f7\] {
 .site-music-notice { margin: 8px 0 0; font-size: 12px; line-height: 1.5; }
 .site-music-notice a { color: #176a42; text-decoration: underline; }
 .site-music :is(button,a):focus-visible { outline: 2px solid #1b7a4a; outline-offset: 2px; }
+.site-music[hidden] { display: none; }
+.site-music-controls { display: flex; align-items: center; gap: 6px; }
+.site-music-mute { display: grid; place-items: center; width: 39px; height: 39px; border: 1px solid #ccdcd0; border-radius: 50%; background: #fff; color: #176a42; box-shadow: 0 5px 20px #1f293723; }
+.site-music-notice { max-width: 200px; padding: 7px 10px; background: #fff; color: #34473b; }
+.slfa-cream .cream-footer-bottom .footer-music-credit { margin-top: 6px; font-size: 12px; }
+.footer-music-credit a { color: #176a42; text-decoration: underline; text-underline-offset: 3px; }

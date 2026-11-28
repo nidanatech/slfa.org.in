@@ -1,80 +1,48 @@
 import { useEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
-import { Music2, Volume2, VolumeX, X } from 'lucide-react';
-
-const videoId = 'Vzbs4E9Ok2Q';
+import { Music2, Pause, Volume2, VolumeX } from 'lucide-react';
 
 export default function BackgroundMusic({ initialPage }) {
     const [page, setPage] = useState(initialPage);
-    const [open, setOpen] = useState(false);
-    const [ready, setReady] = useState(false);
+    const [playing, setPlaying] = useState(false);
     const [muted, setMuted] = useState(false);
     const [notice, setNotice] = useState('');
-    const player = useRef(null);
-    const mount = useRef(null);
+    const audio = useRef(null);
     const publicPage = page.startsWith('SLFA/');
 
     useEffect(() => router.on('navigate', event => setPage(event.detail.page.component)), []);
-    useEffect(() => { if (!publicPage) setOpen(false); }, [publicPage]);
-
     useEffect(() => {
-        if (!open || !publicPage) return undefined;
-        let disposed = false;
-        const previousReady = window.onYouTubeIframeAPIReady;
-        const createPlayer = () => {
-            if (disposed || !mount.current || !window.YT?.Player) return;
-            const target = document.createElement('div');
-            mount.current.replaceChildren(target);
-            player.current = new window.YT.Player(target, {
-                width: '240', height: '200', videoId,
-                host: 'https://www.youtube-nocookie.com',
-                playerVars: { playsinline: 1, rel: 0, loop: 1, playlist: videoId, origin: window.location.origin },
-                events: {
-                    onReady: event => { event.target.setVolume(15); setReady(true); event.target.playVideo(); },
-                    onAutoplayBlocked: () => setNotice('Tap play in the video to start the music.'),
-                    onError: () => setNotice('This video cannot be played here. You can open it on YouTube.'),
-                },
-            });
-        };
-        if (window.YT?.Player) createPlayer();
-        else {
-            window.onYouTubeIframeAPIReady = () => { previousReady?.(); createPlayer(); };
-            if (!document.querySelector('script[data-slfa-youtube-api]')) {
-                const script = document.createElement('script');
-                script.src = 'https://www.youtube.com/iframe_api';
-                script.dataset.slfaYoutubeApi = 'true';
-                script.onerror = () => { script.remove(); if (!disposed) setNotice('Unable to load the player. You can open the track on YouTube.'); };
-                document.head.appendChild(script);
-            }
-        }
+        if (!publicPage) audio.current?.pause();
+    }, [publicPage]);
+    useEffect(() => {
         const pauseForVideo = event => {
-            if (event.target instanceof HTMLVideoElement && !event.target.muted) player.current?.pauseVideo?.();
+            if (event.target instanceof HTMLVideoElement && !event.target.muted) audio.current?.pause();
         };
         document.addEventListener('play', pauseForVideo, true);
-        return () => {
-            disposed = true;
-            document.removeEventListener('play', pauseForVideo, true);
-            player.current?.destroy?.();
-            player.current = null;
-            setReady(false);
-            setMuted(false);
-            if (window.onYouTubeIframeAPIReady && !window.YT?.Player) window.onYouTubeIframeAPIReady = previousReady;
-        };
-    }, [open, publicPage]);
+        return () => document.removeEventListener('play', pauseForVideo, true);
+    }, []);
 
-    if (!publicPage) return null;
+    const togglePlayback = async () => {
+        const player = audio.current;
+        if (!player) return;
+        if (!player.paused) { player.pause(); return; }
+        setNotice('');
+        player.volume = 0.15;
+        if (!player.getAttribute('src')) player.src = '/audio/srilankan-airlines-music.mp3';
+        try { await player.play(); } catch { setNotice('Music could not be played. Please try again.'); }
+    };
     const toggleMute = () => {
-        if (!player.current || !ready) return;
-        if (muted) player.current.unMute(); else player.current.mute();
-        setMuted(!muted);
+        if (!audio.current) return;
+        audio.current.muted = !audio.current.muted;
+        setMuted(audio.current.muted);
     };
 
-    return <aside className="site-music" aria-label="Website music">
-        {!open ? <button type="button" className="site-music-trigger" onClick={() => { setNotice(''); setOpen(true); }}><Music2 size={17} aria-hidden="true" /> Play music</button> :
-            <div className="site-music-panel">
-                <div className="site-music-header"><span>Music for your visit</span><div><button type="button" onClick={toggleMute} disabled={!ready} aria-label={muted ? 'Unmute music' : 'Mute music'}>{muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</button><button type="button" onClick={() => setOpen(false)} aria-label="Stop music and close player"><X size={18} /></button></div></div>
-                <div ref={mount} className="site-music-video" />
-                {notice && <p className="site-music-notice" role="status">{notice} <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer">Open on YouTube</a></p>}
-            </div>}
+    return <aside className="site-music" aria-label="Website music" hidden={!publicPage}>
+        <audio ref={audio} preload="none" loop onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => setNotice('Music could not be loaded.')} />
+        <div className="site-music-controls">
+            <button type="button" className="site-music-trigger" onClick={togglePlayback} aria-label={playing ? 'Pause background music' : 'Play background music'}>{playing ? <Pause size={17} aria-hidden="true" /> : <Music2 size={17} aria-hidden="true" />}{playing ? 'Pause music' : 'Play music'}</button>
+            {playing && <button type="button" className="site-music-mute" onClick={toggleMute} aria-label={muted ? 'Unmute background music' : 'Mute background music'}>{muted ? <VolumeX size={18} aria-hidden="true" /> : <Volume2 size={18} aria-hidden="true" />}</button>}
+        </div>
+        {notice && <p className="site-music-notice" role="status">{notice}</p>}
     </aside>;
 }
