@@ -102,17 +102,21 @@ jobs:
 
       - name: Verify public website
         env:
-          SITE_URL: https://venerable-mistyrose-quetzal-21.hostingersite.com/
+          SITE_URL: https://slfa.org.in/
         run: |
           base_url="${SITE_URL%/}"
           echo '| Path | HTTP status |' >> "$GITHUB_STEP_SUMMARY"
           echo '| --- | --- |' >> "$GITHUB_STEP_SUMMARY"
           failed=0
           for path in / /favicon.png /images/slfa-crest.webp /about /membership /happenings /events /news; do
-            status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$base_url$path" || true)
+            status=$(curl --http1.1 --silent --show-error --location --output /dev/null --write-out '%{http_code}' --max-time 20 "$base_url$path" || true)
             printf '| `%s` | %s |\n' "$path" "$status" >> "$GITHUB_STEP_SUMMARY"
             if [ "$status" != "200" ]; then
-              echo "Public route $path returned HTTP $status"
+              if [ "$status" = "000" ]; then
+                echo "Could not get an HTTP response for $path; see the curl error above."
+              else
+                echo "Public route $path returned HTTP $status"
+              fi
               failed=1
             fi
           done
