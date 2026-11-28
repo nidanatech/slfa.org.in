@@ -51,7 +51,7 @@ jobs:
 
       - name: Deploy with rsync
         run: |
-          rsync -rvz --delete --omit-dir-times --no-owner --no-group --no-perms \
+          rsync -rvz --omit-dir-times --no-owner --no-group --no-perms \
             -e "ssh -p ${{ secrets.SERVER_PORT || 65002 }} -i ~/.ssh/id_rsa" \
             --exclude='.git/' \
             --exclude='.github/' \
@@ -95,7 +95,7 @@ jobs:
             php artisan storage:link || true
 
             # Hostinger serves public_html; Laravel's public directory is its web root.
-            rsync -a --delete --exclude='storage' public/ public_html/
+            rsync -a --exclude='storage' public/ public_html/
             if [ ! -e public_html/storage ]; then
               ln -s ../storage/app/public public_html/storage
             fi
